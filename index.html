@@ -209,9 +209,36 @@
 
     /* ════════ §1 HERO ════════ */
     .hero { padding-top: clamp(64px, 10vw, 130px); }
-    .hero h1 { max-width: 11ch; margin-bottom: 36px; }
+    .hero .hero-grid { display: grid; grid-template-columns: 1fr minmax(280px, 380px); gap: clamp(40px, 6vw, 88px); align-items: center; }
+    .hero-col { min-width: 0; }
     .hero .lede { font-family: var(--serif); font-size: clamp(19px, 2vw, 24px); line-height: 1.5; color: var(--ink-2); max-width: 38ch; margin-bottom: 48px; }
     .hero .lede em { font-style: italic; }
+
+    /* hero — formulaire légèrement agrandi (lisibilité) */
+    .hero .waitlist-form .field-label { font-size: 14px; }
+    .hero .waitlist-form .ul-act { font-size: 15px; }
+    .hero .waitlist-form .help { font-size: 12px; }
+
+    /* iPhone vertical à droite — reprend la pub AD 1.1 de la campagne (fond ivoire, type géant) */
+    .hero-visual { display: flex; justify-content: center; }
+    .hero-phone {
+      width: 100%; max-width: 340px; aspect-ratio: 9 / 19.5;
+      border-radius: 44px; background: var(--paper); border: 1px solid var(--rule-2);
+      box-shadow: 0 30px 60px -20px rgba(22,20,18,0.28), 0 1px 0 rgba(255,255,255,0.5) inset;
+      padding: 56px 28px 34px; position: relative; overflow: hidden;
+      display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .hero-phone .phone-notch { position: absolute; top: 14px; left: 50%; transform: translateX(-50%); width: 86px; height: 24px; background: var(--ink); border-radius: 14px; }
+    .hero-phone .phone-top { font-family: var(--mono); font-size: 10px; letter-spacing: var(--track-mono); text-transform: lowercase; color: var(--slate); text-align: center; padding-top: 16px; }
+    .hero-phone h1 { max-width: none; margin: 0; font-size: clamp(38px, 6.4vw, 58px); line-height: 0.94; color: var(--ink); }
+    .hero-phone .phone-foot { display: flex; justify-content: space-between; align-items: flex-end; }
+    .hero-phone .phone-brand { font-family: var(--display); font-weight: 300; font-size: 30px; letter-spacing: -0.045em; line-height: 1; }
+    .hero-phone .phone-cta { font-family: var(--mono); font-size: 10px; letter-spacing: var(--track-mono); text-transform: lowercase; color: var(--ink); border-bottom: 1px solid var(--ink); padding-bottom: 3px; }
+    @media (max-width: 760px) {
+      .hero .hero-grid { grid-template-columns: 1fr; gap: clamp(36px, 8vw, 56px); }
+      .hero-visual { order: -1; }
+      .hero-phone { max-width: 300px; }
+    }
 
     /* ════════ §2 6 TEMPS ════════ */
     .six-times h2 { max-width: 16ch; margin-bottom: 56px; }
@@ -346,28 +373,41 @@
 
   <!-- ════════ §1 HERO ════════ -->
   <section class="hero" id="hero" aria-labelledby="hero-title">
-    <div class="wrap">
-      <h1 id="hero-title">tu ne la prendras qu'<span class="une">une<span class="dot"></span></span> fois.</h1>
-      <p class="lede">
-        tu prends, tu attends, tu reçois.
-        <span class="une" style="font-size:1em">une<span class="dot"></span></span>
-        est une pellicule numérique. tu fais tes photos sans jamais les voir,
-        et les tirages arrivent chez toi quelques jours plus tard.
-        le numérique vient après — dans le colis, il y a un code.
-      </p>
+    <div class="wrap hero-grid">
+      <div class="hero-col">
+        <p class="lede">
+          tu prends, tu attends, tu reçois.
+          <span class="une" style="font-size:1em">une<span class="dot"></span></span>
+          est une pellicule numérique. tu fais tes photos sans jamais les voir,
+          et les tirages arrivent chez toi quelques jours plus tard.
+          le numérique vient après — dans le colis, il y a un code.
+        </p>
 
-      <form class="waitlist-form" data-location="hero" aria-labelledby="hero-form-title" novalidate>
-        <span class="field-label" id="hero-form-title">ton email</span>
-        <div class="row">
-          <input type="email" id="email-hero" name="email" placeholder="prenom@exemple.fr"
-                 autocomplete="email" inputmode="email" required aria-label="ton email"
-                 aria-describedby="hero-help hero-error" />
-          <button type="submit" class="ul-act"><span class="w">garder ma place</span><span class="trail"></span></button>
-          <input type="text" name="company" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true" />
+        <form class="waitlist-form" data-location="hero" aria-labelledby="hero-form-title" novalidate>
+          <span class="field-label" id="hero-form-title">ton email</span>
+          <div class="row">
+            <input type="email" id="email-hero" name="email" placeholder="prenom@exemple.fr"
+                   autocomplete="email" inputmode="email" required aria-label="ton email"
+                   aria-describedby="hero-help hero-error" />
+            <button type="submit" class="ul-act"><span class="w">garder ma place</span><span class="trail"></span></button>
+            <input type="text" name="company" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true" />
+          </div>
+          <p id="hero-help" class="help">-50 % sur la première pellicule pour les 100 premiers inscrits · on ne partage pas ton email</p>
+          <p id="hero-error" class="error-msg" role="alert" aria-live="polite"></p>
+        </form>
+      </div>
+
+      <div class="hero-visual">
+        <div class="hero-phone">
+          <span class="phone-notch" aria-hidden="true"></span>
+          <span class="phone-top">pellicule simulée · 24 poses</span>
+          <h1 id="hero-title" class="phone-body">tu ne la prendras qu'<span class="une">une<span class="dot"></span></span> fois.</h1>
+          <div class="phone-foot">
+            <span class="phone-brand"><span class="une">une<span class="dot"></span></span></span>
+            <span class="phone-cta">en mai</span>
+          </div>
         </div>
-        <p id="hero-help" class="help">-50 % sur la première pellicule pour les 100 premiers inscrits · on ne partage pas ton email</p>
-        <p id="hero-error" class="error-msg" role="alert" aria-live="polite"></p>
-      </form>
+      </div>
     </div>
   </section>
 
