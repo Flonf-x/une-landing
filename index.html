@@ -629,12 +629,35 @@
 
     function showSuccess(form) {
       const onInk = form.closest(".on-ink") ? " on-ink" : "";
-      form.outerHTML = `
-        <div class="success-state${onInk}" role="status">
-          <h3>bien reçu.</h3>
-          <p style="margin:0 0 14px;">on t'écrit dès qu'on ouvre. vérifie ta boîte — un email de confirmation arrive dans la minute.</p>
-          <a class="ul-act${onInk}" href="?ref=${generateRefStub()}"><span class="w">inviter un ami · +1 place</span><span class="trail"></span></a>
-        </div>`;
+      const refCode = generateRefStub();
+      const shareUrl = "https://une-app.fr/?ref=" + refCode;
+      const shareText = "j'ai gardé ma place sur une. — la pellicule numérique. garde la tienne :";
+      const wrap = document.createElement("div");
+      wrap.className = "success-state" + onInk;
+      wrap.setAttribute("role", "status");
+      wrap.innerHTML = `
+        <h3>bien reçu.</h3>
+        <p style="margin:0 0 14px;">on t'écrit dès qu'on ouvre. vérifie ta boîte — un email de confirmation arrive dans la minute.</p>
+        <button type="button" class="ul-act${onInk}" data-share><span class="w">inviter un ami · +1 place</span><span class="trail"></span></button>
+        <p class="mini" data-share-link>ton lien : <span style="text-transform:none;">${shareUrl}</span></p>
+        <p class="error-msg" data-share-feedback aria-live="polite"></p>`;
+      form.replaceWith(wrap);
+      const btn = wrap.querySelector("[data-share]");
+      const feedback = wrap.querySelector("[data-share-feedback]");
+      btn.addEventListener("click", async () => {
+        track("referral_shared", { method: navigator.share ? "native" : "clipboard" });
+        if (navigator.share) {
+          try { await navigator.share({ title: "une.", text: shareText, url: shareUrl }); }
+          catch (_) { /* partage annulé par l'utilisateur — on ne fait rien */ }
+        } else {
+          try {
+            await navigator.clipboard.writeText(shareUrl);
+            feedback.textContent = "lien copié — envoie-le à un ami.";
+          } catch (_) {
+            feedback.textContent = "copie ce lien : " + shareUrl;
+          }
+        }
+      });
     }
 
     function bindForm(form) {
