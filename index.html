@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>une. — une application photographique. des tirages livrés.</title>
+  <meta name="description" content="tu ne la prendras qu'une fois. une. est une pellicule numérique pour iphone et android. les tirages physiques arrivent chez toi par courrier. lancement bientôt — les 100 premiers ont leur première pellicule à -50 %." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://une-app.fr/" />
+
+  <meta property="og:title" content="une. — une application photographique. des tirages livrés." />
+  <meta property="og:description" content="une seule prise. une seule respiration. une seule photo. lancement bientôt." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://une-app.fr/" />
+  <meta property="og:image" content="https://une-app.fr/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Polices de la direction artistique (Google Fonts — gratuites) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400&family=Cormorant+Garamond:ital,wght@0,400;1,300;1,400&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+
+  <!-- Plausible analytics (privacy-first, sans cookies) -->
+  <script defer data-domain="une-app.fr" src="https://plausible.io/js/script.outbound-links.tagged-events.js"></script>
+  <script>window.plausible = window.plausible || function(){(window.plausible.q=window.plausible.q||[]).push(arguments)};</script>
+
+  <!-- ════ Backend waitlist TEMPORAIRE — remplace l'URL par celle de ton service (Render/Fly).
+       Quand le backend NAS sera public en HTTPS sur une-app.fr, supprime ce bloc (form en same-origin). ════ -->
+  <script>window.UNE_API_BASE_URL = "https://une-waitlist-temp.onrender.com";</script>
+
+  <style>
+    /* ════════ DESIGN TOKENS — strictement alignés sur la DA ════════ */
+    :root {
+      /* encre / papier — monochrome strict, aucune couleur sémantique */
+      --ink:      #161412;   /* surface noire / texte décision */
+      --ink-2:    #3d3935;   /* corps secondaire */
+      --slate:    #5a554f;   /* labels & méta */
+      --voile:    #8a8278;   /* aide / désactivé */
+      --rule-2:   #b8b1a5;   /* filets secondaires */
+      --rule:     #c9c2b5;   /* filets / séparateurs */
+      --paper-3:  #d9d3c7;   /* papier intermédiaire */
+      --paper-2:  #e8e2d6;   /* surfaces secondaires */
+      --paper:    #f1ece4;   /* surface primaire / ivoire */
+
+      /* typo — trois familles, jamais plus */
+      --display:  'Fraunces','GT Sectra Display',Georgia,serif;
+      --serif:    'Cormorant Garamond','Garamond',Georgia,serif;
+      --mono:     'JetBrains Mono',ui-monospace,monospace;
+
+      --max-w:    1180px;
+      --pad-x:    clamp(20px, 5vw, 64px);
+      --pad-y:    clamp(80px, 12vw, 150px);
+      --track-mono: 0.18em;
+    }
+
+    /* ════════ RESET & BASE ════════ */
+    *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 1.6;
+    }
+    ::selection { background: var(--ink); color: var(--paper); }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *,*::before,*::after { animation: none !important; transition: none !important; }
+    }
+    img { max-width: 100%; height: auto; display: block; }
+    a { color: inherit; text-decoration: none; }
+    a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
+      outline: 2px solid var(--ink);
+      outline-offset: 3px;
+    }
+
+    /* ════════ ATOMES TYPO ════════ */
+    .display { font-family: var(--display); font-weight: 300; letter-spacing: -0.045em; }
+    .italic  { font-family: var(--serif); font-style: italic; font-weight: 300; }
+    .mono {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: var(--track-mono);
+      text-transform: lowercase;
+      color: var(--slate);
+      font-weight: 400;
+    }
+    .mono-sm { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: lowercase; color: var(--slate); }
+
+    h1,h2,h3 { font-family: var(--display); font-weight: 300; letter-spacing: -0.04em; line-height: 1; }
+    h1 { font-size: clamp(46px, 9vw, 120px); }
+    h2 { font-size: clamp(32px, 5vw, 60px); letter-spacing: -0.035em; }
+    h3 { font-size: clamp(20px, 2.4vw, 28px); letter-spacing: -0.02em; }
+
+    .wrap { max-width: var(--max-w); margin: 0 auto; padding-left: var(--pad-x); padding-right: var(--pad-x); }
+    section { padding-top: var(--pad-y); padding-bottom: var(--pad-y); }
+
+    .eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: var(--track-mono); text-transform: lowercase; color: var(--slate); margin-bottom: 40px; }
+
+    /* ════════ LOGO .une — TEMPLATE OFFICIEL (repris tel quel de la DA) ════════ */
+    .une {
+      font-family: var(--display);
+      font-weight: 300;
+      font-style: normal;
+      letter-spacing: -0.045em;
+      text-transform: lowercase;
+      color: inherit;
+      line-height: 1;
+      display: inline-block;
+      position: relative;
+      padding-right: .20em;       /* diam 0.16 + gap 0.04 */
+      font-feature-settings: "liga" 1, "kern" 1;
+    }
+    .une .dot {
+      display: block;
+      width: .16em; height: .16em;
+      background: currentColor;   /* JAMAIS de couleur — suit le texte */
+      border-radius: 50%;
+      position: absolute;
+      right: 0; bottom: .18em;
+    }
+    .une.xs { padding-right: .24em; }
+    .une.xs .dot { width: .20em; height: .20em; bottom: .17em; }
+
+    /* ════════ ACTION SOULIGNÉE (.ul-act) — pas de bouton rectangulaire ════════ */
+    .ul-act {
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: var(--track-mono);
+      text-transform: lowercase;
+      color: var(--ink);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: .6em;
+      cursor: pointer;
+      background: none; border: none; padding: 0;
+      line-height: 1;
+    }
+    .ul-act .w { padding-bottom: 4px; border-bottom: 1px solid var(--ink); }
+    .ul-act .trail { display: inline-block; width: 1.4em; height: 1px; background: var(--ink); transition: width .35s ease; }
+    .ul-act:hover .trail, .ul-act:focus-visible .trail { width: 3.2em; }
+    .ul-act[disabled] { color: var(--voile); cursor: progress; }
+    .ul-act[disabled] .w { border-bottom-color: var(--voile); }
+    .ul-act[disabled] .trail { background: var(--voile); }
+    .on-ink .ul-act, .ul-act.on-ink { color: var(--paper); }
+    .on-ink .ul-act .w, .ul-act.on-ink .w { border-bottom-color: var(--paper); }
+    .on-ink .ul-act .trail, .ul-act.on-ink .trail { background: var(--paper); }
+
+    /* ════════ §0 SPLASH / COVER (plein écran encre) ════════ */
+    .cover {
+      background: var(--ink);
+      color: var(--paper);
+      min-height: 100svh;
+      padding: clamp(28px, 5vw, 56px) var(--pad-x);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .cover .cover-head, .cover .cover-foot {
+      display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap;
+      font-family: var(--mono); font-size: 10px; letter-spacing: var(--track-mono);
+      text-transform: lowercase; color: var(--voile);
+    }
+    .cover .cover-head b, .cover .cover-foot b { color: var(--paper); font-weight: 400; }
+    .cover .stage {
+      flex: 1;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: clamp(28px, 4vw, 48px);
+      text-align: center;
+    }
+    .cover-logo { font-size: clamp(140px, 32vw, 420px); color: var(--paper); line-height: .8; }
+    .cover .lede {
+      font-family: var(--serif); font-style: italic; font-weight: 300;
+      font-size: clamp(20px, 2.6vw, 30px); line-height: 1.4; color: var(--paper-3);
+      max-width: 30ch;
+    }
+    .cover .descriptor { font-family: var(--mono); font-size: 10px; letter-spacing: var(--track-mono); text-transform: lowercase; color: var(--voile); max-width: 40ch; margin: 0 auto; line-height: 1.8; }
+    .scroll-cue { font-family: var(--mono); font-size: 10px; letter-spacing: var(--track-mono); text-transform: lowercase; color: var(--voile); }
+    .scroll-cue .arrow { display: inline-block; animation: bob 2.4s ease-in-out infinite; }
+    @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(4px)} }
+
+    /* ════════ FORM (champs filaires, submit en action soulignée) ════════ */
+    .waitlist-form { max-width: 520px; }
+    .waitlist-form .field-label { font-family: var(--mono); font-size: 11px; letter-spacing: var(--track-mono); text-transform: lowercase; color: var(--slate); display: block; margin-bottom: 14px; }
+    .waitlist-form .row { display: flex; align-items: baseline; gap: 24px; flex-wrap: wrap; }
+    .waitlist-form input[type="email"] {
+      flex: 1 1 240px; min-width: 0;
+      border: 0; border-bottom: 1px solid var(--ink);
+      background: transparent;
+      font-family: var(--serif); font-size: 22px; color: var(--ink);
+      padding: 6px 0;
+    }
+    .waitlist-form input[type="email"]::placeholder { color: var(--voile); }
+    .waitlist-form input[type="email"]:focus { outline: none; border-bottom-width: 2px; }
+    .waitlist-form input[type="email"][aria-invalid="true"] { border-bottom-style: dashed; }
+    .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+    .help, .mini { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: lowercase; color: var(--voile); margin-top: 18px; line-height: 1.7; }
+    .error-msg { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: lowercase; color: var(--ink-2); margin-top: 12px; min-height: 1.4em; }
+    .success-state { border: 1px solid var(--rule); padding: 28px; max-width: 520px; background: var(--paper-2); }
+    .success-state h3 { font-family: var(--display); font-weight: 300; margin-bottom: 10px; }
+    .on-ink .waitlist-form input[type="email"] { border-bottom-color: var(--paper); color: var(--paper); }
+    .on-ink .waitlist-form input[type="email"]::placeholder { color: var(--voile); }
+    .on-ink .field-label, .on-ink .help, .on-ink .mini { color: var(--voile); }
+    .on-ink .error-msg { color: var(--paper-3); }
+    .on-ink .success-state { background: rgba(241,236,228,0.06); border-color: rgba(241,236,228,0.2); }
+
+    /* ════════ §1 HERO ════════ */
+    .hero { padding-top: clamp(64px, 10vw, 130px); }
+    .hero h1 { max-width: 11ch; margin-bottom: 36px; }
+    .hero .lede { font-family: var(--serif); font-size: clamp(19px, 2vw, 24px); line-height: 1.5; color: var(--ink-2); max-width: 38ch; margin-bottom: 48px; }
+    .hero .lede em { font-style: italic; }
+
+    /* ════════ §2 6 TEMPS ════════ */
+    .six-times h2 { max-width: 16ch; margin-bottom: 56px; }
+    .times { list-style: none; border-top: 1px solid var(--ink); }
+    .times li {
+      display: grid; grid-template-columns: 56px 1fr auto; align-items: baseline; gap: 32px;
+      padding: clamp(26px,3.6vw,48px) 0; border-bottom: 1px solid var(--rule);
+    }
+    .times .num { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: var(--slate); }
+    .times .word { font-family: var(--display); font-weight: 300; font-size: clamp(28px,4.4vw,52px); letter-spacing: -0.04em; line-height: 1; color: var(--ink); }
+    .times .word .il { font-family: var(--serif); font-style: italic; font-weight: 400; color: var(--slate); margin-right: .18em; font-size: .8em; }
+    .times .label { font-family: var(--mono); font-size: 10px; letter-spacing: var(--track-mono); text-transform: lowercase; color: var(--slate); text-align: right; }
+    .times .desc { grid-column: 2 / 3; margin: 0; color: var(--ink-2); font-size: 17px; max-width: 44ch; opacity: 0; max-height: 0; overflow: hidden; transition: opacity .25s ease, max-height .25s ease, margin .25s ease; }
+    .times li:hover .desc, .times li:focus-within .desc, .times li.is-open .desc { opacity: 1; max-height: 120px; margin-top: 16px; }
+    @media (max-width: 720px) {
+      .times li { grid-template-columns: 1fr auto; gap: 10px; }
+      .times .num { grid-column: 1 / -1; }
+      .times .label { align-self: center; }
+      .times .desc { grid-column: 1 / -1; opacity: 1; max-height: 200px; margin-top: 12px; }
+    }
+
+    /* ════════ §3 LE COLIS ════════ */
+    .colis { text-align: center; }
+    .colis h2 { max-width: 14ch; margin: 0 auto 56px; }
+    .colis h2 .il { font-family: var(--serif); font-style: italic; font-weight: 400; }
+    .colis-visual {
+      max-width: 760px; margin: 0 auto; aspect-ratio: 4 / 3;
+      background: var(--paper-2); border: 1px solid var(--rule);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 10px; letter-spacing: var(--track-mono); text-transform: lowercase; color: var(--voile);
+    }
+    .colis-visual::after { content: "[ photo studio · colis ouvert · tirages + carte avec code ]"; }
+
+    /* ════════ §4 MANIFESTE (plein écran encre) ════════ */
+    .manifeste { background: var(--ink); color: var(--paper); padding: clamp(100px,16vw,180px) 0; }
+    .manifeste .eyebrow { color: var(--voile); }
+    .manifeste-body { max-width: 30ch; margin-right: auto; font-family: var(--serif); font-size: clamp(20px,2vw,26px); line-height: 1.5; color: var(--paper); }
+    .manifeste-body p { margin-bottom: 1.5em; }
+    .manifeste-body p:last-child { margin-bottom: 0; }
+    .manifeste-body .opener { font-family: var(--display); font-weight: 300; font-size: clamp(56px,8vw,96px); line-height: 1; letter-spacing: -0.045em; margin-bottom: .9em; }
+    .manifeste-body em { font-family: var(--serif); font-style: italic; font-weight: 400; }
+    .manifeste-body .claim { font-family: var(--display); font-weight: 300; font-size: clamp(26px,3.2vw,38px); letter-spacing: -0.03em; line-height: 1.25; margin: 1.6em 0; max-width: 18ch; }
+
+    /* ════════ §5 CE QUI CHANGE ════════ */
+    .diff h2 { max-width: 20ch; margin-bottom: 56px; }
+    .diff h2 .il { font-family: var(--serif); font-style: italic; font-weight: 400; }
+    .diff .grid { display: grid; grid-template-columns: repeat(2,1fr); border-top: 1px solid var(--rule); border-left: 1px solid var(--rule); }
+    .diff .item { padding: clamp(26px,3.6vw,44px); border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+    .diff .item h3 { margin-bottom: 12px; color: var(--ink); }
+    .diff .item p { color: var(--ink-2); font-size: 17px; max-width: 34ch; }
+    @media (max-width: 700px) { .diff .grid { grid-template-columns: 1fr; } }
+
+    /* ════════ §6 PELLICULES ════════ */
+    .films { background: var(--paper-2); }
+    .films h2 { margin-bottom: 56px; }
+    .films h2 .il { font-family: var(--serif); font-style: italic; font-weight: 400; }
+    .films .grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+    .film { background: var(--paper); padding: 32px 28px; }
+    .film h3 { margin-bottom: 8px; color: var(--ink); }
+    .film p { color: var(--ink-2); font-size: 16px; }
+    .film-swatch { width: 100%; aspect-ratio: 4 / 5; margin-bottom: 24px; }
+    /* nuances de gris monochromes — pas de teinte (DA : aucune couleur sémantique) */
+    .swatch-warm { background: linear-gradient(160deg, #e8e2d6 0%, #b8b1a5 55%, #5a554f 100%); }
+    .swatch-cool { background: linear-gradient(160deg, #d9d3c7 0%, #8a8278 55%, #3d3935 100%); }
+    .swatch-bw   { background: linear-gradient(160deg, #f1ece4 0%, #8a8278 50%, #161412 100%); }
+    .films .footnote { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: lowercase; color: var(--voile); text-align: center; margin-top: 40px; }
+    @media (max-width: 800px) { .films .grid { grid-template-columns: 1fr; } }
+
+    /* ════════ §7 PROMESSE WAITLIST ════════ */
+    .promise h2 { max-width: 18ch; margin-bottom: 32px; }
+    .promise h2 .il { font-family: var(--serif); font-style: italic; font-weight: 400; }
+    .promise p { max-width: 40ch; color: var(--ink-2); font-size: 18px; }
+    .counter { display: flex; align-items: baseline; gap: 14px; margin: 32px 0; padding-bottom: 18px; border-bottom: 1px solid var(--rule); max-width: 360px; }
+    .counter .label { font-family: var(--mono); font-size: 10px; letter-spacing: var(--track-mono); text-transform: lowercase; color: var(--slate); }
+    .counter .val { font-family: var(--display); font-weight: 300; font-size: clamp(34px,5vw,56px); letter-spacing: -0.04em; line-height: 1; color: var(--ink); margin-left: auto; }
+    .counter .val .tot { color: var(--voile); }
+
+    /* ════════ §8 FAQ ════════ */
+    .faq h2 { margin-bottom: 48px; }
+    .faq h2 .il { font-family: var(--serif); font-style: italic; font-weight: 400; }
+    .faq details { border-top: 1px solid var(--rule); padding: 26px 0; }
+    .faq details:last-of-type { border-bottom: 1px solid var(--rule); }
+    .faq summary { cursor: pointer; font-family: var(--display); font-weight: 300; font-size: clamp(20px,2.4vw,28px); letter-spacing: -0.02em; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 24px; }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq summary::after { content: "+"; font-family: var(--display); font-weight: 300; color: var(--slate); }
+    .faq details[open] summary::after { content: "–"; }
+    .faq .answer { margin-top: 18px; color: var(--ink-2); font-size: 17px; max-width: 46ch; }
+
+    /* ════════ §9 CTA FINAL (plein écran encre) ════════ */
+    .final { background: var(--ink); color: var(--paper); }
+    .final .final-logo { font-size: clamp(80px,12vw,150px); color: var(--paper); display: inline-block; margin-bottom: 28px; }
+    .final h2 { color: var(--paper); max-width: 16ch; margin-bottom: 24px; }
+    .final h2 .il { font-family: var(--serif); font-style: italic; font-weight: 400; }
+    .final .lede { font-family: var(--serif); font-size: clamp(18px,2vw,22px); color: var(--paper-3); max-width: 38ch; margin-bottom: 44px; line-height: 1.5; }
+
+    /* ════════ FOOTER ════════ */
+    footer.site { padding: 56px 0 64px; background: var(--paper); border-top: 1px solid var(--rule); }
+    footer.site .wrap { display: grid; grid-template-columns: 2fr 3fr; gap: 32px; align-items: end; }
+    footer.site .brandline { font-family: var(--display); font-weight: 300; font-size: 22px; color: var(--ink); margin-bottom: 8px; display: inline-block; }
+    footer.site .tag { font-family: var(--serif); font-style: italic; font-size: 16px; color: var(--ink-2); }
+    footer.site nav ul { list-style: none; display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: flex-end; }
+    footer.site nav a { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: lowercase; color: var(--slate); border-bottom: 1px solid transparent; }
+    footer.site nav a:hover { color: var(--ink); border-bottom-color: var(--ink); }
+    footer.site .legal { grid-column: 1 / -1; margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--rule); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: lowercase; color: var(--voile); }
+    @media (max-width: 700px) { footer.site .wrap { grid-template-columns: 1fr; } footer.site nav ul { justify-content: flex-start; } }
+
+    /* ════════ REVEAL ════════ */
+    .reveal { opacity: 0; transform: translateY(8px); transition: opacity .5s ease, transform .5s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+  <!-- ════════ §0 SPLASH / COVER ════════ -->
+  <section class="cover on-ink" aria-label="une. — pré-lancement">
+    <div class="cover-head">
+      <span>une<span class="dot" style="display:none"></span> · <b>pré-lancement</b></span>
+      <span>mai 2026 · paris</span>
+    </div>
+
+    <div class="stage">
+      <span class="une cover-logo">une<span class="dot"></span></span>
+      <p class="lede">une seule prise. une seule respiration. une seule photo.</p>
+      <p class="descriptor">une application photographique qui retient la prise jusqu'à la livraison d'un tirage par courrier.</p>
+    </div>
+
+    <div class="cover-foot">
+      <a href="#hero" class="scroll-cue">défiler <span class="arrow">↓</span></a>
+      <span>iphone · android · bientôt</span>
+    </div>
+  </section>
+
+  <!-- ════════ §1 HERO ════════ -->
+  <section class="hero" id="hero" aria-labelledby="hero-title">
+    <div class="wrap">
+      <h1 id="hero-title">tu ne la prendras qu'<span class="une">une<span class="dot"></span></span> fois.</h1>
+      <p class="lede">
+        tu prends, tu attends, tu reçois.
+        <span class="une" style="font-size:1em">une<span class="dot"></span></span>
+        est une pellicule numérique. tu fais tes photos sans jamais les voir,
+        et les tirages arrivent chez toi quelques jours plus tard.
+        le numérique vient après — dans le colis, il y a un code.
+      </p>
+
+      <form class="waitlist-form" data-location="hero" aria-labelledby="hero-form-title" novalidate>
+        <span class="field-label" id="hero-form-title">ton email</span>
+        <div class="row">
+          <input type="email" id="email-hero" name="email" placeholder="prenom@exemple.fr"
+                 autocomplete="email" inputmode="email" required aria-label="ton email"
+                 aria-describedby="hero-help hero-error" />
+          <button type="submit" class="ul-act"><span class="w">garder ma place</span><span class="trail"></span></button>
+          <input type="text" name="company" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true" />
+        </div>
+        <p id="hero-help" class="help">-50 % sur la première pellicule pour les 100 premiers inscrits · on ne partage pas ton email</p>
+        <p id="hero-error" class="error-msg" role="alert" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ════════ §2 6 TEMPS ════════ -->
+  <section class="six-times" aria-labelledby="six-times-title">
+    <div class="wrap">
+      <p class="eyebrow">comment ça marche</p>
+      <h2 id="six-times-title">six temps, un seul rythme.</h2>
+
+      <ol class="times" role="list">
+        <li tabindex="0">
+          <span class="num">01</span>
+          <span class="word"><span class="il">une</span>pellicule.</span>
+          <span class="label">l'engagement</span>
+          <p class="desc">tu choisis ton format — 12, 24 ou 36 poses. à partir d'ici, plus de retour en arrière.</p>
+        </li>
+        <li tabindex="0">
+          <span class="num">02</span>
+          <span class="word"><span class="il">une</span>pose.</span>
+          <span class="label">la prise</span>
+          <p class="desc">tu vises, tu déclenches. le viseur reste noir entre deux poses. tu fais confiance au moment.</p>
+        </li>
+        <li tabindex="0">
+          <span class="num">03</span>
+          <span class="word"><span class="il">une</span>promesse.</span>
+          <span class="label">l'envoi</span>
+          <p class="desc">la dernière pose lance le rembobinage. ta pellicule part au labo. on t'écrit à chaque étape.</p>
+        </li>
+        <li tabindex="0">
+          <span class="num">04</span>
+          <span class="word"><span class="il">une</span>surprise.</span>
+          <span class="label">la boîte aux lettres</span>
+          <p class="desc">quelques jours plus tard, un colis arrive. tu sais à peu près ce qu'il y a dedans. pas exactement quoi.</p>
+        </li>
+        <li tabindex="0">
+          <span class="num">05</span>
+          <span class="word"><span class="il">une</span>révélation.</span>
+          <span class="label">la découverte</span>
+          <p class="desc">tu ouvres. tu regardes tes tirages. tu rentres le code dans l'app — la galerie numérique se débloque.</p>
+        </li>
+        <li tabindex="0">
+          <span class="num">06</span>
+          <span class="word"><span class="il">une</span>trace.</span>
+          <span class="label">le vestige</span>
+          <p class="desc">ce qui reste : du papier dans une main, des photos sur ton téléphone, un moment qui a tenu.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ════════ §3 LE COLIS ════════ -->
+  <section class="colis" aria-labelledby="colis-title">
+    <div class="wrap">
+      <p class="eyebrow">l'objet</p>
+      <h2 id="colis-title"><span class="il">le colis</span> est le produit.</h2>
+      <div class="colis-visual" role="img" aria-label="un colis ouvert contenant des tirages photo argentique et une carte avec un code"></div>
+    </div>
+  </section>
+
+  <!-- ════════ §4 MANIFESTE ════════ -->
+  <section class="manifeste on-ink" aria-labelledby="manifeste-title">
+    <div class="wrap">
+      <p class="eyebrow" id="manifeste-title">manifeste</p>
+      <div class="manifeste-body">
+        <p class="opener">une<span class="dot" style="display:none"></span>.</p>
+        <p>nous prenons trop de photos.<br>nous en regardons trop peu.<br>nous les stockons par milliers dans des téléphones qui les oublient.</p>
+        <p>la photographie était un acte.<br>elle est devenue un réflexe.</p>
+        <p class="claim"><em>une</em> remet l'acte au centre.</p>
+        <p>une pellicule limitée.<br>une pose qu'on ne refait pas.<br>une attente qu'on ne contourne pas.<br>un tirage papier qu'on tient.</p>
+        <p>pas de prévisualisation.<br>pas de retouche.<br>pas de filtre.<br>pas de cloud.</p>
+        <p>juste une photo, prise <em>une</em> fois, révélée plus tard, gardée pour toujours.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════ §5 CE QUI CHANGE ════════ -->
+  <section class="diff" aria-labelledby="diff-title">
+    <div class="wrap">
+      <p class="eyebrow">ce qui change</p>
+      <h2 id="diff-title">quatre choses qui ne ressemblent <span class="il">à rien d'autre.</span></h2>
+      <div class="grid">
+        <div class="item">
+          <h3>tu ne triches pas.</h3>
+          <p>impossible de voir les photos avant le développement. impossible de les supprimer. c'est l'app qui tient la règle — pas un argument marketing.</p>
+        </div>
+        <div class="item">
+          <h3>le tirage avant le numérique.</h3>
+          <p>le code qui débloque les photos sur ton téléphone arrive dans le colis. pas de raccourci, pas de version numérique avant le papier.</p>
+        </div>
+        <div class="item">
+          <h3>tes photos restent chez toi.</h3>
+          <p>une fois le code saisi, tes photos vivent sur ton téléphone. pas chez nous. tu n'as rien à confier à un cloud étranger.</p>
+        </div>
+        <div class="item">
+          <h3>un look, pas un filtre.</h3>
+          <p>le rendu est calibré au moment de la prise. trois pellicules, trois ambiances — chaude, froide, noir et blanc. tu n'ajustes rien après.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════ §6 PELLICULES ════════ -->
+  <section class="films" aria-labelledby="films-title">
+    <div class="wrap">
+      <p class="eyebrow">pellicules</p>
+      <h2 id="films-title">trois pellicules <span class="il">pour commencer.</span></h2>
+      <div class="grid">
+        <article class="film">
+          <div class="film-swatch swatch-warm" aria-hidden="true"></div>
+          <h3>couleur chaude</h3>
+          <p>pour l'été, les amis, la lumière de fin de journée.</p>
+        </article>
+        <article class="film">
+          <div class="film-swatch swatch-cool" aria-hidden="true"></div>
+          <h3>couleur froide</h3>
+          <p>pour les villes, les soirs, les températures basses.</p>
+        </article>
+        <article class="film">
+          <div class="film-swatch swatch-bw" aria-hidden="true"></div>
+          <h3>noir et blanc</h3>
+          <p>pour ce qui ne demande pas la couleur.</p>
+        </article>
+      </div>
+      <p class="footnote">les noms changeront peut-être avant le launch. l'idée non.</p>
+    </div>
+  </section>
+
+  <!-- ════════ §7 PROMESSE WAITLIST ════════ -->
+  <section class="promise" aria-labelledby="promise-title">
+    <div class="wrap">
+      <p class="eyebrow">en ce moment</p>
+      <h2 id="promise-title">les 100 premiers ont leur première pellicule <span class="il">à -50 %.</span></h2>
+      <p>
+        on lance dans les prochains mois. les 100 premiers inscrits ont leur première
+        pellicule à -50 % — colis complet, tirages compris, livraison comprise.
+        pas d'astuce, pas de roue à faire tourner : l'ordre d'inscription fait l'ordre des places.
+      </p>
+      <p>quand on ouvre, on prévient — toi en premier.</p>
+
+      <div class="counter" aria-live="polite">
+        <span class="label">places à -50 % restantes</span>
+        <span class="val"><span id="counter-remaining">78</span><span class="tot"> / 100</span></span>
+      </div>
+
+      <form class="waitlist-form" data-location="promise" aria-labelledby="promise-form-title" novalidate>
+        <span class="field-label" id="promise-form-title">ton email</span>
+        <div class="row">
+          <input type="email" id="email-promise" name="email" placeholder="prenom@exemple.fr"
+                 autocomplete="email" inputmode="email" required aria-label="ton email"
+                 aria-describedby="promise-help promise-error" />
+          <button type="submit" class="ul-act"><span class="w">garder ma place</span><span class="trail"></span></button>
+          <input type="text" name="company" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true" />
+        </div>
+        <p id="promise-help" class="help">email seul · aucun partage · désinscription en un clic</p>
+        <p id="promise-error" class="error-msg" role="alert" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ════════ §8 FAQ ════════ -->
+  <section class="faq" aria-labelledby="faq-title">
+    <div class="wrap">
+      <p class="eyebrow">questions</p>
+      <h2 id="faq-title">quelques <span class="il">questions.</span></h2>
+
+      <details>
+        <summary>combien ça coûte ?</summary>
+        <p class="answer">on finalise le prix avec le labo partenaire. ce qu'on peut dire : le prix couvre la pellicule, le développement, les tirages physiques et l'envoi. pas d'abonnement, pas d'option cachée. on annoncera le tarif final aux inscrits avant tout le monde.</p>
+      </details>
+      <details>
+        <summary>quand est-ce que vous lancez ?</summary>
+        <p class="answer">les prochains mois. on préfère sortir un produit qui tient ses promesses que tenir une date. tu seras prévenu·e par email avant l'ouverture publique.</p>
+      </details>
+      <details>
+        <summary>vous voyez mes photos ?</summary>
+        <p class="answer">non. tes photos sont protégées entre ton téléphone et le labo. personne de notre équipe ne peut les ouvrir. le laboratoire partenaire les voit le temps de faire les tirages, c'est tout.</p>
+      </details>
+      <details>
+        <summary>et si la photo est ratée ?</summary>
+        <p class="answer">c'est pour ça que c'est de la photo. une pellicule, c'est un risque assumé — c'est ce qui rend le moment réel. on ne rembourse pas un cadrage manqué, mais on s'occupe de tout ce qui dépend de nous.</p>
+      </details>
+      <details>
+        <summary>comment je reçois les tirages ?</summary>
+        <p class="answer">par la poste, à l'adresse que tu nous donnes au moment de la commande. dans le colis : tes tirages papier et une carte avec un code unique. le code débloque les versions numériques dans l'app.</p>
+      </details>
+      <details>
+        <summary>je peux me désinscrire ?</summary>
+        <p class="answer">oui, en un clic depuis n'importe quel email qu'on t'envoie. et si tu décides plus tard que ce n'est plus pour toi, on supprime ton adresse.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- ════════ §9 CTA FINAL ════════ -->
+  <section class="final on-ink" aria-labelledby="final-title">
+    <div class="wrap">
+      <span class="une final-logo">une<span class="dot"></span></span>
+      <h2 id="final-title">une pellicule. <span class="il">un colis. un code.</span></h2>
+      <p class="lede">si l'idée tient, garde ta place. on t'écrit quand on ouvre. les 100 premiers ont leur première pellicule à -50 %.</p>
+
+      <form class="waitlist-form" data-location="final" aria-labelledby="final-form-title" novalidate>
+        <span class="field-label" id="final-form-title">ton email</span>
+        <div class="row">
+          <input type="email" id="email-final" name="email" placeholder="prenom@exemple.fr"
+                 autocomplete="email" inputmode="email" required aria-label="ton email"
+                 aria-describedby="final-help final-error" />
+          <button type="submit" class="ul-act on-ink"><span class="w">garder ma place</span><span class="trail"></span></button>
+          <input type="text" name="company" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true" />
+        </div>
+        <p id="final-help" class="help">-50 % sur la première pellicule pour les 100 premiers inscrits</p>
+        <p id="final-error" class="error-msg" role="alert" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ════════ FOOTER ════════ -->
+  <footer class="site">
+    <div class="wrap">
+      <div>
+        <span class="une brandline">une<span class="dot"></span></span>
+        <p class="tag">une seule prise. une seule respiration. une seule photo.</p>
+      </div>
+      <nav aria-label="liens de pied de page">
+        <ul>
+          <li><a href="/mentions">mentions légales</a></li>
+          <li><a href="/confidentialite">confidentialité</a></li>
+          <li><a href="/statut-hebergeur">statut hébergeur</a></li>
+          <li><a href="mailto:hello@une-app.fr">contact</a></li>
+        </ul>
+      </nav>
+      <div class="legal">
+        <span>hébergeur au sens du règlement européen sur les services numériques.</span>
+        <span>© 2026 une.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ════════ Form handling (mocké — voir 03-form-spec.md pour le branchement réel) ════════
+    const COMMON_TYPOS = {
+      "gmial.com":"gmail.com","gnail.com":"gmail.com","gmail.con":"gmail.com","gmaill.com":"gmail.com",
+      "hotnail.fr":"hotmail.fr","hotmal.com":"hotmail.com","yhoo.fr":"yahoo.fr","yaho.fr":"yahoo.fr","outlok.fr":"outlook.fr",
+    };
+    const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+
+    function validateEmail(raw) {
+      const value = (raw || "").trim();
+      if (!value) return { ok:false, msg:"il faut un email pour garder ta place." };
+      if (!EMAIL_RE.test(value)) return { ok:false, msg:"on dirait qu'il manque un point ou un signe @. tu peux vérifier ?" };
+      const domain = value.split("@")[1].toLowerCase();
+      if (COMMON_TYPOS[domain]) return { ok:true, value, suggestion:value.replace(domain, COMMON_TYPOS[domain]) };
+      return { ok:true, value };
+    }
+    function track(event, props) {
+      if (typeof window.plausible === "function") window.plausible(event, { props });
+      if (["localhost","127.0.0.1"].includes(window.location.hostname)) console.log("[track]", event, props);
+    }
+    function getUtmSource() { return new URLSearchParams(window.location.search).get("utm_source") || "direct"; }
+    function generateRefStub() { return Math.random().toString(36).slice(2,8).toUpperCase(); }
+
+    function showSuccess(form) {
+      const onInk = form.closest(".on-ink") ? " on-ink" : "";
+      form.outerHTML = `
+        <div class="success-state${onInk}" role="status">
+          <h3>bien reçu.</h3>
+          <p style="margin:0 0 14px;">on t'écrit dès qu'on ouvre. vérifie ta boîte — un email de confirmation arrive dans la minute.</p>
+          <a class="ul-act${onInk}" href="?ref=${generateRefStub()}"><span class="w">inviter un ami · +1 place</span><span class="trail"></span></a>
+        </div>`;
+    }
+
+    function bindForm(form) {
+      const loadTime = Date.now();
+      const location = form.dataset.location;
+      const emailInput = form.querySelector('input[type="email"]');
+      const errorEl = form.querySelector(".error-msg");
+      const submitBtn = form.querySelector("button[type='submit']");
+      const honeypot = form.querySelector('input[name="company"]');
+
+      submitBtn.addEventListener("click", () => track("cta_clicked", { location }));
+      emailInput.addEventListener("blur", () => {
+        if (!emailInput.value) return;
+        const r = validateEmail(emailInput.value);
+        if (!r.ok) { errorEl.textContent = r.msg; emailInput.setAttribute("aria-invalid","true"); }
+        else { errorEl.textContent = ""; emailInput.removeAttribute("aria-invalid"); }
+      });
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        errorEl.textContent = ""; emailInput.removeAttribute("aria-invalid");
+        if (honeypot.value.trim() !== "") { showSuccess(form); return; }
+        if (Date.now() - loadTime < 2000) { showSuccess(form); return; }
+        const r = validateEmail(emailInput.value);
+        if (!r.ok) { errorEl.textContent = r.msg; emailInput.setAttribute("aria-invalid","true"); emailInput.focus(); return; }
+        submitBtn.disabled = true;
+        const lbl = submitBtn.querySelector(".w");
+        const old = lbl.textContent; lbl.textContent = "une seconde…";
+        track("form_submitted", { location });
+        try {
+          const base = (typeof window.UNE_API_BASE_URL === "string") ? window.UNE_API_BASE_URL : "";
+          const refCode = new URLSearchParams(window.location.search).get("ref");
+          const res = await fetch(base + "/api/v1/waitlist", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: r.value,
+              source: getUtmSource(),
+              ...(refCode ? { ref_code: refCode } : {}),
+              company: honeypot.value, // honeypot (vide chez un humain)
+              ts: loadTime,            // anti-bot timing, vérifié côté serveur
+            }),
+          });
+          if (res.status === 200) {
+            // Réponse uniforme { accepted:true } (anti-énumération) → toujours succès UI
+            track("waitlist_signup", { location, source: getUtmSource() });
+            showSuccess(form);
+          } else if (res.status === 400) {
+            submitBtn.disabled = false; lbl.textContent = old;
+            errorEl.textContent = "on dirait qu'il manque un point ou un signe @. tu peux vérifier ?";
+            emailInput.setAttribute("aria-invalid","true"); emailInput.focus();
+          } else if (res.status === 429) {
+            submitBtn.disabled = false; lbl.textContent = old;
+            errorEl.textContent = "trop de tentatives. patiente une minute et réessaie.";
+          } else {
+            throw new Error("HTTP " + res.status);
+          }
+        } catch (err) {
+          submitBtn.disabled = false; lbl.textContent = old;
+          errorEl.textContent = "quelque chose a coincé. tu peux réessayer ?";
+        }
+      });
+    }
+    document.querySelectorAll(".waitlist-form").forEach(bindForm);
+
+    // ════════ 6 temps : tap to expand (mobile) ════════
+    document.querySelectorAll(".times li").forEach((li) => {
+      li.addEventListener("click", (e) => { if (e.target.closest("a,button")) return; li.classList.toggle("is-open"); });
+      li.addEventListener("keypress", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); li.classList.toggle("is-open"); } });
+    });
+
+    // ════════ Reveal on scroll ════════
+    if ("IntersectionObserver" in window) {
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach((en) => { if (en.isIntersecting) { en.target.classList.add("visible"); obs.unobserve(en.target); } });
+      }, { threshold: 0.1 });
+      document.querySelectorAll("section:not(.cover) > .wrap > *").forEach((el) => { el.classList.add("reveal"); obs.observe(el); });
+    }
+  </script>
+</body>
+</html>
