@@ -265,12 +265,10 @@
     .colis h2 { max-width: 14ch; margin: 0 auto 56px; }
     .colis h2 .il { font-family: var(--serif); font-style: italic; font-weight: 400; }
     .colis-visual {
-      max-width: 760px; margin: 0 auto; aspect-ratio: 4 / 3;
-      background: var(--paper-2); border: 1px solid var(--rule);
-      display: flex; align-items: center; justify-content: center;
-      font-family: var(--mono); font-size: 10px; letter-spacing: var(--track-mono); text-transform: lowercase; color: var(--voile);
+      display: block; width: 100%; max-width: 760px; margin: 0 auto;
+      aspect-ratio: 1 / 1; object-fit: cover;
+      border: 1px solid var(--rule);
     }
-    .colis-visual::after { content: "[ photo studio · colis ouvert · tirages + carte avec code ]"; }
 
     /* ════════ §4 MANIFESTE (plein écran encre) ════════ */
     .manifeste { background: var(--ink); color: var(--paper); padding: clamp(100px,16vw,180px) 0; }
@@ -464,7 +462,7 @@
     <div class="wrap">
       <p class="eyebrow">l'objet</p>
       <h2 id="colis-title"><span class="il">le colis</span> est le produit.</h2>
-      <div class="colis-visual" role="img" aria-label="un colis ouvert contenant des tirages photo argentique et une carte avec un code"></div>
+      <img class="colis-visual" src="assets/colis.jpg" alt="un carton une. avec le code pellicule 2758, un iPhone affichant la galerie de l'app, et des tirages photo argentique posés sur du lin" width="1024" height="1024" loading="lazy" decoding="async" />
     </div>
   </section>
 
