@@ -304,6 +304,7 @@
     .swatch-warm { background: linear-gradient(160deg, #e8e2d6 0%, #b8b1a5 55%, #5a554f 100%); }
     .swatch-cool { background: linear-gradient(160deg, #d9d3c7 0%, #8a8278 55%, #3d3935 100%); }
     .swatch-bw   { background: linear-gradient(160deg, #f1ece4 0%, #8a8278 50%, #161412 100%); }
+    .film-photo { object-fit: cover; object-position: center; background: var(--paper-2); display: block; }
     .films .footnote { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: lowercase; color: var(--voile); text-align: center; margin-top: 40px; }
     @media (max-width: 800px) { .films .grid { grid-template-columns: 1fr; } }
 
@@ -516,17 +517,17 @@
       <h2 id="films-title">trois pellicules <span class="il">pour commencer.</span></h2>
       <div class="grid">
         <article class="film">
-          <div class="film-swatch swatch-warm" aria-hidden="true"></div>
+          <img class="film-swatch film-photo" src="assets/films/chaude.jpg" alt="pellicule couleur chaude — une chaise sur une terrasse baignée par la lumière dorée de fin de journée" width="1100" height="827" loading="lazy" decoding="async" />
           <h3>couleur chaude</h3>
           <p>pour l'été, les amis, la lumière de fin de journée.</p>
         </article>
         <article class="film">
-          <div class="film-swatch swatch-cool" aria-hidden="true"></div>
+          <img class="film-swatch film-photo" src="assets/films/froide.jpg" alt="pellicule couleur froide — une scène urbaine au crépuscule, un skateur passant devant un kiosque éclairé sur les quais" width="1100" height="835" loading="lazy" decoding="async" />
           <h3>couleur froide</h3>
           <p>pour les villes, les soirs, les températures basses.</p>
         </article>
         <article class="film">
-          <div class="film-swatch swatch-bw" aria-hidden="true"></div>
+          <img class="film-swatch film-photo" src="assets/films/nb.jpg" alt="pellicule noir et blanc — un fauteuil et un mur traversés par des ombres découpées" width="1100" height="841" loading="lazy" decoding="async" />
           <h3>noir et blanc</h3>
           <p>pour ce qui ne demande pas la couleur.</p>
         </article>
