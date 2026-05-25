@@ -12,7 +12,7 @@
   <meta property="og:description" content="une seule prise. une seule respiration. une seule photo. lancement bientôt." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://une-app.fr/" />
-  <meta property="og:image" content="https://une-app.fr/og-image.png" />
+  <meta property="og:image" content="https://une-app.fr/og-image.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
 
   <!-- Polices de la direction artistique (Google Fonts — gratuites) -->
@@ -20,13 +20,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400&family=Cormorant+Garamond:ital,wght@0,400;1,300;1,400&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
 
-  <!-- Plausible analytics (privacy-first, sans cookies) -->
+  <!-- Plausible analytics (à activer en prod)
   <script defer data-domain="une-app.fr" src="https://plausible.io/js/script.outbound-links.tagged-events.js"></script>
   <script>window.plausible = window.plausible || function(){(window.plausible.q=window.plausible.q||[]).push(arguments)};</script>
-
-  <!-- ════ Backend waitlist TEMPORAIRE — remplace l'URL par celle de ton service (Render/Fly).
-       Quand le backend NAS sera public en HTTPS sur une-app.fr, supprime ce bloc (form en same-origin). ════ -->
-  <script>window.UNE_API_BASE_URL = "https://une-waitlist-temp.onrender.com";</script>
+  -->
 
   <style>
     /* ════════ DESIGN TOKENS — strictement alignés sur la DA ════════ */
@@ -347,9 +344,33 @@
     /* ════════ REVEAL ════════ */
     .reveal { opacity: 0; transform: translateY(8px); transition: opacity .5s ease, transform .5s ease; }
     .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ════════ BANNIÈRE PRÉ-LANCEMENT ════════ */
+    /* bandeau collant ivoire — reste visible au scroll */
+    .prelaunch-bar {
+      position: sticky; top: 0; z-index: 50;
+      background: var(--paper); color: var(--ink);
+      border-bottom: 1px solid var(--ink);
+      display: flex; align-items: baseline; justify-content: center;
+      gap: .7em; flex-wrap: wrap; text-align: center;
+      padding: 15px var(--pad-x);
+    }
+    .prelaunch-bar strong { font-family: var(--display); font-weight: 300; font-size: clamp(17px, 2.4vw, 24px); letter-spacing: -0.03em; }
+    .prelaunch-bar .tagline { font-family: var(--mono); font-size: 11px; letter-spacing: var(--track-mono); text-transform: lowercase; color: var(--slate); }
+    /* grand bloc dans le cover, au-dessus du logo */
+    .prelaunch-hero { display: flex; flex-direction: column; align-items: center; gap: .25em; margin-bottom: clamp(26px, 5vw, 56px); }
+    .prelaunch-hero .kicker { font-family: var(--mono); font-size: 11px; letter-spacing: var(--track-mono); text-transform: lowercase; color: var(--voile); }
+    .prelaunch-hero .big { font-family: var(--display); font-weight: 300; font-size: clamp(42px, 8.5vw, 104px); letter-spacing: -0.045em; line-height: .88; color: var(--paper); }
+    .prelaunch-hero .sub { font-family: var(--serif); font-style: italic; font-size: clamp(15px, 2vw, 23px); color: var(--paper-3); max-width: 30ch; }
   </style>
 </head>
 <body>
+
+  <!-- ════════ BANNIÈRE PRÉ-LANCEMENT ════════ -->
+  <div class="prelaunch-bar" role="note" aria-label="campagne de pré-lancement">
+    <strong>pré-lancement</strong>
+    <span class="tagline">— inscris-toi pour être prévenu·e du lancement</span>
+  </div>
 
   <!-- ════════ §0 SPLASH / COVER ════════ -->
   <section class="cover on-ink" aria-label="une. — pré-lancement">
@@ -359,6 +380,11 @@
     </div>
 
     <div class="stage">
+      <div class="prelaunch-hero">
+        <span class="kicker">campagne de</span>
+        <span class="big">pré-lancement</span>
+        <span class="sub">inscris-toi pour être prévenu·e du lancement</span>
+      </div>
       <span class="une cover-logo">une<span class="dot"></span></span>
       <p class="lede">une seule prise. une seule respiration. une seule photo.</p>
       <p class="descriptor">une application photographique qui retient la prise jusqu'à la livraison d'un tirage par courrier.</p>
@@ -540,7 +566,7 @@
       <p class="eyebrow">en ce moment</p>
       <h2 id="promise-title">les 100 premiers ont leur première pellicule <span class="il">à -50 %.</span></h2>
       <p>
-        on lance dans les prochains mois. les 100 premiers inscrits ont leur première
+        on lance dans les semaines à venir. les 100 premiers inscrits ont leur première
         pellicule à -50 % — colis complet, tirages compris, livraison comprise.
         pas d'astuce, pas de roue à faire tourner : l'ordre d'inscription fait l'ordre des places.
       </p>
@@ -578,7 +604,7 @@
       </details>
       <details>
         <summary>quand est-ce que vous lancez ?</summary>
-        <p class="answer">les prochains mois. on préfère sortir un produit qui tient ses promesses que tenir une date. tu seras prévenu·e par email avant l'ouverture publique.</p>
+        <p class="answer">les semaines à venir. on préfère sortir un produit qui tient ses promesses que tenir une date. tu seras prévenu·e par email avant l'ouverture publique.</p>
       </details>
       <details>
         <summary>vous voyez mes photos ?</summary>
@@ -668,35 +694,12 @@
 
     function showSuccess(form) {
       const onInk = form.closest(".on-ink") ? " on-ink" : "";
-      const refCode = generateRefStub();
-      const shareUrl = "https://une-app.fr/?ref=" + refCode;
-      const shareText = "j'ai gardé ma place sur une. — la pellicule numérique. garde la tienne :";
-      const wrap = document.createElement("div");
-      wrap.className = "success-state" + onInk;
-      wrap.setAttribute("role", "status");
-      wrap.innerHTML = `
-        <h3>bien reçu.</h3>
-        <p style="margin:0 0 14px;">on t'écrit dès qu'on ouvre. vérifie ta boîte — un email de confirmation arrive dans la minute.</p>
-        <button type="button" class="ul-act${onInk}" data-share><span class="w">inviter un ami · +1 place</span><span class="trail"></span></button>
-        <p class="mini" data-share-link>ton lien : <span style="text-transform:none;">${shareUrl}</span></p>
-        <p class="error-msg" data-share-feedback aria-live="polite"></p>`;
-      form.replaceWith(wrap);
-      const btn = wrap.querySelector("[data-share]");
-      const feedback = wrap.querySelector("[data-share-feedback]");
-      btn.addEventListener("click", async () => {
-        track("referral_shared", { method: navigator.share ? "native" : "clipboard" });
-        if (navigator.share) {
-          try { await navigator.share({ title: "une.", text: shareText, url: shareUrl }); }
-          catch (_) { /* partage annulé par l'utilisateur — on ne fait rien */ }
-        } else {
-          try {
-            await navigator.clipboard.writeText(shareUrl);
-            feedback.textContent = "lien copié — envoie-le à un ami.";
-          } catch (_) {
-            feedback.textContent = "copie ce lien : " + shareUrl;
-          }
-        }
-      });
+      form.outerHTML = `
+        <div class="success-state${onInk}" role="status">
+          <h3>bien reçu.</h3>
+          <p style="margin:0 0 14px;">on t'écrit dès qu'on ouvre. vérifie ta boîte — un email de confirmation arrive dans la minute.</p>
+          <a class="ul-act${onInk}" href="?ref=${generateRefStub()}"><span class="w">inviter un ami · +1 place</span><span class="trail"></span></a>
+        </div>`;
     }
 
     function bindForm(form) {
@@ -726,33 +729,10 @@
         const old = lbl.textContent; lbl.textContent = "une seconde…";
         track("form_submitted", { location });
         try {
-          const base = (typeof window.UNE_API_BASE_URL === "string") ? window.UNE_API_BASE_URL : "";
-          const refCode = new URLSearchParams(window.location.search).get("ref");
-          const res = await fetch(base + "/api/v1/waitlist", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              email: r.value,
-              source: getUtmSource(),
-              ...(refCode ? { ref_code: refCode } : {}),
-              company: honeypot.value, // honeypot (vide chez un humain)
-              ts: loadTime,            // anti-bot timing, vérifié côté serveur
-            }),
-          });
-          if (res.status === 200) {
-            // Réponse uniforme { accepted:true } (anti-énumération) → toujours succès UI
-            track("waitlist_signup", { location, source: getUtmSource() });
-            showSuccess(form);
-          } else if (res.status === 400) {
-            submitBtn.disabled = false; lbl.textContent = old;
-            errorEl.textContent = "on dirait qu'il manque un point ou un signe @. tu peux vérifier ?";
-            emailInput.setAttribute("aria-invalid","true"); emailInput.focus();
-          } else if (res.status === 429) {
-            submitBtn.disabled = false; lbl.textContent = old;
-            errorEl.textContent = "trop de tentatives. patiente une minute et réessaie.";
-          } else {
-            throw new Error("HTTP " + res.status);
-          }
+          // En prod : await fetch("/api/v1/waitlist", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ email:r.value, ref_code:new URLSearchParams(location.search).get("ref")||null }) });
+          await new Promise((res) => setTimeout(res, 700));
+          track("waitlist_signup", { location, source:getUtmSource() });
+          showSuccess(form);
         } catch (err) {
           submitBtn.disabled = false; lbl.textContent = old;
           errorEl.textContent = "quelque chose a coincé. tu peux réessayer ?";
