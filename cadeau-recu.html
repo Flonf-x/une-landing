@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>une. — ton cadeau t'attend</title>
+  <meta name="robots" content="noindex" />
+  <!-- Page d'atterrissage du bouton « Ouvrir mon cadeau » des emails gift
+       (cf. backend sendGiftReceived → /cadeau-recu.html?code=XXXX…).
+       Rôle : relayer vers l'app via le scheme une://cadeau?code=… au tap,
+       et si l'app ne s'ouvre pas (non installée), proposer l'App Store.
+       Hébergement statique (GitHub Pages) → tout se joue côté client. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400&family=Cormorant+Garamond:ital,wght@0,400;1,300;1,400&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink:     #161412;
+      --ink-2:   #3d3935;
+      --slate:   #6b645c;
+      --voile:   #9a958c;
+      --paper:   #f1ece4;
+      --paper-2: #e8e2d6;
+      --rule:    #d9d3c7;
+      --serif: "Cormorant Garamond", Georgia, serif;
+      --display: "Fraunces", Georgia, serif;
+      --mono: "JetBrains Mono", ui-monospace, monospace;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--serif);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 24px;
+    }
+    ::selection { background: var(--ink); color: var(--paper); }
+    main { width: 100%; max-width: 420px; }
+    .wordmark {
+      font-family: var(--display);
+      font-weight: 400;
+      font-size: 28px;
+      letter-spacing: -0.02em;
+      margin-bottom: 40px;
+    }
+    .kicker {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: lowercase;
+      color: var(--voile);
+      margin-bottom: 12px;
+    }
+    h1 {
+      font-family: var(--display);
+      font-weight: 300;
+      font-size: 40px;
+      line-height: 1.02;
+      letter-spacing: -0.03em;
+      margin-bottom: 18px;
+    }
+    .lede {
+      font-style: italic;
+      font-weight: 300;
+      font-size: 18px;
+      color: var(--ink-2);
+      margin-bottom: 30px;
+    }
+    .code-block {
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--rule);
+      padding: 18px 0;
+      margin-bottom: 30px;
+    }
+    .code-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      color: var(--slate);
+      margin-bottom: 8px;
+    }
+    .code {
+      font-family: var(--mono);
+      font-size: 21px;
+      letter-spacing: 0.12em;
+      word-break: break-all;
+    }
+    .btn {
+      display: block;
+      width: 100%;
+      background: var(--ink);
+      color: var(--paper);
+      font-family: var(--mono);
+      font-size: 13px;
+      letter-spacing: 0.18em;
+      text-transform: lowercase;
+      text-align: center;
+      text-decoration: none;
+      border: 0;
+      padding: 17px 20px;
+      cursor: pointer;
+      margin-bottom: 14px;
+    }
+    .btn:active { opacity: 0.75; }
+    .ul-act {
+      background: none;
+      border: 0;
+      cursor: pointer;
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: lowercase;
+      color: var(--ink);
+      border-bottom: 1px solid var(--ink);
+      padding: 2px 0;
+    }
+    /* Bloc révélé quand l'app ne s'est pas ouverte après une tentative. */
+    #fallback {
+      display: none;
+      border-top: 1px solid var(--rule);
+      margin-top: 26px;
+      padding-top: 22px;
+    }
+    #fallback.visible { display: block; }
+    #fallback p {
+      font-style: italic;
+      font-size: 16px;
+      color: var(--ink-2);
+      margin-bottom: 16px;
+    }
+    footer {
+      margin-top: 56px;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--voile);
+      text-transform: lowercase;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="wordmark">une.</div>
+    <div class="kicker">cadeau</div>
+    <h1>ton cadeau<br>t'attend.</h1>
+    <p class="lede">une pellicule à activer dans l'app — tu choisiras ton rendu au moment de la charger.</p>
+
+    <div class="code-block" id="codeBlock">
+      <div class="code-label">ton code</div>
+      <div class="code" id="codeText">—</div>
+    </div>
+
+    <button class="btn" id="openBtn">ouvrir dans l'app</button>
+    <button class="ul-act" id="copyBtn">copier le code</button>
+
+    <div id="fallback">
+      <p>l'app ne s'est pas ouverte ? elle n'est peut-être pas encore installée.</p>
+      <a class="btn" id="storeLink" href="#" rel="noopener">télécharger une. sur l'app store</a>
+    </div>
+
+    <footer>une seule prise. une seule chance. une seule photo.</footer>
+  </main>
+
+  <script>
+    // TODO (publication App Store) : renseigner l'URL réelle de la fiche,
+    // ex. https://apps.apple.com/fr/app/une/id0000000000
+    var APP_STORE_URL = "";
+
+    var params = new URLSearchParams(location.search);
+    var raw = (params.get("code") || "").replace(/[^0-9A-Za-z]/g, "").toUpperCase();
+    var formatted = raw ? (raw.match(/.{1,4}/g) || [raw]).join("-") : "";
+
+    var codeText = document.getElementById("codeText");
+    if (formatted) {
+      codeText.textContent = formatted;
+    } else {
+      // Lien ouvert sans code (transféré, tronqué…) : la page reste utile,
+      // le code est dans le corps du mail.
+      document.getElementById("codeBlock").style.display = "none";
+      document.getElementById("copyBtn").style.display = "none";
+    }
+
+    // Tentative d'ouverture de l'app via le scheme custom. Pas de tentative
+    // automatique au chargement : sans geste utilisateur, Safari affiche une
+    // alerte d'erreur si l'app est absente. Si la page est toujours visible
+    // ~1,6 s après le tap, l'app ne s'est pas ouverte → bloc App Store.
+    function openApp() {
+      location.href = "une://cadeau" + (raw ? "?code=" + raw : "");
+      setTimeout(function () {
+        if (!document.hidden) showFallback();
+      }, 1600);
+    }
+
+    function showFallback() {
+      var fb = document.getElementById("fallback");
+      var link = document.getElementById("storeLink");
+      if (APP_STORE_URL) {
+        link.href = APP_STORE_URL;
+      } else {
+        // Fiche App Store pas encore en ligne (pré-lancement).
+        link.textContent = "l'app arrive bientôt sur l'app store";
+        link.style.pointerEvents = "none";
+        link.style.opacity = "0.6";
+      }
+      fb.classList.add("visible");
+    }
+
+    document.getElementById("openBtn").addEventListener("click", openApp);
+
+    document.getElementById("copyBtn").addEventListener("click", function () {
+      if (!formatted) return;
+      var btn = this;
+      navigator.clipboard.writeText(formatted).then(function () {
+        btn.textContent = "copié.";
+        setTimeout(function () { btn.textContent = "copier le code"; }, 1800);
+      });
+    });
+  </script>
+</body>
+</html>
