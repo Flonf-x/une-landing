@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>une. — une application photographique. des tirages livrés.</title>
-  <meta name="description" content="tu ne la prendras qu'une fois. une. est une pellicule numérique pour iphone et android. les tirages physiques arrivent chez toi par courrier. lancement bientôt — les 100 premiers ont leur première pellicule à -50 %." />
+  <title>offrir une pellicule — une.</title>
+  <meta name="description" content="offre une pellicule une. à quelqu'un : un colis de tirages physiques et un code à révéler. tu choisis le format, la personne choisit son look à la réception." />
   <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://une-app.fr/" />
+  <link rel="canonical" href="https://une-app.fr/cadeau" />
 
-  <meta property="og:title" content="une. — une application photographique. des tirages livrés." />
-  <meta property="og:description" content="une seule prise. une seule respiration. une seule photo. lancement bientôt." />
+  <meta property="og:title" content="offrir une pellicule — une." />
+  <meta property="og:description" content="offre une pellicule numérique : un colis de tirages, un code à révéler. tu choisis le format, la personne choisit son look." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://une-app.fr/" />
+  <meta property="og:url" content="https://une-app.fr/cadeau" />
   <meta property="og:image" content="https://une-app.fr/og-image.png" />
   <meta name="twitter:card" content="summary_large_image" />
 
@@ -27,6 +27,17 @@
   <!-- ════ Backend waitlist TEMPORAIRE — service Render `une-waitlist-temp` (cf. AIDE-MEMOIRE-BACKEND.md).
        Quand le backend NAS sera public en HTTPS sur une-app.fr, supprime ce bloc (form en same-origin). ════ -->
   <script>window.UNE_API_BASE_URL = "https://une-waitlist-temp.onrender.com";</script>
+
+  <!-- ════ Achat-cadeau (backend principal `apps/backend`, distinct du waitlist) ════
+       - UNE_GIFT_API_BASE_URL : l'API qui sert POST /api/v1/gifts/guest.
+         Laisser vide → auto : localhost:3000 en dev, https://api.une-app.fr en prod.
+       - STRIPE_PUBLISHABLE_KEY : clé PUBLIQUE Stripe (pk_test_… en dev, pk_live_… en prod).
+         À REMPLIR. Une clé publique est faite pour vivre dans le HTML, c'est normal. ════ -->
+  <script>
+    window.UNE_GIFT_API_BASE_URL = ""; // ex: "http://localhost:3000" ou "https://api.une-app.fr"
+    window.STRIPE_PUBLISHABLE_KEY = "pk_test_REMPLACE_MOI";
+  </script>
+  <script src="https://js.stripe.com/v3/"></script>
 
   <style>
     /* ════════ DESIGN TOKENS — strictement alignés sur la DA ════════ */
@@ -378,6 +389,55 @@
     .prelaunch-hero .kicker { font-family: var(--mono); font-size: 11px; letter-spacing: var(--track-mono); text-transform: lowercase; color: var(--voile); }
     .prelaunch-hero .big { font-family: var(--display); font-weight: 300; font-size: clamp(42px, 8.5vw, 104px); letter-spacing: -0.045em; line-height: .88; color: var(--paper); }
     .prelaunch-hero .sub { font-family: var(--serif); font-style: italic; font-size: clamp(15px, 2vw, 23px); color: var(--paper-3); max-width: 30ch; }
+
+    /* ════════ GIFT — achat-cadeau (premier visuel, au-dessus du hero) ════════ */
+    .gift { background: var(--paper-2); border-bottom: 1px solid var(--rule); }
+    .gift .eyebrow { margin-bottom: 24px; }
+    .gift h2 { max-width: 18ch; margin-bottom: 18px; }
+    .gift h2 .il { font-family: var(--serif); font-style: italic; font-weight: 400; }
+    .gift .intro { max-width: 44ch; color: var(--ink-2); font-size: 18px; margin-bottom: 52px; }
+    .gift-grid { display: grid; grid-template-columns: 1fr minmax(300px, 400px); gap: clamp(40px, 6vw, 80px); align-items: start; }
+    @media (max-width: 860px) { .gift-grid { grid-template-columns: 1fr; gap: 40px; } }
+
+    .gift-form .field-label { font-family: var(--mono); font-size: 12px; letter-spacing: var(--track-mono); text-transform: lowercase; color: var(--slate); display: block; margin-bottom: 14px; }
+    .gift-field { margin-bottom: 32px; }
+    .gift-form input[type="text"], .gift-form input[type="email"],
+    .gift-form input[type="datetime-local"], .gift-form textarea {
+      width: 100%; border: 0; border-bottom: 1px solid var(--ink); background: transparent;
+      font-family: var(--serif); font-size: 20px; color: var(--ink); padding: 6px 0;
+    }
+    .gift-form textarea { resize: vertical; min-height: 2.6em; line-height: 1.5; }
+    .gift-form input::placeholder, .gift-form textarea::placeholder { color: var(--voile); }
+    .gift-form input:focus, .gift-form textarea:focus { outline: none; border-bottom-width: 2px; }
+    .gift-form input[aria-invalid="true"] { border-bottom-style: dashed; }
+    .gift-row { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    @media (max-width: 520px) { .gift-row { grid-template-columns: 1fr; gap: 24px; } }
+
+    /* sélecteur de format — 12 / 24 / 36 (cartes filaires radio) */
+    .gift-formats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .gift-format { position: relative; }
+    .gift-format input { position: absolute; inset: 0; opacity: 0; cursor: pointer; margin: 0; }
+    .gift-format label { display: flex; flex-direction: column; gap: 6px; border: 1px solid var(--rule); padding: 16px 14px; cursor: pointer; transition: border-color .15s ease, background-color .15s ease; }
+    .gift-format .poses { font-family: var(--display); font-weight: 300; font-size: 26px; letter-spacing: -0.03em; line-height: 1; color: var(--ink); }
+    .gift-format .price { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; color: var(--slate); }
+    .gift-format input:checked + label { border-color: var(--ink); background: var(--paper); }
+    .gift-format input:focus-visible + label { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+    /* colonne droite — récap & paiement (sticky) */
+    .gift-aside { border: 1px solid var(--rule); background: var(--paper); padding: clamp(24px, 3vw, 36px); position: sticky; top: clamp(72px, 8vw, 96px); }
+    .gift-aside h3 { font-family: var(--display); font-weight: 300; margin-bottom: 18px; color: var(--ink); }
+    .gift-summary { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; text-transform: lowercase; color: var(--slate); line-height: 2; margin-bottom: 24px; }
+    .gift-summary .amount { display: block; font-family: var(--display); font-weight: 300; font-size: 44px; letter-spacing: -0.03em; line-height: 1; color: var(--ink); margin-bottom: 10px; }
+    .gift-aside .ul-act { font-size: 14px; }
+    #gift-payment-element { margin: 8px 0 24px; min-height: 40px; }
+    .gift-back { margin-bottom: 28px; }
+    .gift-note { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: lowercase; color: var(--voile); margin-top: 18px; line-height: 1.8; }
+    .gift-error { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; text-transform: lowercase; color: var(--ink-2); margin-top: 14px; min-height: 1.4em; }
+    .gift-step { display: none; }
+    .gift-step.active { display: block; }
+    .gift-success { border: 1px solid var(--rule); background: var(--paper); padding: clamp(28px, 4vw, 44px); max-width: 620px; }
+    .gift-success h3 { font-family: var(--display); font-weight: 300; font-size: clamp(28px, 4vw, 44px); margin-bottom: 14px; color: var(--ink); }
+    .gift-success p { color: var(--ink-2); max-width: 46ch; }
   </style>
 </head>
 <body>
@@ -411,6 +471,109 @@
     <div class="cover-foot">
       <a href="#hero" class="scroll-cue">défiler <span class="arrow">↓</span></a>
       <span>iphone · android · bientôt</span>
+    </div>
+  </section>
+
+  <!-- ════════ §★ OFFRIR UNE PELLICULE (premier visuel, au-dessus du hero) ════════ -->
+  <section class="gift" id="gift" aria-labelledby="gift-title">
+    <div class="wrap">
+      <p class="eyebrow">offrir</p>
+      <h2 id="gift-title">offre une pellicule <span class="il">à quelqu'un.</span></h2>
+      <p class="intro">une pellicule numérique, un colis de tirages physiques, un code à révéler. tu choisis le format — la personne choisit son look à la réception.</p>
+
+      <!-- STEP 1 — détails du cadeau -->
+      <div class="gift-step active" id="gift-step-details">
+        <form class="gift-form" id="gift-form" novalidate>
+          <div class="gift-grid">
+            <div>
+              <div class="gift-field">
+                <span class="field-label">le format</span>
+                <div class="gift-formats" role="radiogroup" aria-label="format de la pellicule">
+                  <div class="gift-format">
+                    <input type="radio" name="poses_max" id="poses-12" value="12" />
+                    <label for="poses-12"><span class="poses">12</span><span class="price">14,90 €</span></label>
+                  </div>
+                  <div class="gift-format">
+                    <input type="radio" name="poses_max" id="poses-24" value="24" />
+                    <label for="poses-24"><span class="poses">24</span><span class="price">21,90 €</span></label>
+                  </div>
+                  <div class="gift-format">
+                    <input type="radio" name="poses_max" id="poses-36" value="36" checked />
+                    <label for="poses-36"><span class="poses">36</span><span class="price">28,90 €</span></label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="gift-field">
+                <span class="field-label">toi, l'offreur·euse</span>
+                <div class="gift-row">
+                  <input type="text" name="buyer_first_name" placeholder="ton prénom" autocomplete="given-name" maxlength="80" required aria-label="ton prénom" />
+                  <input type="email" name="buyer_email" placeholder="ton email" autocomplete="email" inputmode="email" maxlength="255" required aria-label="ton email" />
+                </div>
+              </div>
+
+              <div class="gift-field">
+                <span class="field-label">le·la destinataire</span>
+                <div class="gift-row">
+                  <input type="text" name="recipient_first_name" placeholder="son prénom" maxlength="80" required aria-label="prénom du destinataire" />
+                  <input type="email" name="recipient_email" placeholder="son email" inputmode="email" maxlength="255" required aria-label="email du destinataire" />
+                </div>
+              </div>
+
+              <div class="gift-field">
+                <span class="field-label">un mot (optionnel)</span>
+                <textarea name="message" maxlength="280" placeholder="joyeux anniversaire…" aria-label="message pour le destinataire"></textarea>
+              </div>
+
+              <div class="gift-field">
+                <span class="field-label">date d'envoi de l'email (optionnel)</span>
+                <input type="datetime-local" name="send_at" aria-label="date d'envoi de l'email cadeau" />
+                <p class="gift-note">par défaut l'email part dès le paiement. sinon, entre +5 min et +30 jours.</p>
+              </div>
+            </div>
+
+            <aside class="gift-aside">
+              <h3>récapitulatif</h3>
+              <p class="gift-summary">
+                <span class="amount" id="gift-amount">28,90 €</span>
+                pellicule <span id="gift-poses-label">36</span> poses<br />
+                tirages + livraison compris
+              </p>
+              <button type="submit" class="ul-act" id="gift-continue"><span class="w">continuer vers le paiement</span><span class="trail"></span></button>
+              <p class="gift-error" id="gift-details-error" role="alert" aria-live="polite"></p>
+              <p class="gift-note">paiement sécurisé par stripe. débit uniquement à la confirmation.</p>
+            </aside>
+          </div>
+        </form>
+      </div>
+
+      <!-- STEP 2 — paiement -->
+      <div class="gift-step" id="gift-step-payment">
+        <div class="gift-grid">
+          <div>
+            <button type="button" class="ul-act gift-back" id="gift-back"><span class="w">← modifier le cadeau</span><span class="trail"></span></button>
+            <div id="gift-payment-element"><!-- Stripe Payment Element monté ici --></div>
+          </div>
+          <aside class="gift-aside">
+            <h3>paiement</h3>
+            <p class="gift-summary">
+              <span class="amount" id="gift-amount-2">28,90 €</span>
+              pour <span id="gift-recipient-label">—</span>
+            </p>
+            <button type="button" class="ul-act" id="gift-pay"><span class="w">payer</span><span class="trail"></span></button>
+            <p class="gift-error" id="gift-payment-error" role="alert" aria-live="polite"></p>
+            <p class="gift-note">stripe · une authentification 3-D secure peut être demandée par ta banque.</p>
+          </aside>
+        </div>
+      </div>
+
+      <!-- STEP 3 — succès -->
+      <div class="gift-step" id="gift-step-success">
+        <div class="gift-success" role="status">
+          <h3>c'est offert.</h3>
+          <p>on a envoyé un email de confirmation à ton adresse, et le cadeau part vers son·sa destinataire avec un code à révéler. il·elle choisira son look à la réception.</p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -818,6 +981,211 @@
       }, { threshold: 0.1 });
       document.querySelectorAll("section:not(.cover) > .wrap > *").forEach((el) => { el.classList.add("reveal"); obs.observe(el); });
     }
+  </script>
+
+  <!-- ════════ Achat-cadeau : guest checkout + Stripe Payment Element ════════ -->
+  <script>
+    (function () {
+      const form = document.getElementById("gift-form");
+      if (!form) return;
+
+      // Prix miroir du backend (gifts.pricing.ts : 12→1490, 24→2190, 36→2890).
+      // Source de vérité = serveur ; ces valeurs ne servent qu'à l'affichage du récap.
+      const PRICES = { "12": 1490, "24": 2190, "36": 2890 };
+      const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+      const fmt = (cents) =>
+        (cents / 100).toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " €";
+
+      const apiBase =
+        (typeof window.UNE_GIFT_API_BASE_URL === "string" && window.UNE_GIFT_API_BASE_URL) ||
+        (["localhost", "127.0.0.1"].includes(location.hostname)
+          ? "http://localhost:3000"
+          : "https://api.une-app.fr");
+      const pk = window.STRIPE_PUBLISHABLE_KEY || "";
+      const pkReady = /^pk_(test|live)_/.test(pk);
+
+      // Refs
+      const stepDetails = document.getElementById("gift-step-details");
+      const stepPayment = document.getElementById("gift-step-payment");
+      const stepSuccess = document.getElementById("gift-step-success");
+      const amountEl = document.getElementById("gift-amount");
+      const amount2El = document.getElementById("gift-amount-2");
+      const posesLabel = document.getElementById("gift-poses-label");
+      const recipientLabel = document.getElementById("gift-recipient-label");
+      const detailsError = document.getElementById("gift-details-error");
+      const paymentError = document.getElementById("gift-payment-error");
+      const continueBtn = document.getElementById("gift-continue");
+      const payBtn = document.getElementById("gift-pay");
+      const backBtn = document.getElementById("gift-back");
+
+      let stripe = null;
+      let elements = null;
+
+      function selectedPoses() {
+        const r = form.querySelector('input[name="poses_max"]:checked');
+        return r ? r.value : "36";
+      }
+      function refreshSummary() {
+        const poses = selectedPoses();
+        const txt = fmt(PRICES[poses]);
+        amountEl.textContent = txt;
+        posesLabel.textContent = poses;
+      }
+      form.querySelectorAll('input[name="poses_max"]').forEach((r) =>
+        r.addEventListener("change", refreshSummary),
+      );
+      refreshSummary();
+
+      function showStep(which) {
+        stepDetails.classList.toggle("active", which === "details");
+        stepPayment.classList.toggle("active", which === "payment");
+        stepSuccess.classList.toggle("active", which === "success");
+        if (which !== "details") {
+          document.getElementById("gift").scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }
+
+      function setBusy(btn, busy, busyLabel) {
+        const w = btn.querySelector(".w");
+        if (busy) {
+          btn.disabled = true;
+          btn.dataset.label = w.textContent;
+          w.textContent = busyLabel;
+        } else {
+          btn.disabled = false;
+          if (btn.dataset.label) w.textContent = btn.dataset.label;
+        }
+      }
+
+      function val(name) {
+        const el = form.querySelector('[name="' + name + '"]');
+        return (el && el.value ? el.value : "").trim();
+      }
+
+      function validateDetails() {
+        const buyerEmail = val("buyer_email");
+        const recipientEmail = val("recipient_email");
+        if (!val("buyer_first_name")) return "indique ton prénom.";
+        if (!EMAIL_RE.test(buyerEmail)) return "ton email semble incomplet.";
+        if (!val("recipient_first_name")) return "indique le prénom du·de la destinataire.";
+        if (!EMAIL_RE.test(recipientEmail)) return "l'email du·de la destinataire semble incomplet.";
+        if (buyerEmail.toLowerCase() === recipientEmail.toLowerCase())
+          return "tu ne peux pas t'offrir un cadeau à toi-même.";
+        return null;
+      }
+
+      function buildPayload() {
+        const payload = {
+          buyer_first_name: val("buyer_first_name"),
+          buyer_email: val("buyer_email"),
+          recipient_first_name: val("recipient_first_name"),
+          recipient_email: val("recipient_email"),
+          poses_max: Number(selectedPoses()),
+        };
+        const message = val("message");
+        if (message) payload.message = message;
+        const sendAt = val("send_at"); // datetime-local (heure locale)
+        if (sendAt) {
+          const d = new Date(sendAt);
+          if (!isNaN(d.getTime())) payload.send_at = d.toISOString();
+        }
+        return payload;
+      }
+
+      // ── STEP 1 → créer le gift + PaymentIntent, monter le Payment Element ──
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        detailsError.textContent = "";
+        const err = validateDetails();
+        if (err) {
+          detailsError.textContent = err;
+          return;
+        }
+        if (!pkReady) {
+          detailsError.textContent = "paiement non configuré (clé stripe manquante).";
+          return;
+        }
+        setBusy(continueBtn, true, "une seconde…");
+        try {
+          const res = await fetch(apiBase + "/api/v1/gifts/guest", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(buildPayload()),
+          });
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok) {
+            const code = data && data.error && data.error.code;
+            const msg =
+              (data && data.error && data.error.message) ||
+              (res.status === 429
+                ? "trop de tentatives. patiente une minute et réessaie."
+                : "quelque chose a coincé. tu peux réessayer ?");
+            detailsError.textContent = msg;
+            setBusy(continueBtn, false);
+            return;
+          }
+
+          // Récap côté paiement
+          amount2El.textContent = fmt(data.amount_cents);
+          recipientLabel.textContent = val("recipient_first_name");
+
+          // Stripe Elements + Payment Element
+          if (!stripe) stripe = Stripe(pk);
+          elements = stripe.elements({
+            clientSecret: data.client_secret,
+            appearance: {
+              theme: "flat",
+              variables: {
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                colorPrimary: "#161412",
+                colorBackground: "#f1ece4",
+                colorText: "#161412",
+                borderRadius: "0px",
+              },
+            },
+          });
+          const paymentElement = elements.create("payment");
+          document.getElementById("gift-payment-element").innerHTML = "";
+          paymentElement.mount("#gift-payment-element");
+
+          setBusy(continueBtn, false);
+          showStep("payment");
+        } catch (e2) {
+          detailsError.textContent = "le serveur est injoignable. réessaie dans un instant.";
+          setBusy(continueBtn, false);
+        }
+      });
+
+      // ── Retour à l'étape détails ──
+      backBtn.addEventListener("click", () => {
+        paymentError.textContent = "";
+        showStep("details");
+      });
+
+      // ── STEP 2 → confirmer le paiement ──
+      payBtn.addEventListener("click", async () => {
+        if (!stripe || !elements) return;
+        paymentError.textContent = "";
+        setBusy(payBtn, true, "paiement…");
+        try {
+          const { error } = await stripe.confirmPayment({
+            elements,
+            redirect: "if_required",
+          });
+          if (error) {
+            paymentError.textContent =
+              error.message || "le paiement n'a pas abouti. vérifie tes informations.";
+            setBusy(payBtn, false);
+            return;
+          }
+          // Succès : le webhook backend déclenche l'email cadeau + le code.
+          showStep("success");
+        } catch (e3) {
+          paymentError.textContent = "le paiement n'a pas pu être confirmé. réessaie.";
+          setBusy(payBtn, false);
+        }
+      });
+    })();
   </script>
 </body>
 </html>

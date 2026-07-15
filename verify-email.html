@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>une. — confirme ton adresse</title>
+  <meta name="robots" content="noindex" />
+  <!-- Page d'atterrissage du lien « Confirmer mon adresse » des emails de
+       vérification (cf. backend sendEmailConfirmation / sendEmailChange →
+       /verify-email.html?token=XXXX…).
+       Rôle : relayer vers l'app via le scheme une://verify?token=… au tap,
+       et si l'app ne s'ouvre pas (non installée), proposer l'App Store.
+       La vérification réelle + l'auto-login se font DANS l'app (POST
+       /api/v1/auth/verify-email) : cette page ne consomme pas le token.
+       Hébergement statique (GitHub Pages) → tout se joue côté client. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400&family=Cormorant+Garamond:ital,wght@0,400;1,300;1,400&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink:     #161412;
+      --ink-2:   #3d3935;
+      --slate:   #6b645c;
+      --voile:   #9a958c;
+      --paper:   #f1ece4;
+      --paper-2: #e8e2d6;
+      --rule:    #d9d3c7;
+      --serif: "Cormorant Garamond", Georgia, serif;
+      --display: "Fraunces", Georgia, serif;
+      --mono: "JetBrains Mono", ui-monospace, monospace;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--serif);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 24px;
+    }
+    ::selection { background: var(--ink); color: var(--paper); }
+    main { width: 100%; max-width: 420px; }
+    .wordmark {
+      font-family: var(--display);
+      font-weight: 400;
+      font-size: 28px;
+      letter-spacing: -0.02em;
+      margin-bottom: 40px;
+    }
+    .kicker {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: lowercase;
+      color: var(--voile);
+      margin-bottom: 12px;
+    }
+    h1 {
+      font-family: var(--display);
+      font-weight: 300;
+      font-size: 40px;
+      line-height: 1.02;
+      letter-spacing: -0.03em;
+      margin-bottom: 18px;
+    }
+    .lede {
+      font-style: italic;
+      font-weight: 300;
+      font-size: 18px;
+      color: var(--ink-2);
+      margin-bottom: 30px;
+    }
+    .btn {
+      display: block;
+      width: 100%;
+      background: var(--ink);
+      color: var(--paper);
+      font-family: var(--mono);
+      font-size: 13px;
+      letter-spacing: 0.18em;
+      text-transform: lowercase;
+      text-align: center;
+      text-decoration: none;
+      border: 0;
+      padding: 17px 20px;
+      cursor: pointer;
+      margin-bottom: 14px;
+    }
+    .btn:active { opacity: 0.75; }
+    /* Bloc révélé quand l'app ne s'est pas ouverte après une tentative. */
+    #fallback {
+      display: none;
+      border-top: 1px solid var(--rule);
+      margin-top: 26px;
+      padding-top: 22px;
+    }
+    #fallback.visible { display: block; }
+    #fallback p {
+      font-style: italic;
+      font-size: 16px;
+      color: var(--ink-2);
+      margin-bottom: 16px;
+    }
+    /* Message d'erreur (lien sans token). */
+    #error {
+      display: none;
+      font-style: italic;
+      font-size: 16px;
+      color: var(--ink-2);
+    }
+    #error.visible { display: block; }
+    footer {
+      margin-top: 56px;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--voile);
+      text-transform: lowercase;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="wordmark">une.</div>
+    <div class="kicker">vérification</div>
+    <h1>confirme<br>ton adresse.</h1>
+    <p class="lede">un dernier geste : ouvre l'app pour activer ton compte. tu arrives directement à l'intérieur.</p>
+
+    <button class="btn" id="openBtn">ouvrir dans l'app</button>
+
+    <p id="error">ce lien est incomplet. rouvre-le depuis l'email d'origine, ou renvoie-toi un lien depuis l'app.</p>
+
+    <div id="fallback">
+      <p>l'app ne s'est pas ouverte ? elle n'est peut-être pas encore installée.</p>
+      <a class="btn" id="storeLink" href="#" rel="noopener">télécharger une. sur l'app store</a>
+    </div>
+
+    <footer>une seule prise. une seule chance. une seule photo.</footer>
+  </main>
+
+  <script>
+    // TODO (publication App Store) : renseigner l'URL réelle de la fiche,
+    // ex. https://apps.apple.com/fr/app/une/id0000000000
+    var APP_STORE_URL = "";
+
+    var params = new URLSearchParams(location.search);
+    var token = params.get("token") || "";
+
+    if (!token) {
+      // Lien tronqué / transféré sans token : la page reste lisible mais on
+      // masque le bouton et on explique.
+      document.getElementById("openBtn").style.display = "none";
+      document.getElementById("error").classList.add("visible");
+    }
+
+    // Tentative d'ouverture de l'app via le scheme custom. Pas de tentative
+    // automatique au chargement : sans geste utilisateur, Safari affiche une
+    // alerte d'erreur si l'app est absente. Si la page est toujours visible
+    // ~1,6 s après le tap, l'app ne s'est pas ouverte → bloc App Store.
+    // Le token est passé tel quel à l'app, qui appellera le backend pour
+    // vérifier et ouvrir la session (auto-login).
+    function openApp() {
+      location.href = "une://verify?token=" + encodeURIComponent(token);
+      setTimeout(function () {
+        if (!document.hidden) showFallback();
+      }, 1600);
+    }
+
+    function showFallback() {
+      var fb = document.getElementById("fallback");
+      var link = document.getElementById("storeLink");
+      if (APP_STORE_URL) {
+        link.href = APP_STORE_URL;
+      } else {
+        // Fiche App Store pas encore en ligne (pré-lancement).
+        link.textContent = "l'app arrive bientôt sur l'app store";
+        link.style.pointerEvents = "none";
+        link.style.opacity = "0.6";
+      }
+      fb.classList.add("visible");
+    }
+
+    document.getElementById("openBtn").addEventListener("click", openApp);
+  </script>
+</body>
+</html>
