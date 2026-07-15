@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Assistance — une.</title>
+  <meta name="description" content="Questions fréquentes et assistance pour l'application une. — la pellicule numérique avec tirages livrés par courrier." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://une-app.fr/support" />
+
+  <meta property="og:title" content="Assistance — une." />
+  <meta property="og:description" content="Questions fréquentes et assistance pour une." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://une-app.fr/support" />
+  <meta property="og:image" content="https://une-app.fr/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Polices de la direction artistique (Google Fonts — gratuites) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400&family=Cormorant+Garamond:ital,wght@0,400;1,300;1,400&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+
+  <!-- Plausible analytics (privacy-first, sans cookies) -->
+  <script defer data-domain="une-app.fr" src="https://plausible.io/js/script.outbound-links.tagged-events.js"></script>
+  <script>window.plausible = window.plausible || function(){(window.plausible.q=window.plausible.q||[]).push(arguments)};</script>
+
+  <style>
+    /* ════════ DESIGN TOKENS — strictement alignés sur la DA ════════ */
+    :root {
+      /* encre / papier — monochrome strict, aucune couleur sémantique */
+      --ink:      #161412;   /* surface noire / texte décision */
+      --ink-2:    #3d3935;   /* corps secondaire */
+      --slate:    #5a554f;   /* labels & méta */
+      --voile:    #8a8278;   /* aide / désactivé */
+      --rule-2:   #b8b1a5;   /* filets secondaires */
+      --rule:     #c9c2b5;   /* filets / séparateurs */
+      --paper-3:  #d9d3c7;   /* papier intermédiaire */
+      --paper-2:  #e8e2d6;   /* surfaces secondaires */
+      --paper:    #f1ece4;   /* surface primaire / ivoire */
+
+      /* typo — trois familles, jamais plus */
+      --display:  'Fraunces','GT Sectra Display',Georgia,serif;
+      --serif:    'Cormorant Garamond','Garamond',Georgia,serif;
+      --mono:     'JetBrains Mono',ui-monospace,monospace;
+
+      --max-w:    1180px;
+      --pad-x:    clamp(20px, 5vw, 64px);
+      --pad-y:    clamp(80px, 12vw, 150px);
+      --track-mono: 0.18em;
+    }
+
+    /* ════════ RESET & BASE ════════ */
+    *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 1.6;
+    }
+    ::selection { background: var(--ink); color: var(--paper); }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *,*::before,*::after { animation: none !important; transition: none !important; }
+    }
+    img { max-width: 100%; height: auto; display: block; }
+    a { color: inherit; text-decoration: none; }
+    a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
+      outline: 2px solid var(--ink);
+      outline-offset: 3px;
+    }
+
+    /* ════════ ATOMES TYPO ════════ */
+    .display { font-family: var(--display); font-weight: 300; letter-spacing: -0.045em; }
+    .italic  { font-family: var(--serif); font-style: italic; font-weight: 300; }
+    .mono {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: var(--track-mono);
+      text-transform: lowercase;
+      color: var(--slate);
+      font-weight: 400;
+    }
+    .mono-sm { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: lowercase; color: var(--slate); }
+
+    h1,h2,h3 { font-family: var(--display); font-weight: 300; letter-spacing: -0.04em; line-height: 1; }
+    h1 { font-size: clamp(46px, 9vw, 120px); }
+    h2 { font-size: clamp(32px, 5vw, 60px); letter-spacing: -0.035em; }
+    h3 { font-size: clamp(20px, 2.4vw, 28px); letter-spacing: -0.02em; }
+
+    .wrap { max-width: var(--max-w); margin: 0 auto; padding-left: var(--pad-x); padding-right: var(--pad-x); }
+    section { padding-top: var(--pad-y); padding-bottom: var(--pad-y); }
+
+    .eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: var(--track-mono); text-transform: lowercase; color: var(--slate); margin-bottom: 40px; }
+
+    /* ════════ LOGO .une — TEMPLATE OFFICIEL ════════ */
+    .une {
+      font-family: var(--display);
+      font-weight: 300;
+      font-style: normal;
+      letter-spacing: -0.045em;
+      text-transform: lowercase;
+      color: inherit;
+      line-height: 1;
+      display: inline-block;
+      position: relative;
+      padding-right: .20em;
+      font-feature-settings: "liga" 1, "kern" 1;
+    }
+    .une .dot {
+      display: block;
+      width: .16em; height: .16em;
+      background: currentColor;
+      border-radius: 50%;
+      position: absolute;
+      right: 0; bottom: .18em;
+    }
+    .une.xs { padding-right: .24em; }
+    .une.xs .dot { width: .20em; height: .20em; bottom: .17em; }
+
+    /* ════════ ACTION SOULIGNÉE ════════ */
+    .ul-act {
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: var(--track-mono);
+      text-transform: lowercase;
+      color: var(--ink);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: .6em;
+      cursor: pointer;
+      background: none; border: none; padding: 0;
+      line-height: 1;
+    }
+    .ul-act .w { padding-bottom: 4px; border-bottom: 1px solid var(--ink); }
+    .ul-act .trail { display: inline-block; width: 1.4em; height: 1px; background: var(--ink); transition: width .35s ease; }
+    .ul-act:hover .trail, .ul-act:focus-visible .trail { width: 3.2em; }
+
+    /* ════════ HEADER ════════ */
+    header.site {
+      padding: 32px 0;
+      border-bottom: 1px solid var(--rule);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    header.site .wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+    header.site .brandline {
+      font-family: var(--display);
+      font-weight: 300;
+      font-size: 22px;
+      color: var(--ink);
+      display: inline-block;
+    }
+    header.site nav a {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: lowercase;
+      color: var(--slate);
+      border-bottom: 1px solid transparent;
+      transition: color .2s ease, border-color .2s ease;
+    }
+    header.site nav a:hover {
+      color: var(--ink);
+      border-bottom-color: var(--ink);
+    }
+
+    /* ════════ HERO SECTION ════════ */
+    .hero-support {
+      text-align: center;
+      padding-top: clamp(64px, 10vw, 130px);
+      padding-bottom: clamp(80px, 12vw, 150px);
+    }
+    .hero-support h1 {
+      margin-bottom: 24px;
+    }
+    .hero-support p {
+      font-family: var(--serif);
+      font-size: clamp(18px, 2vw, 22px);
+      color: var(--ink-2);
+      max-width: 50ch;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+
+    /* ════════ FAQ ════════ */
+    .faq h2 { margin-bottom: 48px; }
+    .faq h2 .il { font-family: var(--serif); font-style: italic; font-weight: 400; }
+    .faq details { border-top: 1px solid var(--rule); padding: 26px 0; }
+    .faq details:last-of-type { border-bottom: 1px solid var(--rule); }
+    .faq summary { cursor: pointer; font-family: var(--display); font-weight: 300; font-size: clamp(20px,2.4vw,28px); letter-spacing: -0.02em; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 24px; }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq summary::after { content: "+"; font-family: var(--display); font-weight: 300; color: var(--slate); }
+    .faq details[open] summary::after { content: "–"; }
+    .faq .answer { margin-top: 18px; color: var(--ink-2); font-size: 17px; max-width: 46ch; }
+
+    /* ════════ FOOTER ════════ */
+    footer.site { padding: 56px 0 64px; background: var(--paper); border-top: 1px solid var(--rule); }
+    footer.site .wrap { display: grid; grid-template-columns: 2fr 3fr; gap: 32px; align-items: end; }
+    footer.site .brandline { font-family: var(--display); font-weight: 300; font-size: 22px; color: var(--ink); margin-bottom: 8px; display: inline-block; }
+    footer.site .tag { font-family: var(--serif); font-style: italic; font-size: 16px; color: var(--ink-2); }
+    footer.site nav ul { list-style: none; display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: flex-end; }
+    footer.site nav a { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: lowercase; color: var(--slate); border-bottom: 1px solid transparent; }
+    footer.site nav a:hover { color: var(--ink); border-bottom-color: var(--ink); }
+    footer.site .legal { grid-column: 1 / -1; margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--rule); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: lowercase; color: var(--voile); }
+    @media (max-width: 700px) {
+      footer.site .wrap { grid-template-columns: 1fr; }
+      footer.site nav ul { justify-content: flex-start; }
+      header.site { padding: 20px 0; }
+      header.site .wrap { flex-direction: column; align-items: center; gap: 16px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ════════ HEADER ════════ -->
+  <header class="site">
+    <div class="wrap">
+      <a href="/" class="une brandline">une<span class="dot"></span></a>
+      <nav aria-label="navigation principale">
+        <a href="/">retour à l'accueil</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ════════ HERO ════════ -->
+  <section class="hero-support">
+    <div class="wrap">
+      <h1>assistance</h1>
+      <p>quelques réponses aux questions qu'on nous pose le plus souvent. tu ne trouves pas ce qu'il te faut ? <a href="mailto:hello@une-app.fr">écris-nous</a>.</p>
+    </div>
+  </section>
+
+  <!-- ════════ FAQ ════════ -->
+  <section class="faq" aria-labelledby="faq-title">
+    <div class="wrap">
+      <h2 id="faq-title">quelques <span class="il">questions.</span></h2>
+
+      <details>
+        <summary>combien ça coûte ?</summary>
+        <p class="answer">on finalise le prix avec le labo partenaire. ce qu'on peut dire : le prix couvre tout — la pellicule, le développement, les tirages papier et l'envoi. pas d'abonnement, pas de frais cachés, pas d'option. un seul tarif, annoncé aux inscrits avant le lancement. Moins que le prix d'un appareil photo jetable + développement.</p>
+      </details>
+      <details>
+        <summary>quand est-ce que vous lancez ?</summary>
+        <p class="answer">les semaines à venir. on préfère sortir un produit qui tient ses promesses que tenir une date. tu seras prévenu·e par email avant l'ouverture publique.</p>
+      </details>
+      <details>
+        <summary>vous voyez mes photos ?</summary>
+        <p class="answer">non. tes photos sont protégées entre ton téléphone et le labo. personne de notre équipe ne peut les ouvrir. le laboratoire partenaire les voit le temps de faire les tirages, c'est tout.</p>
+      </details>
+      <details>
+        <summary>et si la photo est ratée ?</summary>
+        <p class="answer">c'est pour ça que c'est de la photo. une pellicule, c'est un risque assumé — c'est ce qui rend le moment réel. on ne rembourse pas un cadrage manqué, mais on s'occupe de tout ce qui dépend de nous.</p>
+      </details>
+      <details>
+        <summary>comment je reçois les tirages ?</summary>
+        <p class="answer">par la poste, à l'adresse que tu nous donnes au moment de la commande. dans le colis : tes tirages papier et une carte avec un code unique. le code débloque les versions numériques dans l'app.</p>
+      </details>
+      <details>
+        <summary>je peux me désinscrire ?</summary>
+        <p class="answer">oui, en un clic depuis n'importe quel email qu'on t'envoie. et si tu décides plus tard que ce n'est plus pour toi, on supprime ton adresse.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- ════════ FOOTER ════════ -->
+  <footer class="site">
+    <div class="wrap">
+      <div>
+        <span class="une brandline">une<span class="dot"></span></span>
+        <p class="tag">une seule prise. une seule respiration. une seule photo.</p>
+      </div>
+      <nav aria-label="liens de pied de page">
+        <ul>
+          <li><a href="/mentions">mentions légales</a></li>
+          <li><a href="/confidentialite">confidentialité</a></li>
+          <li><a href="/statut-hebergeur">statut hébergeur</a></li>
+          <li><a href="mailto:hello@une-app.fr">contact</a></li>
+        </ul>
+      </nav>
+      <div class="legal">
+        <span>hébergeur au sens du règlement européen sur les services numériques.</span>
+        <span>© 2026 une.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    if (typeof window.plausible === "function") {
+      window.plausible("support_page_view", {});
+    }
+  </script>
+</body>
+</html>
