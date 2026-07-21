@@ -121,9 +121,35 @@
       text-transform: lowercase;
       text-align: center;
     }
+
+    /* ════════ NAV GLOBALE (partagée entre les pages) ════════ */
+    .site-nav {
+      position: sticky; top: 0; z-index: 60;
+      display: flex; align-items: center; justify-content: center;
+      gap: clamp(20px, 5vw, 52px);
+      padding: 13px clamp(16px, 5vw, 40px);
+      background: var(--paper); color: var(--ink);
+      border-bottom: 1px solid var(--ink);
+    }
+    .site-nav a {
+      font-family: var(--mono);
+      font-size: 11px; letter-spacing: .18em; text-transform: lowercase;
+      color: var(--slate); text-decoration: none;
+      padding-bottom: 3px; border-bottom: 1px solid transparent;
+      transition: color .15s ease, border-color .15s ease;
+    }
+    .site-nav a:hover,
+    .site-nav a:focus-visible { color: var(--ink); border-bottom-color: var(--ink); outline: none; }
+    .site-nav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--ink); }
   </style>
 </head>
 <body>
+  <!-- ════════ NAV GLOBALE ════════ -->
+  <nav class="site-nav" aria-label="navigation principale">
+    <a href="/">accueil</a>
+    <a href="/cadeau">cadeau</a>
+    <a href="/#manifeste">à propos</a>
+  </nav>
   <main>
     <div class="wordmark">une.</div>
     <div class="kicker">vérification</div>

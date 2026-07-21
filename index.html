@@ -350,8 +350,28 @@
 
     /* ════════ BANNIÈRE PRÉ-LANCEMENT ════════ */
     /* bandeau collant ivoire — toute la bannière est un lien vers la section §7 */
+    /* ════════ NAV GLOBALE (partagée entre les pages) ════════ */
+    .site-nav {
+      position: sticky; top: 0; z-index: 60;
+      display: flex; align-items: center; justify-content: center;
+      gap: clamp(20px, 5vw, 52px);
+      padding: 13px clamp(16px, 5vw, 40px);
+      background: var(--paper); color: var(--ink);
+      border-bottom: 1px solid var(--ink);
+    }
+    .site-nav a {
+      font-family: var(--mono);
+      font-size: 11px; letter-spacing: .18em; text-transform: lowercase;
+      color: var(--slate); text-decoration: none;
+      padding-bottom: 3px; border-bottom: 1px solid transparent;
+      transition: color .15s ease, border-color .15s ease;
+    }
+    .site-nav a:hover,
+    .site-nav a:focus-visible { color: var(--ink); border-bottom-color: var(--ink); outline: none; }
+    .site-nav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--ink); }
+
     .prelaunch-bar {
-      position: sticky; top: 0; z-index: 50;
+      position: static; z-index: 50;
       background: var(--paper); color: var(--ink);
       border-bottom: 1px solid var(--ink);
       display: flex; align-items: baseline; justify-content: center;
@@ -373,6 +393,7 @@
     .prelaunch-bar .cue { font-family: var(--mono); font-size: 14px; line-height: 1; color: var(--ink); padding: 0 .15em; transition: color .15s ease; }
     /* compense la hauteur de la bannière sticky lors du saut vers #waitlist-promise */
     #waitlist-promise { scroll-margin-top: clamp(56px, 7vw, 80px); }
+    #manifeste { scroll-margin-top: 52px; }
     /* grand bloc dans le cover, au-dessus du logo */
     .prelaunch-hero { display: flex; flex-direction: column; align-items: center; gap: .25em; margin-bottom: clamp(26px, 5vw, 56px); }
     .prelaunch-hero .kicker { font-family: var(--mono); font-size: 11px; letter-spacing: var(--track-mono); text-transform: lowercase; color: var(--voile); }
@@ -381,6 +402,13 @@
   </style>
 </head>
 <body>
+
+  <!-- ════════ NAV GLOBALE ════════ -->
+  <nav class="site-nav" aria-label="navigation principale">
+    <a href="/" aria-current="page">accueil</a>
+    <a href="/cadeau">cadeau</a>
+    <a href="/#manifeste">à propos</a>
+  </nav>
 
   <!-- ════════ BANNIÈRE PRÉ-LANCEMENT ════════ -->
   <a class="prelaunch-bar" href="#waitlist-promise" aria-label="campagne de pré-lancement — aller au formulaire d'inscription">
@@ -405,7 +433,7 @@
       </div>
       <span class="une cover-logo">une<span class="dot"></span></span>
       <p class="lede">une seule prise. une seule respiration. une seule photo.</p>
-      <p class="descriptor">application photographique<br>tu prends, tu attends, tu reçois.<br>tu prends tes photos sans les revoir comme avec un appareil argentique, et les tirages arrivent chez toi par courrier.</p>
+      <p class="descriptor">une application photographique qui retient la prise jusqu'à la livraison d'un tirage par courrier.</p>
     </div>
 
     <div class="cover-foot">
@@ -511,7 +539,7 @@
   </section>
 
   <!-- ════════ §4 MANIFESTE ════════ -->
-  <section class="manifeste on-ink" aria-labelledby="manifeste-title">
+  <section id="manifeste" class="manifeste on-ink" aria-labelledby="manifeste-title">
     <div class="wrap">
       <p class="eyebrow" id="manifeste-title">manifeste</p>
       <div class="manifeste-body">
@@ -618,7 +646,7 @@
 
       <details>
         <summary>combien ça coûte ?</summary>
-        <p class="answer">on finalise le prix avec le labo partenaire. ce qu'on peut dire : le prix couvre tout — la pellicule, le développement, les tirages papier et l'envoi. pas d'abonnement, pas de frais cachés, pas d'option. un seul tarif, annoncé aux inscrits avant le lancement. Moins que le prix d'un appareil photo jetable + développement.</p>
+        <p class="answer">on finalise le prix avec le labo partenaire. ce qu'on peut dire : le prix couvre la pellicule, le développement, les tirages physiques et l'envoi. pas d'abonnement, pas d'option cachée. on annoncera le tarif final aux inscrits avant tout le monde.</p>
       </details>
       <details>
         <summary>quand est-ce que vous lancez ?</summary>
@@ -674,10 +702,10 @@
       </div>
       <nav aria-label="liens de pied de page">
         <ul>
-          <li><a href="/mentions">mentions légales</a></li>
-          <li><a href="/confidentialite">confidentialité</a></li>
-          <li><a href="/statut-hebergeur">statut hébergeur</a></li>
-          <li><a href="mailto:hello@une-app.fr">contact</a></li>
+          <li><a href="https://legal.une-app.fr/mentions-legales">mentions légales</a></li>
+          <li><a href="https://legal.une-app.fr/confidentialite">confidentialité</a></li>
+          <li><a href="https://legal.une-app.fr/cgu-cgv">CGU/CGV</a></li>
+          <li><a href="mailto:bonjour@une-app.fr">contact</a></li>
         </ul>
       </nav>
       <div class="legal">
