@@ -361,8 +361,28 @@
 
     /* ════════ BANNIÈRE PRÉ-LANCEMENT ════════ */
     /* bandeau collant ivoire — toute la bannière est un lien vers la section §7 */
+    /* ════════ NAV GLOBALE (partagée entre les pages) ════════ */
+    .site-nav {
+      position: sticky; top: 0; z-index: 60;
+      display: flex; align-items: center; justify-content: center;
+      gap: clamp(20px, 5vw, 52px);
+      padding: 13px clamp(16px, 5vw, 40px);
+      background: var(--paper); color: var(--ink);
+      border-bottom: 1px solid var(--ink);
+    }
+    .site-nav a {
+      font-family: var(--mono);
+      font-size: 11px; letter-spacing: .18em; text-transform: lowercase;
+      color: var(--slate); text-decoration: none;
+      padding-bottom: 3px; border-bottom: 1px solid transparent;
+      transition: color .15s ease, border-color .15s ease;
+    }
+    .site-nav a:hover,
+    .site-nav a:focus-visible { color: var(--ink); border-bottom-color: var(--ink); outline: none; }
+    .site-nav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--ink); }
+
     .prelaunch-bar {
-      position: sticky; top: 0; z-index: 50;
+      position: static; z-index: 50;
       background: var(--paper); color: var(--ink);
       border-bottom: 1px solid var(--ink);
       display: flex; align-items: baseline; justify-content: center;
@@ -441,6 +461,13 @@
   </style>
 </head>
 <body>
+
+  <!-- ════════ NAV GLOBALE ════════ -->
+  <nav class="site-nav" aria-label="navigation principale">
+    <a href="/">accueil</a>
+    <a href="/cadeau" aria-current="page">cadeau</a>
+    <a href="/#manifeste">à propos</a>
+  </nav>
 
   <!-- ════════ BANNIÈRE PRÉ-LANCEMENT ════════ -->
   <a class="prelaunch-bar" href="#waitlist-promise" aria-label="campagne de pré-lancement — aller au formulaire d'inscription">
@@ -837,10 +864,10 @@
       </div>
       <nav aria-label="liens de pied de page">
         <ul>
-          <li><a href="/mentions">mentions légales</a></li>
-          <li><a href="/confidentialite">confidentialité</a></li>
-          <li><a href="/statut-hebergeur">statut hébergeur</a></li>
-          <li><a href="mailto:hello@une-app.fr">contact</a></li>
+          <li><a href="https://legal.une-app.fr/mentions-legales">mentions légales</a></li>
+          <li><a href="https://legal.une-app.fr/confidentialite">confidentialité</a></li>
+          <li><a href="https://legal.une-app.fr/cgu-cgv">CGU/CGV</a></li>
+          <li><a href="mailto:bonjour@une-app.fr">contact</a></li>
         </ul>
       </nav>
       <div class="legal">
