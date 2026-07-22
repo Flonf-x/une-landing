@@ -380,6 +380,9 @@
     .site-nav a:hover,
     .site-nav a:focus-visible { color: var(--ink); border-bottom-color: var(--ink); outline: none; }
     .site-nav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--ink); }
+    .site-nav .nav-logo { position: absolute; left: clamp(16px, 5vw, 40px); top: 50%; transform: translateY(-50%); display: inline-flex; padding: 0; border-bottom: 0; }
+    .site-nav .nav-logo img { height: 20px; width: auto; display: block; }
+    .site-nav .nav-logo:hover, .site-nav .nav-logo:focus-visible { border-bottom-color: transparent; }
 
     .prelaunch-bar {
       position: static; z-index: 50;
@@ -465,6 +468,7 @@
 
   <!-- ════════ NAV GLOBALE ════════ -->
   <nav class="site-nav" aria-label="navigation principale">
+    <a href="/" class="nav-logo" aria-label="une. — accueil"><img src="assets/une-logo.png" alt="une." width="59" height="20"></a>
     <a href="/">accueil</a>
     <a href="/cadeau#gift" aria-current="page">cadeau</a>
     <a href="/#manifeste">à propos</a>
