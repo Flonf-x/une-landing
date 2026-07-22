@@ -35,7 +35,7 @@
          À REMPLIR. Une clé publique est faite pour vivre dans le HTML, c'est normal. ════ -->
   <script>
     window.UNE_GIFT_API_BASE_URL = ""; // ex: "http://localhost:3000" ou "https://api.une-app.fr"
-    window.STRIPE_PUBLISHABLE_KEY = "pk_test_REMPLACE_MOI";
+    window.STRIPE_PUBLISHABLE_KEY = "pk_test_51TRGqWI4BzwIUvIMDbscNMgDBnPVSvQgD4ZR0gAPVe9chULXXWn2Ik0B1gbH7AgnTjCpjLDiP3TCTxTj1k8y9bef00cqLRT7aW";
   </script>
   <script src="https://js.stripe.com/v3/"></script>
 
@@ -1029,7 +1029,10 @@
           ? "http://localhost:3000"
           : "https://api.une-app.fr");
       const pk = window.STRIPE_PUBLISHABLE_KEY || "";
-      const pkReady = /^pk_(test|live)_/.test(pk);
+      // Vraie clé Stripe : pk_test_/pk_live_ suivi d'un identifiant long.
+      // On rejette explicitement le placeholder pour ne plus jamais monter
+      // le Payment Element avec une clé bidon (échec silencieux à « payer »).
+      const pkReady = /^pk_(test|live)_[A-Za-z0-9]{20,}$/.test(pk) && !/REMPLACE/i.test(pk);
 
       // Refs
       const stepDetails = document.getElementById("gift-step-details");
