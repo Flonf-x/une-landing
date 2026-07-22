@@ -1029,7 +1029,10 @@
           ? "http://localhost:3000"
           : "https://api.une-app.fr");
       const pk = window.STRIPE_PUBLISHABLE_KEY || "";
-      const pkReady = /^pk_(test|live)_/.test(pk);
+      // Vraie clé Stripe : pk_test_/pk_live_ suivi d'un identifiant long.
+      // On rejette explicitement le placeholder pour ne plus jamais monter
+      // le Payment Element avec une clé bidon (échec silencieux à « payer »).
+      const pkReady = /^pk_(test|live)_[A-Za-z0-9]{20,}$/.test(pk) && !/REMPLACE/i.test(pk);
 
       // Refs
       const stepDetails = document.getElementById("gift-step-details");
