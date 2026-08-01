@@ -361,31 +361,8 @@
 
     /* ════════ BANNIÈRE PRÉ-LANCEMENT ════════ */
     /* bandeau collant ivoire — toute la bannière est un lien vers la section §7 */
-    /* ════════ NAV GLOBALE (partagée entre les pages) ════════ */
-    .site-nav {
-      position: sticky; top: 0; z-index: 60;
-      display: flex; align-items: center; justify-content: center;
-      gap: clamp(20px, 5vw, 52px);
-      padding: 13px clamp(16px, 5vw, 40px);
-      background: var(--paper); color: var(--ink);
-      border-bottom: 1px solid var(--ink);
-    }
-    .site-nav a {
-      font-family: var(--mono);
-      font-size: 11px; letter-spacing: .18em; text-transform: lowercase;
-      color: var(--slate); text-decoration: none;
-      padding-bottom: 3px; border-bottom: 1px solid transparent;
-      transition: color .15s ease, border-color .15s ease;
-    }
-    .site-nav a:hover,
-    .site-nav a:focus-visible { color: var(--ink); border-bottom-color: var(--ink); outline: none; }
-    .site-nav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--ink); }
-    .site-nav .nav-logo { position: absolute; left: clamp(16px, 5vw, 40px); top: 50%; transform: translateY(-50%); display: inline-flex; padding: 0; border-bottom: 0; }
-    .site-nav .nav-logo img { height: 20px; width: auto; display: block; }
-    .site-nav .nav-logo:hover, .site-nav .nav-logo:focus-visible { border-bottom-color: transparent; }
-
     .prelaunch-bar {
-      position: static; z-index: 50;
+      position: sticky; top: 0; z-index: 50;
       background: var(--paper); color: var(--ink);
       border-bottom: 1px solid var(--ink);
       display: flex; align-items: baseline; justify-content: center;
@@ -407,7 +384,6 @@
     .prelaunch-bar .cue { font-family: var(--mono); font-size: 14px; line-height: 1; color: var(--ink); padding: 0 .15em; transition: color .15s ease; }
     /* compense la hauteur de la bannière sticky lors du saut vers #waitlist-promise */
     #waitlist-promise { scroll-margin-top: clamp(56px, 7vw, 80px); }
-    #gift { scroll-margin-top: clamp(56px, 7vw, 80px); }
     /* grand bloc dans le cover, au-dessus du logo */
     .prelaunch-hero { display: flex; flex-direction: column; align-items: center; gap: .25em; margin-bottom: clamp(26px, 5vw, 56px); }
     .prelaunch-hero .kicker { font-family: var(--mono); font-size: 11px; letter-spacing: var(--track-mono); text-transform: lowercase; color: var(--voile); }
@@ -466,14 +442,6 @@
 </head>
 <body>
 
-  <!-- ════════ NAV GLOBALE ════════ -->
-  <nav class="site-nav" aria-label="navigation principale">
-    <a href="/" class="nav-logo" aria-label="une. — accueil"><img src="assets/une-logo.png" alt="une." width="59" height="20"></a>
-    <a href="/">accueil</a>
-    <a href="/cadeau#gift" aria-current="page">cadeau</a>
-    <a href="/#manifeste">à propos</a>
-  </nav>
-
   <!-- ════════ BANNIÈRE PRÉ-LANCEMENT ════════ -->
   <a class="prelaunch-bar" href="#waitlist-promise" aria-label="campagne de pré-lancement — aller au formulaire d'inscription">
     <span class="cue" aria-hidden="true">↓</span>
@@ -502,7 +470,7 @@
 
     <div class="cover-foot">
       <a href="#hero" class="scroll-cue">défiler <span class="arrow">↓</span></a>
-      <span>iphone · android · bientôt</span>
+      <span>iPhone® · disponible sur l'App Store</span>
     </div>
   </section>
 
@@ -869,10 +837,10 @@
       </div>
       <nav aria-label="liens de pied de page">
         <ul>
-          <li><a href="https://legal.une-app.fr/mentions-legales">mentions légales</a></li>
-          <li><a href="https://legal.une-app.fr/confidentialite">confidentialité</a></li>
-          <li><a href="https://legal.une-app.fr/cgu-cgv">CGU/CGV</a></li>
-          <li><a href="mailto:bonjour@une-app.fr">contact</a></li>
+          <li><a href="/mentions">mentions légales</a></li>
+          <li><a href="/confidentialite">confidentialité</a></li>
+          <li><a href="/statut-hebergeur">statut hébergeur</a></li>
+          <li><a href="mailto:hello@une-app.fr">contact</a></li>
         </ul>
       </nav>
       <div class="legal">
@@ -1034,10 +1002,7 @@
           ? "http://localhost:3000"
           : "https://api.une-app.fr");
       const pk = window.STRIPE_PUBLISHABLE_KEY || "";
-      // Vraie clé Stripe : pk_test_/pk_live_ suivi d'un identifiant long.
-      // On rejette explicitement le placeholder pour ne plus jamais monter
-      // le Payment Element avec une clé bidon (échec silencieux à « payer »).
-      const pkReady = /^pk_(test|live)_[A-Za-z0-9]{20,}$/.test(pk) && !/REMPLACE/i.test(pk);
+      const pkReady = /^pk_(test|live)_/.test(pk);
 
       // Refs
       const stepDetails = document.getElementById("gift-step-details");
