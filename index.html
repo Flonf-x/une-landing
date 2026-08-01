@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>une. — une application photographique. des tirages livrés.</title>
-  <meta name="description" content="tu ne la prendras qu'une fois. une. est une pellicule numérique pour iphone. les tirages physiques arrivent chez toi par courrier. disponible sur l'App Store." />
+  <meta name="description" content="tu ne la prendras qu'une fois. une. est une pellicule numérique pour iPhone®. les tirages physiques arrivent chez toi par courrier. disponible sur l'App Store." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://une-app.fr/" />
 
@@ -178,14 +178,21 @@
     .scroll-cue .arrow { display: inline-block; animation: bob 2.4s ease-in-out infinite; }
     @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(4px)} }
 
-    /* ════════ CTA APP STORE — action soulignée agrandie ════════ */
+    /* ════════ CTA APP STORE — badge officiel Apple ════════ */
     .cta-download {
       display: inline-flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 14px;
       max-width: 520px;
     }
-    .cta-download .ul-act { font-size: 15px; }
+    .cta-download .badge {
+      display: inline-block;
+      height: 56px; width: auto;
+      transition: opacity .2s ease;
+    }
+    .cta-download .badge:hover, .cta-download .badge:focus-visible { opacity: 0.82; }
+    .cta-download a:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; border-radius: 4px; }
+    .on-ink .cta-download a:focus-visible { outline-color: var(--paper); }
     .cta-download .hint { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: lowercase; color: var(--voile); line-height: 1.7; }
     .on-ink .cta-download .hint { color: var(--voile); }
 
@@ -196,8 +203,8 @@
     .hero .lede { font-family: var(--serif); font-size: clamp(19px, 2vw, 24px); line-height: 1.5; color: var(--ink-2); max-width: 38ch; margin-bottom: 48px; }
     .hero .lede em { font-style: italic; }
 
-    /* hero — CTA agrandi pour lisibilité */
-    .hero .cta-download .ul-act { font-size: 17px; }
+    /* hero — badge agrandi pour lisibilité */
+    .hero .cta-download .badge { height: 64px; }
     .hero .cta-download .hint { font-size: 12px; }
 
     /* iPhone vertical à droite — reprend la pub AD 1.1 de la campagne (fond ivoire, type géant) */
@@ -338,7 +345,7 @@
 
     <div class="cover-foot">
       <a href="#hero" class="scroll-cue">défiler <span class="arrow">↓</span></a>
-      <span>iphone · disponible sur l'App Store</span>
+      <span>iPhone® · disponible sur l'App Store</span>
     </div>
   </section>
 
@@ -355,8 +362,8 @@
         </p>
 
         <div class="cta-download">
-          <a class="ul-act" href="#" data-app-store data-location="hero" aria-label="télécharger une. sur l'App Store"><span class="w">télécharger sur l'App Store</span><span class="trail"></span></a>
-          <p class="hint">iphone · à partir de 12,90 € tout compris (tirages et livraison)</p>
+          <a href="#" data-app-store data-location="hero" aria-label="télécharger une. sur l'App Store"><img class="badge" src="assets/badges/app-store-black.svg" alt="Télécharger dans l'App Store" width="180" height="60" /></a>
+          <p class="hint">iPhone® · à partir de 12,90 € tout compris (tirages et livraison)</p>
         </div>
       </div>
 
@@ -510,7 +517,7 @@
       </details>
       <details>
         <summary>c'est disponible où ?</summary>
-        <p class="answer">sur l'App Store, pour iPhone. tu télécharges, tu choisis ta pellicule, tu prends tes photos, tu reçois le colis par la poste.</p>
+        <p class="answer">sur l'App Store, pour iPhone®. tu télécharges, tu choisis ta pellicule, tu prends tes photos, tu reçois le colis par la poste.</p>
       </details>
       <details>
         <summary>vous voyez mes photos ?</summary>
@@ -539,8 +546,8 @@
       <p class="lede">télécharge <span class="une">une<span class="dot"></span></span>, choisis ta pellicule, prends tes photos. le colis fait le reste.</p>
 
       <div class="cta-download">
-        <a class="ul-act on-ink" href="#" data-app-store data-location="final" aria-label="télécharger une. sur l'App Store"><span class="w">télécharger sur l'App Store</span><span class="trail"></span></a>
-        <p class="hint">iphone · à partir de 12,90 € tout compris</p>
+        <a href="#" data-app-store data-location="final" aria-label="télécharger une. sur l'App Store"><img class="badge" src="assets/badges/app-store-white.svg" alt="Télécharger dans l'App Store" width="180" height="60" /></a>
+        <p class="hint">iPhone® · à partir de 12,90 € tout compris</p>
       </div>
     </div>
   </section>
