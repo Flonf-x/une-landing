@@ -196,10 +196,11 @@
     .cta-download .hint { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: lowercase; color: var(--voile); line-height: 1.7; }
     .on-ink .cta-download .hint { color: var(--voile); }
 
-    /* cover — badge App Store dans le stage du splash */
-    .stage .badge-mini { display: inline-block; height: 56px; width: auto; transition: opacity .2s ease; }
-    .stage a:hover .badge-mini, .stage a:focus-visible .badge-mini { opacity: 0.82; }
-    .stage a:focus-visible { outline: 2px solid var(--paper); outline-offset: 4px; border-radius: 4px; }
+    /* cover — badge App Store tout en haut du splash */
+    .cover-badge-top { display: inline-block; align-self: center; margin-top: 8px; }
+    .cover-badge-top .badge-mini { display: inline-block; height: 56px; width: auto; transition: opacity .2s ease; }
+    .cover-badge-top:hover .badge-mini, .cover-badge-top:focus-visible .badge-mini { opacity: 0.82; }
+    .cover-badge-top:focus-visible { outline: 2px solid var(--paper); outline-offset: 4px; border-radius: 4px; }
 
     /* ════════ §1 HERO ════════ */
     .hero { padding-top: clamp(64px, 10vw, 130px); }
@@ -373,11 +374,12 @@
       <span>août 2026 · paris</span>
     </div>
 
+    <a href="#" class="cover-badge-top" data-app-store data-location="cover" aria-label="télécharger une. sur l'App Store"><img class="badge-mini" src="assets/badges/app-store-white.svg" alt="Télécharger dans l'App Store" width="180" height="60" /></a>
+
     <div class="stage">
       <span class="une cover-logo">une<span class="dot"></span></span>
       <p class="lede">une seule prise. une seule respiration. une seule photo.</p>
       <p class="descriptor">application photographique<br>tu prends, tu attends, tu reçois.<br>tu prends tes photos sans les revoir comme avec un appareil argentique, et les tirages arrivent chez toi par courrier.</p>
-      <a href="#" data-app-store data-location="cover" aria-label="télécharger une. sur l'App Store"><img class="badge-mini" src="assets/badges/app-store-white.svg" alt="Télécharger dans l'App Store" width="180" height="60" /></a>
     </div>
 
     <div class="cover-foot">
