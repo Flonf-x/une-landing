@@ -173,7 +173,7 @@
       font-size: clamp(20px, 2.6vw, 30px); line-height: 1.4; color: var(--paper-3);
       max-width: 30ch;
     }
-    .cover .descriptor { font-family: var(--mono); font-size: 10px; letter-spacing: var(--track-mono); text-transform: lowercase; color: var(--voile); max-width: 40ch; margin: 0 auto; line-height: 1.8; }
+    .cover .descriptor { font-family: var(--mono); font-size: 12px; letter-spacing: var(--track-mono); text-transform: lowercase; color: var(--voile); max-width: 40ch; margin: 0 auto; line-height: 1.8; }
     .scroll-cue { font-family: var(--mono); font-size: 10px; letter-spacing: var(--track-mono); text-transform: lowercase; color: var(--voile); }
     .scroll-cue .arrow { display: inline-block; animation: bob 2.4s ease-in-out infinite; }
     @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(4px)} }
@@ -196,10 +196,10 @@
     .cta-download .hint { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: lowercase; color: var(--voile); line-height: 1.7; }
     .on-ink .cta-download .hint { color: var(--voile); }
 
-    /* cover — badge miniature dans le footer du splash */
-    .cover-foot .badge-mini { display: inline-block; height: 28px; width: auto; vertical-align: middle; transition: opacity .2s ease; }
-    .cover-foot a:hover .badge-mini, .cover-foot a:focus-visible .badge-mini { opacity: 0.82; }
-    .cover-foot a:focus-visible { outline: 2px solid var(--paper); outline-offset: 4px; border-radius: 4px; }
+    /* cover — badge App Store dans le stage du splash */
+    .stage .badge-mini { display: inline-block; height: 56px; width: auto; transition: opacity .2s ease; }
+    .stage a:hover .badge-mini, .stage a:focus-visible .badge-mini { opacity: 0.82; }
+    .stage a:focus-visible { outline: 2px solid var(--paper); outline-offset: 4px; border-radius: 4px; }
 
     /* ════════ §1 HERO ════════ */
     .hero { padding-top: clamp(64px, 10vw, 130px); }
@@ -377,11 +377,12 @@
       <span class="une cover-logo">une<span class="dot"></span></span>
       <p class="lede">une seule prise. une seule respiration. une seule photo.</p>
       <p class="descriptor">application photographique<br>tu prends, tu attends, tu reçois.<br>tu prends tes photos sans les revoir comme avec un appareil argentique, et les tirages arrivent chez toi par courrier.</p>
+      <a href="#" data-app-store data-location="cover" aria-label="télécharger une. sur l'App Store"><img class="badge-mini" src="assets/badges/app-store-white.svg" alt="Télécharger dans l'App Store" width="180" height="60" /></a>
     </div>
 
     <div class="cover-foot">
       <a href="#hero" class="scroll-cue">défiler <span class="arrow">↓</span></a>
-      <a href="#" data-app-store data-location="cover" aria-label="télécharger une. sur l'App Store"><img class="badge-mini" src="assets/badges/app-store-white.svg" alt="Télécharger dans l'App Store" width="120" height="40" /></a>
+      <span>iPhone® · disponible sur l'App Store</span>
     </div>
   </section>
 
