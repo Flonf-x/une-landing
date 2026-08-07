@@ -1051,6 +1051,11 @@
 
       let stripe = null;
       let elements = null;
+      // Contexte du gift en cours de paiement (utilisé par la purge immédiate
+      // en cas d'échec de confirmPayment). Réinitialisé à chaque nouveau POST
+      // guest ou après un back vers l'étape 1.
+      let currentGiftId = null;
+      let currentClientSecret = null;
 
       function selectedPoses() {
         const r = form.querySelector('input[name="poses_max"]:checked');
@@ -1156,7 +1161,10 @@
             return;
           }
 
-          // Récap côté paiement
+          // Récap côté paiement + mémorisation pour la purge immédiate
+          // en cas d'échec de confirmPayment (cf. catch plus bas).
+          currentGiftId = data.gift_id;
+          currentClientSecret = data.client_secret;
           amount2El.textContent = fmt(data.amount_cents);
           recipientLabel.textContent = val("recipient_first_name");
 
@@ -1187,9 +1195,34 @@
         }
       });
 
+      // Purge immédiate côté backend (annule le PI Stripe + hard-delete le
+      // gift) — symétrie du fix iOS `ba7f8a8`. Best-effort : les erreurs
+      // sont avalées, le cron `gifts:abandoned_payment_cleanup` rattrape à
+      // T+24h si l'appel a échoué (réseau, backend en maintenance).
+      async function purgeCurrentGift() {
+        if (!currentGiftId || !currentClientSecret) return;
+        const giftId = currentGiftId;
+        const clientSecret = currentClientSecret;
+        currentGiftId = null;
+        currentClientSecret = null;
+        try {
+          await fetch(apiBase + "/api/v1/gifts/guest/" + encodeURIComponent(giftId), {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ client_secret: clientSecret }),
+            keepalive: true,
+          });
+        } catch (_) {
+          /* best-effort : cron 24h prend le relais */
+        }
+      }
+
       // ── Retour à l'étape détails ──
+      // L'utilisateur choisit de modifier son cadeau → on purge le gift+PI
+      // en cours pour repartir sur du frais (nouveau POST guest au submit).
       backBtn.addEventListener("click", () => {
         paymentError.textContent = "";
+        void purgeCurrentGift();
         showStep("details");
       });
 
@@ -1207,14 +1240,29 @@
             paymentError.textContent =
               error.message || "le paiement n'a pas abouti. vérifie tes informations.";
             setBusy(payBtn, false);
+            // Purge du gift+PI : le PI est probablement dans un état terminal
+            // (canceled / requires_payment_method après refus banque). Un
+            // retry immédiat re-crée un gift+PI propres depuis l'étape 1.
+            void purgeCurrentGift();
             return;
           }
-          // Succès : le webhook backend déclenche l'email cadeau + le code.
+          // Succès : on efface le contexte pour ne pas re-purger un gift déjà
+          // payé si l'utilisateur clique ailleurs. Le webhook backend
+          // déclenche l'email cadeau + le code.
+          currentGiftId = null;
+          currentClientSecret = null;
           showStep("success");
         } catch (e3) {
           paymentError.textContent = "le paiement n'a pas pu être confirmé. réessaie.";
           setBusy(payBtn, false);
+          void purgeCurrentGift();
         }
+      });
+
+      // Fermeture d'onglet / navigation externe pendant l'étape paiement :
+      // best-effort avec `keepalive:true` (la requête part avant l'unload).
+      window.addEventListener("pagehide", () => {
+        if (currentGiftId && currentClientSecret) void purgeCurrentGift();
       });
     })();
   </script>
