@@ -24,15 +24,11 @@
   <script defer data-domain="une-app.fr" src="https://plausible.io/js/script.outbound-links.tagged-events.js"></script>
   <script>window.plausible = window.plausible || function(){(window.plausible.q=window.plausible.q||[]).push(arguments)};</script>
 
-  <!-- ════ Backend waitlist TEMPORAIRE — service Render `une-waitlist-temp` (cf. AIDE-MEMOIRE-BACKEND.md).
-       Quand le backend NAS sera public en HTTPS sur une-app.fr, supprime ce bloc (form en same-origin). ════ -->
-  <script>window.UNE_API_BASE_URL = "https://une-waitlist-temp.onrender.com";</script>
-
-  <!-- ════ Achat-cadeau (backend principal `apps/backend`, distinct du waitlist) ════
+  <!-- ════ Achat-cadeau (backend principal `apps/backend`) ════
        - UNE_GIFT_API_BASE_URL : l'API qui sert POST /api/v1/gifts/guest.
          Laisser vide → auto : localhost:3000 en dev, https://api.une-app.fr en prod.
        - STRIPE_PUBLISHABLE_KEY : clé PUBLIQUE Stripe (pk_test_… en dev, pk_live_… en prod).
-         À REMPLIR. Une clé publique est faite pour vivre dans le HTML, c'est normal. ════ -->
+         Une clé publique est faite pour vivre dans le HTML, c'est normal. ════ -->
   <script>
     window.UNE_GIFT_API_BASE_URL = ""; // ex: "http://localhost:3000" ou "https://api.une-app.fr"
     window.STRIPE_PUBLISHABLE_KEY = "pk_live_51TRGqWI4BzwIUvIMGuUlO7VjZyabVjDZJePdpfx1Q3IHagbhTzQcy4oU04BkBReGtvKZRlKcfQO1cGl4L2AzMp0400vIpVJpz8";
@@ -193,30 +189,29 @@
     .scroll-cue .arrow { display: inline-block; animation: bob 2.4s ease-in-out infinite; }
     @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(4px)} }
 
-    /* ════════ FORM (champs filaires, submit en action soulignée) ════════ */
-    .waitlist-form { max-width: 520px; }
-    .waitlist-form .field-label { font-family: var(--mono); font-size: 11px; letter-spacing: var(--track-mono); text-transform: lowercase; color: var(--slate); display: block; margin-bottom: 14px; }
-    .waitlist-form .row { display: flex; align-items: baseline; gap: 24px; flex-wrap: wrap; }
-    .waitlist-form input[type="email"] {
-      flex: 1 1 240px; min-width: 0;
-      border: 0; border-bottom: 1px solid var(--ink);
-      background: transparent;
-      font-family: var(--serif); font-size: 22px; color: var(--ink);
-      padding: 6px 0;
+    /* cover — badge App Store tout en haut du splash */
+    .cover-badge-top { display: inline-block; align-self: center; margin-top: 8px; }
+    .cover-badge-top .badge-mini { display: inline-block; height: 56px; width: auto; transition: opacity .2s ease; }
+    .cover-badge-top:hover .badge-mini, .cover-badge-top:focus-visible .badge-mini { opacity: 0.82; }
+    .cover-badge-top:focus-visible { outline: 2px solid var(--paper); outline-offset: 4px; border-radius: 4px; }
+
+    /* ════════ CTA APP STORE — badge officiel Apple ════════ */
+    .cta-download {
+      display: inline-flex;
+      flex-direction: column;
+      gap: 14px;
+      max-width: 520px;
     }
-    .waitlist-form input[type="email"]::placeholder { color: var(--voile); }
-    .waitlist-form input[type="email"]:focus { outline: none; border-bottom-width: 2px; }
-    .waitlist-form input[type="email"][aria-invalid="true"] { border-bottom-style: dashed; }
-    .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
-    .help, .mini { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: lowercase; color: var(--voile); margin-top: 18px; line-height: 1.7; }
-    .error-msg { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: lowercase; color: var(--ink-2); margin-top: 12px; min-height: 1.4em; }
-    .success-state { border: 1px solid var(--rule); padding: 28px; max-width: 520px; background: var(--paper-2); }
-    .success-state h3 { font-family: var(--display); font-weight: 300; margin-bottom: 10px; }
-    .on-ink .waitlist-form input[type="email"] { border-bottom-color: var(--paper); color: var(--paper); }
-    .on-ink .waitlist-form input[type="email"]::placeholder { color: var(--voile); }
-    .on-ink .field-label, .on-ink .help, .on-ink .mini { color: var(--voile); }
-    .on-ink .error-msg { color: var(--paper-3); }
-    .on-ink .success-state { background: rgba(241,236,228,0.06); border-color: rgba(241,236,228,0.2); }
+    .cta-download .badge {
+      display: inline-block;
+      height: 56px; width: auto;
+      transition: opacity .2s ease;
+    }
+    .cta-download .badge:hover, .cta-download .badge:focus-visible { opacity: 0.82; }
+    .cta-download a:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; border-radius: 4px; }
+    .on-ink .cta-download a:focus-visible { outline-color: var(--paper); }
+    .cta-download .hint { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: lowercase; color: var(--voile); line-height: 1.7; }
+    .on-ink .cta-download .hint { color: var(--voile); }
 
     /* ════════ §1 HERO ════════ */
     .hero { padding-top: clamp(64px, 10vw, 130px); }
@@ -225,10 +220,9 @@
     .hero .lede { font-family: var(--serif); font-size: clamp(19px, 2vw, 24px); line-height: 1.5; color: var(--ink-2); max-width: 38ch; margin-bottom: 48px; }
     .hero .lede em { font-style: italic; }
 
-    /* hero — formulaire légèrement agrandi (lisibilité) */
-    .hero .waitlist-form .field-label { font-size: 14px; }
-    .hero .waitlist-form .ul-act { font-size: 15px; }
-    .hero .waitlist-form .help { font-size: 12px; }
+    /* hero — badge agrandi pour lisibilité */
+    .hero .cta-download .badge { height: 64px; }
+    .hero .cta-download .hint { font-size: 12px; }
 
     /* iPhone vertical à droite — reprend la pub AD 1.1 de la campagne (fond ivoire, type géant) */
     .hero-visual { display: flex; justify-content: center; }
@@ -317,15 +311,6 @@
     .films .footnote { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: lowercase; color: var(--voile); text-align: center; margin-top: 40px; }
     @media (max-width: 800px) { .films .grid { grid-template-columns: 1fr; } }
 
-    /* ════════ §7 PROMESSE WAITLIST ════════ */
-    .promise h2 { max-width: 18ch; margin-bottom: 32px; }
-    .promise h2 .il { font-family: var(--serif); font-style: italic; font-weight: 400; }
-    .promise p { max-width: 40ch; color: var(--ink-2); font-size: 18px; }
-    .counter { display: flex; align-items: baseline; gap: 14px; margin: 32px 0; padding-bottom: 18px; border-bottom: 1px solid var(--rule); max-width: 360px; }
-    .counter .label { font-family: var(--mono); font-size: 10px; letter-spacing: var(--track-mono); text-transform: lowercase; color: var(--slate); }
-    .counter .val { font-family: var(--display); font-weight: 300; font-size: clamp(34px,5vw,56px); letter-spacing: -0.04em; line-height: 1; color: var(--ink); margin-left: auto; }
-    .counter .val .tot { color: var(--voile); }
-
     /* ════════ §8 FAQ ════════ */
     .faq h2 { margin-bottom: 48px; }
     .faq h2 .il { font-family: var(--serif); font-style: italic; font-weight: 400; }
@@ -359,39 +344,8 @@
     .reveal { opacity: 0; transform: translateY(8px); transition: opacity .5s ease, transform .5s ease; }
     .reveal.visible { opacity: 1; transform: translateY(0); }
 
-    /* ════════ BANNIÈRE PRÉ-LANCEMENT ════════ */
-    /* bandeau collant ivoire — toute la bannière est un lien vers la section §7 */
-    .prelaunch-bar {
-      position: sticky; top: 0; z-index: 50;
-      background: var(--paper); color: var(--ink);
-      border-bottom: 1px solid var(--ink);
-      display: flex; align-items: baseline; justify-content: center;
-      gap: .7em; flex-wrap: wrap; text-align: center;
-      padding: 15px var(--pad-x);
-      text-decoration: none;
-      cursor: pointer;
-      transition: background-color .15s ease, color .15s ease;
-    }
-    .prelaunch-bar:hover,
-    .prelaunch-bar:focus-visible { background: var(--ink); color: var(--paper); outline: none; }
-    .prelaunch-bar:hover .tagline,
-    .prelaunch-bar:focus-visible .tagline,
-    .prelaunch-bar:hover .cue,
-    .prelaunch-bar:focus-visible .cue { color: var(--paper); }
-    .prelaunch-bar strong { font-family: var(--display); font-weight: 300; font-size: clamp(17px, 2.4vw, 24px); letter-spacing: -0.03em; color: inherit; }
-    .prelaunch-bar .tagline { font-family: var(--mono); font-size: 11px; letter-spacing: var(--track-mono); text-transform: lowercase; color: var(--slate); transition: color .15s ease; }
-    /* sigles flèche visuels — début/fin du texte (l'élément cliquable est la bannière entière) */
-    .prelaunch-bar .cue { font-family: var(--mono); font-size: 14px; line-height: 1; color: var(--ink); padding: 0 .15em; transition: color .15s ease; }
-    /* compense la hauteur de la bannière sticky lors du saut vers #waitlist-promise */
-    #waitlist-promise { scroll-margin-top: clamp(56px, 7vw, 80px); }
-    /* grand bloc dans le cover, au-dessus du logo */
-    .prelaunch-hero { display: flex; flex-direction: column; align-items: center; gap: .25em; margin-bottom: clamp(26px, 5vw, 56px); }
-    .prelaunch-hero .kicker { font-family: var(--mono); font-size: 11px; letter-spacing: var(--track-mono); text-transform: lowercase; color: var(--voile); }
-    .prelaunch-hero .big { font-family: var(--display); font-weight: 300; font-size: clamp(42px, 8.5vw, 104px); letter-spacing: -0.045em; line-height: .88; color: var(--paper); }
-    .prelaunch-hero .sub { font-family: var(--serif); font-style: italic; font-size: clamp(15px, 2vw, 23px); color: var(--paper-3); max-width: 30ch; }
-
     /* ════════ GIFT — achat-cadeau (premier visuel, au-dessus du hero) ════════ */
-    .gift { background: var(--paper-2); border-bottom: 1px solid var(--rule); }
+    .gift { background: var(--paper-2); border-bottom: 1px solid var(--rule); scroll-margin-top: clamp(56px, 7vw, 80px); }
     .gift .eyebrow { margin-bottom: 24px; }
     .gift h2 { max-width: 18ch; margin-bottom: 18px; }
     .gift h2 .il { font-family: var(--serif); font-style: italic; font-weight: 400; }
@@ -473,34 +427,22 @@
     <a href="/#manifeste">à propos</a>
   </nav>
 
-  <!-- ════════ BANNIÈRE PRÉ-LANCEMENT ════════ -->
-  <a class="prelaunch-bar" href="#waitlist-promise" aria-label="campagne de pré-lancement — aller au formulaire d'inscription">
-    <span class="cue" aria-hidden="true">↓</span>
-    <strong>pré-lancement</strong>
-    <span class="tagline">— inscris-toi pour être prévenu·e du lancement</span>
-    <span class="cue" aria-hidden="true">↓</span>
-  </a>
-
   <!-- ════════ §0 SPLASH / COVER ════════ -->
-  <section class="cover on-ink" aria-label="une. — pré-lancement">
+  <section class="cover on-ink" aria-label="offrir une. — disponible">
     <div class="cover-head">
-      <span>une<span class="dot" style="display:none"></span> · <b>pré-lancement</b></span>
-      <span>mai 2026 · paris</span>
+      <span>une<span class="dot" style="display:none"></span> · <b>offrir</b></span>
+      <span>août 2026 · paris</span>
     </div>
 
     <div class="stage">
-      <div class="prelaunch-hero">
-        <span class="kicker">campagne de</span>
-        <span class="big">pré-lancement</span>
-        <span class="sub">inscris-toi pour être prévenu·e du lancement</span>
-      </div>
       <span class="une cover-logo">une<span class="dot"></span></span>
-      <p class="lede">une seule prise. une seule respiration. une seule photo.</p>
-      <p class="descriptor">une application photographique qui retient la prise jusqu'à la livraison d'un tirage par courrier.</p>
+      <p class="lede">offre une pellicule. un colis de tirages. un code à révéler.</p>
+      <p class="descriptor">tu choisis le format, la personne choisit son look à la réception.<br>elle prend, elle attend, elle reçoit — chez elle par courrier.</p>
+      <a href="#gift" class="ul-act on-ink" aria-label="aller au formulaire pour offrir une pellicule"><span class="w">offrir une pellicule</span><span class="trail"></span></a>
     </div>
 
     <div class="cover-foot">
-      <a href="#hero" class="scroll-cue">défiler <span class="arrow">↓</span></a>
+      <a href="#gift" class="scroll-cue">défiler <span class="arrow">↓</span></a>
       <span>iPhone® · disponible sur l'App Store</span>
     </div>
   </section>
@@ -620,18 +562,10 @@
           le numérique vient après — dans le colis, il y a un code.
         </p>
 
-        <form class="waitlist-form" data-location="hero" aria-labelledby="hero-form-title" novalidate>
-          <span class="field-label" id="hero-form-title">ton email</span>
-          <div class="row">
-            <input type="email" id="email-hero" name="email" placeholder="prenom@exemple.fr"
-                   autocomplete="email" inputmode="email" required aria-label="ton email"
-                   aria-describedby="hero-help hero-error" />
-            <button type="submit" class="ul-act"><span class="w">garder ma place</span><span class="trail"></span></button>
-            <input type="text" name="company" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true" />
-          </div>
-          <p id="hero-help" class="help">-50 % sur la première pellicule pour les 100 premiers inscrits · on ne partage pas ton email</p>
-          <p id="hero-error" class="error-msg" role="alert" aria-live="polite"></p>
-        </form>
+        <div class="cta-download">
+          <a href="#" data-app-store data-location="hero" aria-label="télécharger une. sur l'App Store"><img class="badge" src="assets/badges/app-store-black.svg" alt="Télécharger dans l'App Store" width="180" height="60" /></a>
+          <p class="hint">iPhone® · à partir de 12,90 € tout compris (tirages et livraison)</p>
+        </div>
       </div>
 
       <div class="hero-visual">
@@ -641,7 +575,7 @@
           <h1 id="hero-title" class="phone-body">tu ne la prendras qu'<span class="une">une<span class="dot"></span></span> fois.</h1>
           <div class="phone-foot">
             <span class="phone-brand"><span class="une">une<span class="dot"></span></span></span>
-            <span class="phone-cta">en mai</span>
+            <span class="phone-cta">sur l'App Store</span>
           </div>
         </div>
       </div>
@@ -768,39 +702,6 @@
           <p>pour ce qui ne demande pas la couleur.</p>
         </article>
       </div>
-      <p class="footnote">les noms changeront peut-être avant le launch. l'idée non.</p>
-    </div>
-  </section>
-
-  <!-- ════════ §7 PROMESSE WAITLIST ════════ -->
-  <section class="promise" id="waitlist-promise" aria-labelledby="promise-title">
-    <div class="wrap">
-      <p class="eyebrow">en ce moment</p>
-      <h2 id="promise-title">les 100 premiers ont leur première pellicule <span class="il">à -50 %.</span></h2>
-      <p>
-        on lance dans les semaines à venir. les 100 premiers inscrits ont leur première
-        pellicule à -50 % — colis complet, tirages compris, livraison comprise.
-        pas d'astuce, pas de roue à faire tourner : l'ordre d'inscription fait l'ordre des places.
-      </p>
-      <p>quand on ouvre, on prévient — toi en premier.</p>
-
-      <div class="counter" aria-live="polite">
-        <span class="label">places à -50 % restantes</span>
-        <span class="val"><span id="counter-remaining">78</span><span class="tot"> / 100</span></span>
-      </div>
-
-      <form class="waitlist-form" data-location="promise" aria-labelledby="promise-form-title" novalidate>
-        <span class="field-label" id="promise-form-title">ton email</span>
-        <div class="row">
-          <input type="email" id="email-promise" name="email" placeholder="prenom@exemple.fr"
-                 autocomplete="email" inputmode="email" required aria-label="ton email"
-                 aria-describedby="promise-help promise-error" />
-          <button type="submit" class="ul-act"><span class="w">garder ma place</span><span class="trail"></span></button>
-          <input type="text" name="company" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true" />
-        </div>
-        <p id="promise-help" class="help">email seul · aucun partage · désinscription en un clic</p>
-        <p id="promise-error" class="error-msg" role="alert" aria-live="polite"></p>
-      </form>
     </div>
   </section>
 
@@ -811,12 +712,12 @@
       <h2 id="faq-title">quelques <span class="il">questions.</span></h2>
 
       <details>
-        <summary>combien ça coûte ?</summary>
-        <p class="answer">on finalise le prix avec le labo partenaire. ce qu'on peut dire : le prix couvre la pellicule, le développement, les tirages physiques et l'envoi. pas d'abonnement, pas d'option cachée. on annoncera le tarif final aux inscrits avant tout le monde.</p>
+        <summary>combien coûte un cadeau ?</summary>
+        <p class="answer">14,90 € (12 poses), 21,90 € (24 poses) ou 28,90 € (36 poses) — tout compris : pellicule, développement, tirages papier et livraison en France. pas d'abonnement, pas d'option cachée. le·la destinataire n'a rien à payer.</p>
       </details>
       <details>
-        <summary>quand est-ce que vous lancez ?</summary>
-        <p class="answer">les semaines à venir. on préfère sortir un produit qui tient ses promesses que tenir une date. tu seras prévenu·e par email avant l'ouverture publique.</p>
+        <summary>c'est disponible où ?</summary>
+        <p class="answer">sur l'App Store, pour iPhone®. le·la destinataire reçoit un email avec un code à révéler dans l'app. il·elle télécharge une., saisit le code, choisit son look et prend ses photos.</p>
       </details>
       <details>
         <summary>vous voyez mes photos ?</summary>
@@ -842,20 +743,9 @@
     <div class="wrap">
       <span class="une final-logo">une<span class="dot"></span></span>
       <h2 id="final-title">une pellicule. <span class="il">un colis. un code.</span></h2>
-      <p class="lede">si l'idée tient, garde ta place. on t'écrit quand on ouvre. les 100 premiers ont leur première pellicule à -50 %.</p>
+      <p class="lede">un cadeau qui prend son temps. tu choisis le format, la personne choisit son look à la réception.</p>
 
-      <form class="waitlist-form" data-location="final" aria-labelledby="final-form-title" novalidate>
-        <span class="field-label" id="final-form-title">ton email</span>
-        <div class="row">
-          <input type="email" id="email-final" name="email" placeholder="prenom@exemple.fr"
-                 autocomplete="email" inputmode="email" required aria-label="ton email"
-                 aria-describedby="final-help final-error" />
-          <button type="submit" class="ul-act on-ink"><span class="w">garder ma place</span><span class="trail"></span></button>
-          <input type="text" name="company" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true" />
-        </div>
-        <p id="final-help" class="help">-50 % sur la première pellicule pour les 100 premiers inscrits</p>
-        <p id="final-error" class="error-msg" role="alert" aria-live="polite"></p>
-      </form>
+      <a href="#gift" class="ul-act on-ink" aria-label="aller au formulaire pour offrir une pellicule"><span class="w">offrir une pellicule</span><span class="trail"></span></a>
     </div>
   </section>
 
@@ -882,122 +772,22 @@
   </footer>
 
   <script>
-    // ════════ Form handling (mocké — voir 03-form-spec.md pour le branchement réel) ════════
-    const COMMON_TYPOS = {
-      "gmial.com":"gmail.com","gnail.com":"gmail.com","gmail.con":"gmail.com","gmaill.com":"gmail.com",
-      "hotnail.fr":"hotmail.fr","hotmal.com":"hotmail.com","yhoo.fr":"yahoo.fr","yaho.fr":"yahoo.fr","outlok.fr":"outlook.fr",
-    };
-    const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+    // ════════ CTA App Store — bascule 1-edit (miroir de index.html) ════════
+    // Renseigner l'URL réelle de la fiche dès qu'elle est publiée, ex :
+    //   https://apps.apple.com/fr/app/une/id0000000000
+    // Tant que la chaîne est vide, les liens gardent href="#" (placeholder muet).
+    // ⚠️ Miroir : même variable dans /index.html et /o/index.html.
+    var APP_STORE_URL = "https://apps.apple.com/fr/app/une-app-photo-unique/id6788447263";
 
-    function validateEmail(raw) {
-      const value = (raw || "").trim();
-      if (!value) return { ok:false, msg:"il faut un email pour garder ta place." };
-      if (!EMAIL_RE.test(value)) return { ok:false, msg:"on dirait qu'il manque un point ou un signe @. tu peux vérifier ?" };
-      const domain = value.split("@")[1].toLowerCase();
-      if (COMMON_TYPOS[domain]) return { ok:true, value, suggestion:value.replace(domain, COMMON_TYPOS[domain]) };
-      return { ok:true, value };
-    }
     function track(event, props) {
       if (typeof window.plausible === "function") window.plausible(event, { props });
       if (["localhost","127.0.0.1"].includes(window.location.hostname)) console.log("[track]", event, props);
     }
-    function getUtmSource() { return new URLSearchParams(window.location.search).get("utm_source") || "direct"; }
-    function generateRefStub() { return Math.random().toString(36).slice(2,8).toUpperCase(); }
 
-    function showSuccess(form) {
-      const onInk = form.closest(".on-ink") ? " on-ink" : "";
-      const refCode = generateRefStub();
-      const shareUrl = "https://une-app.fr/?ref=" + refCode;
-      const shareText = "j'ai gardé ma place sur une. — la pellicule numérique. garde la tienne :";
-      const wrap = document.createElement("div");
-      wrap.className = "success-state" + onInk;
-      wrap.setAttribute("role", "status");
-      wrap.innerHTML = `
-        <h3>bien reçu.</h3>
-        <p style="margin:0 0 14px;">on t'écrit dès qu'on ouvre. vérifie ta boîte — un email de confirmation arrive dans la minute.</p>
-        <button type="button" class="ul-act${onInk}" data-share><span class="w">inviter un ami · +1 place</span><span class="trail"></span></button>
-        <p class="mini" data-share-link>ton lien : <span style="text-transform:none;">${shareUrl}</span></p>
-        <p class="error-msg" data-share-feedback aria-live="polite"></p>`;
-      form.replaceWith(wrap);
-      const btn = wrap.querySelector("[data-share]");
-      const feedback = wrap.querySelector("[data-share-feedback]");
-      btn.addEventListener("click", async () => {
-        track("referral_shared", { method: navigator.share ? "native" : "clipboard" });
-        if (navigator.share) {
-          try { await navigator.share({ title: "une.", text: shareText, url: shareUrl }); }
-          catch (_) { /* partage annulé par l'utilisateur — on ne fait rien */ }
-        } else {
-          try {
-            await navigator.clipboard.writeText(shareUrl);
-            feedback.textContent = "lien copié — envoie-le à un ami.";
-          } catch (_) {
-            feedback.textContent = "copie ce lien : " + shareUrl;
-          }
-        }
-      });
-    }
-
-    function bindForm(form) {
-      const loadTime = Date.now();
-      const location = form.dataset.location;
-      const emailInput = form.querySelector('input[type="email"]');
-      const errorEl = form.querySelector(".error-msg");
-      const submitBtn = form.querySelector("button[type='submit']");
-      const honeypot = form.querySelector('input[name="company"]');
-
-      submitBtn.addEventListener("click", () => track("cta_clicked", { location }));
-      emailInput.addEventListener("blur", () => {
-        if (!emailInput.value) return;
-        const r = validateEmail(emailInput.value);
-        if (!r.ok) { errorEl.textContent = r.msg; emailInput.setAttribute("aria-invalid","true"); }
-        else { errorEl.textContent = ""; emailInput.removeAttribute("aria-invalid"); }
-      });
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        errorEl.textContent = ""; emailInput.removeAttribute("aria-invalid");
-        if (honeypot.value.trim() !== "") { showSuccess(form); return; }
-        if (Date.now() - loadTime < 2000) { showSuccess(form); return; }
-        const r = validateEmail(emailInput.value);
-        if (!r.ok) { errorEl.textContent = r.msg; emailInput.setAttribute("aria-invalid","true"); emailInput.focus(); return; }
-        submitBtn.disabled = true;
-        const lbl = submitBtn.querySelector(".w");
-        const old = lbl.textContent; lbl.textContent = "une seconde…";
-        track("form_submitted", { location });
-        try {
-          const base = (typeof window.UNE_API_BASE_URL === "string") ? window.UNE_API_BASE_URL : "";
-          const refCode = new URLSearchParams(window.location.search).get("ref");
-          const res = await fetch(base + "/api/v1/waitlist", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              email: r.value,
-              source: getUtmSource(),
-              ...(refCode ? { ref_code: refCode } : {}),
-              company: honeypot.value, // honeypot (vide chez un humain)
-              ts: loadTime,            // anti-bot timing, vérifié côté serveur
-            }),
-          });
-          if (res.status === 200) {
-            // Réponse uniforme { accepted:true } (anti-énumération) → toujours succès UI
-            track("waitlist_signup", { location, source: getUtmSource() });
-            showSuccess(form);
-          } else if (res.status === 400) {
-            submitBtn.disabled = false; lbl.textContent = old;
-            errorEl.textContent = "on dirait qu'il manque un point ou un signe @. tu peux vérifier ?";
-            emailInput.setAttribute("aria-invalid","true"); emailInput.focus();
-          } else if (res.status === 429) {
-            submitBtn.disabled = false; lbl.textContent = old;
-            errorEl.textContent = "trop de tentatives. patiente une minute et réessaie.";
-          } else {
-            throw new Error("HTTP " + res.status);
-          }
-        } catch (err) {
-          submitBtn.disabled = false; lbl.textContent = old;
-          errorEl.textContent = "quelque chose a coincé. tu peux réessayer ?";
-        }
-      });
-    }
-    document.querySelectorAll(".waitlist-form").forEach(bindForm);
+    document.querySelectorAll("[data-app-store]").forEach(function (a) {
+      if (APP_STORE_URL) { a.setAttribute("href", APP_STORE_URL); }
+      a.addEventListener("click", function () { track("app_store_click", { location: a.dataset.location || "unknown", live: !!APP_STORE_URL }); });
+    });
 
     // ════════ 6 temps : tap to expand (mobile) ════════
     document.querySelectorAll(".times li").forEach((li) => {

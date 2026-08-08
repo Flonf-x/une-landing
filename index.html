@@ -179,6 +179,12 @@
     .scroll-cue .arrow { display: inline-block; animation: bob 2.4s ease-in-out infinite; }
     @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(4px)} }
 
+    /* cover — badge App Store tout en haut du splash */
+    .cover-badge-top { display: inline-block; align-self: center; margin-top: 8px; }
+    .cover-badge-top .badge-mini { display: inline-block; height: 56px; width: auto; transition: opacity .2s ease; }
+    .cover-badge-top:hover .badge-mini, .cover-badge-top:focus-visible .badge-mini { opacity: 0.82; }
+    .cover-badge-top:focus-visible { outline: 2px solid var(--paper); outline-offset: 4px; border-radius: 4px; }
+
     /* ════════ CTA APP STORE — badge officiel Apple ════════ */
     .cta-download {
       display: inline-flex;
@@ -196,12 +202,6 @@
     .on-ink .cta-download a:focus-visible { outline-color: var(--paper); }
     .cta-download .hint { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: lowercase; color: var(--voile); line-height: 1.7; }
     .on-ink .cta-download .hint { color: var(--voile); }
-
-    /* cover — badge App Store tout en haut du splash */
-    .cover-badge-top { display: inline-block; align-self: center; margin-top: 8px; }
-    .cover-badge-top .badge-mini { display: inline-block; height: 56px; width: auto; transition: opacity .2s ease; }
-    .cover-badge-top:hover .badge-mini, .cover-badge-top:focus-visible .badge-mini { opacity: 0.82; }
-    .cover-badge-top:focus-visible { outline: 2px solid var(--paper); outline-offset: 4px; border-radius: 4px; }
 
     /* ════════ §1 HERO ════════ */
     .hero { padding-top: clamp(64px, 10vw, 130px); }
@@ -627,7 +627,7 @@
     }
 
     document.querySelectorAll("[data-app-store]").forEach(function (a) {
-      if (APP_STORE_URL) { a.setAttribute("href", APP_STORE_URL); a.setAttribute("target", "_blank"); a.setAttribute("rel", "noopener"); }
+      if (APP_STORE_URL) { a.setAttribute("href", APP_STORE_URL); }
       a.addEventListener("click", function () { track("app_store_click", { location: a.dataset.location || "unknown", live: !!APP_STORE_URL }); });
     });
 
