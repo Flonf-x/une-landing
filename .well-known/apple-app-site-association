@@ -1,0 +1,14 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appIDs": ["UFN3WGL77X.fr.une-app.ios"],
+        "components": [
+          { "/": "/o", "comment": "QR imprimé — offrir une pellicule (sans slash final)" },
+          { "/": "/o/", "comment": "QR imprimé — offrir une pellicule (avec slash final)" }
+        ]
+      }
+    ]
+  }
+}
