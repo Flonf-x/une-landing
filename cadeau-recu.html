@@ -141,39 +141,9 @@
       text-transform: lowercase;
       text-align: center;
     }
-
-    /* ════════ NAV GLOBALE (partagée entre les pages) ════════ */
-    .site-nav {
-      position: sticky; top: 0; z-index: 60;
-      display: flex; align-items: center; justify-content: center;
-      gap: clamp(20px, 5vw, 52px);
-      padding: 13px clamp(16px, 5vw, 40px);
-      background: var(--paper); color: var(--ink);
-      border-bottom: 1px solid var(--ink);
-    }
-    .site-nav a {
-      font-family: var(--mono);
-      font-size: 11px; letter-spacing: .18em; text-transform: lowercase;
-      color: var(--slate); text-decoration: none;
-      padding-bottom: 3px; border-bottom: 1px solid transparent;
-      transition: color .15s ease, border-color .15s ease;
-    }
-    .site-nav a:hover,
-    .site-nav a:focus-visible { color: var(--ink); border-bottom-color: var(--ink); outline: none; }
-    .site-nav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--ink); }
-    .site-nav .nav-logo { position: absolute; left: clamp(16px, 5vw, 40px); top: 50%; transform: translateY(-50%); display: inline-flex; padding: 0; border-bottom: 0; }
-    .site-nav .nav-logo img { height: 20px; width: auto; display: block; }
-    .site-nav .nav-logo:hover, .site-nav .nav-logo:focus-visible { border-bottom-color: transparent; }
   </style>
 </head>
 <body>
-  <!-- ════════ NAV GLOBALE ════════ -->
-  <nav class="site-nav" aria-label="navigation principale">
-    <a href="/" class="nav-logo" aria-label="une. — accueil"><img src="assets/une-logo.png" alt="une." width="59" height="20"></a>
-    <a href="/">accueil</a>
-    <a href="/cadeau#gift">cadeau</a>
-    <a href="/#manifeste">à propos</a>
-  </nav>
   <main>
     <div class="wordmark">une.</div>
     <div class="kicker">cadeau</div>
@@ -197,9 +167,9 @@
   </main>
 
   <script>
-    // TODO (publication App Store) : renseigner l'URL réelle de la fiche,
-    // ex. https://apps.apple.com/fr/app/une/id0000000000
-    var APP_STORE_URL = "";
+    // Miroir : même variable dans /index.html, /cadeau.html, /verify-email.html
+    // et /o/index.html. Mettre à jour aux cinq endroits en cas de changement.
+    var APP_STORE_URL = "https://apps.apple.com/fr/app/une/id6788447263";
 
     var params = new URLSearchParams(location.search);
     var raw = (params.get("code") || "").replace(/[^0-9A-Za-z]/g, "").toUpperCase();
@@ -229,14 +199,7 @@
     function showFallback() {
       var fb = document.getElementById("fallback");
       var link = document.getElementById("storeLink");
-      if (APP_STORE_URL) {
-        link.href = APP_STORE_URL;
-      } else {
-        // Fiche App Store pas encore en ligne (pré-lancement).
-        link.textContent = "l'app arrive bientôt sur l'app store";
-        link.style.pointerEvents = "none";
-        link.style.opacity = "0.6";
-      }
+      link.href = APP_STORE_URL;
       fb.classList.add("visible");
     }
 
