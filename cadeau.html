@@ -383,6 +383,28 @@
     .gift-summary { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; text-transform: lowercase; color: var(--slate); line-height: 2; margin-bottom: 24px; }
     .gift-summary .amount { display: block; font-family: var(--display); font-weight: 300; font-size: 44px; letter-spacing: -0.03em; line-height: 1; color: var(--ink); margin-bottom: 10px; }
     .gift-aside .ul-act { font-size: 14px; }
+    /* Affichage conditionnel selon le mode de remise sélectionné (data-mode
+       posé sur le form au change) ─ ajout 2026-09-07. */
+    .gift-form[data-mode="self"] [data-need="email"],
+    .gift-form[data-mode="postal"] [data-need="email"],
+    .gift-form[data-mode="notification"] [data-need="email"] { /* rien à masquer par défaut */ }
+    .gift-form [data-need="recipient-email"] { display: block; }
+    .gift-form[data-mode="self"] [data-need="recipient-email"],
+    .gift-form[data-mode="postal"] [data-need="recipient-email"] { display: none; }
+    .gift-form [data-need="recipient-name"] { display: block; }
+    .gift-form [data-need="postal-address"] { display: none; }
+    .gift-form[data-mode="postal"] [data-need="postal-address"] { display: block; }
+    .gift-form [data-need="send-at"] { display: block; }
+    .gift-form[data-mode="self"] [data-need="send-at"],
+    .gift-form[data-mode="postal"] [data-need="send-at"] { display: none; }
+    /* Ligne récap supplément postal (masquée hors postal). */
+    .gift-summary .postal-line { display: none; }
+    .gift-form[data-mode="postal"] ~ aside .gift-summary .postal-line,
+    .gift-aside .gift-summary[data-mode="postal"] .postal-line { display: block; }
+    /* Adresse postale : deux lignes empilées puis grille code postal / ville */
+    .gift-postal { display: grid; grid-template-columns: 1fr; gap: 20px; }
+    .gift-postal .postal-cp-city { display: grid; grid-template-columns: 140px 1fr; gap: 20px; }
+    @media (max-width: 520px) { .gift-postal .postal-cp-city { grid-template-columns: 1fr; } }
     #gift-payment-element { margin: 8px 0 24px; min-height: 40px; }
     .gift-back { margin-bottom: 28px; }
     .gift-note { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: lowercase; color: var(--voile); margin-top: 18px; line-height: 1.8; }
@@ -456,25 +478,63 @@
 
       <!-- STEP 1 — détails du cadeau -->
       <div class="gift-step active" id="gift-step-details">
-        <form class="gift-form" id="gift-form" novalidate>
+        <form class="gift-form" id="gift-form" data-kind="classic" data-mode="email" novalidate>
           <div class="gift-grid">
             <div>
+              <div class="gift-field">
+                <span class="field-label">le type de cadeau</span>
+                <div class="gift-formats gift-kinds" role="radiogroup" aria-label="type de cadeau">
+                  <div class="gift-format">
+                    <input type="radio" name="kind" id="kind-classic" value="classic" checked />
+                    <label for="kind-classic"><span class="poses">classique</span><span class="price">à sa cadence</span></label>
+                  </div>
+                  <div class="gift-format">
+                    <input type="radio" name="kind" id="kind-naissance" value="naissance" />
+                    <label for="kind-naissance"><span class="poses">naissance</span><span class="price">rythme calé sur bébé</span></label>
+                  </div>
+                </div>
+                <p class="gift-note" id="gift-kind-note">classique : une pellicule libre, le·la destinataire déclenche à son rythme.</p>
+              </div>
+
               <div class="gift-field">
                 <span class="field-label">le format</span>
                 <div class="gift-formats" role="radiogroup" aria-label="format de la pellicule">
                   <div class="gift-format">
                     <input type="radio" name="poses_max" id="poses-12" value="12" />
-                    <label for="poses-12"><span class="poses">12</span><span class="price">14,90 €</span></label>
+                    <label for="poses-12"><span class="poses">12</span><span class="price" data-price-for="12">14,90 €</span></label>
                   </div>
                   <div class="gift-format">
                     <input type="radio" name="poses_max" id="poses-24" value="24" />
-                    <label for="poses-24"><span class="poses">24</span><span class="price">21,90 €</span></label>
+                    <label for="poses-24"><span class="poses">24</span><span class="price" data-price-for="24">21,90 €</span></label>
                   </div>
                   <div class="gift-format">
                     <input type="radio" name="poses_max" id="poses-36" value="36" checked />
-                    <label for="poses-36"><span class="poses">36</span><span class="price">28,90 €</span></label>
+                    <label for="poses-36"><span class="poses">36</span><span class="price" data-price-for="36">28,90 €</span></label>
                   </div>
                 </div>
+              </div>
+
+              <div class="gift-field">
+                <span class="field-label">comment tu l'offres</span>
+                <div class="gift-formats gift-modes" role="radiogroup" aria-label="mode de remise">
+                  <div class="gift-format">
+                    <input type="radio" name="delivery_mode" id="mode-email" value="email" checked />
+                    <label for="mode-email"><span class="poses">email</span><span class="price">envoi immédiat ou programmé</span></label>
+                  </div>
+                  <div class="gift-format">
+                    <input type="radio" name="delivery_mode" id="mode-notification" value="notification" />
+                    <label for="mode-notification"><span class="poses">notification</span><span class="price">push in-app si déjà sur une.</span></label>
+                  </div>
+                  <div class="gift-format">
+                    <input type="radio" name="delivery_mode" id="mode-self" value="self" />
+                    <label for="mode-self"><span class="poses">je l'offre</span><span class="price">tu reçois le code</span></label>
+                  </div>
+                  <div class="gift-format">
+                    <input type="radio" name="delivery_mode" id="mode-postal" value="postal" />
+                    <label for="mode-postal"><span class="poses">postal</span><span class="price">carte physique, +1,90 €</span></label>
+                  </div>
+                </div>
+                <p class="gift-note" id="gift-mode-note">email : le·la destinataire reçoit un email avec le code à révéler.</p>
               </div>
 
               <div class="gift-field">
@@ -485,12 +545,26 @@
                 </div>
               </div>
 
-              <div class="gift-field">
-                <span class="field-label">le·la destinataire</span>
+              <div class="gift-field" data-need="recipient-name">
+                <span class="field-label" id="recipient-block-label">le·la destinataire</span>
                 <div class="gift-row">
-                  <input type="text" name="recipient_first_name" placeholder="son prénom" maxlength="80" required aria-label="prénom du destinataire" />
-                  <input type="email" name="recipient_email" placeholder="son email" inputmode="email" maxlength="255" required aria-label="email du destinataire" />
+                  <input type="text" name="recipient_first_name" placeholder="son prénom" maxlength="80" aria-label="prénom du destinataire" />
+                  <input type="email" name="recipient_email" placeholder="son email" inputmode="email" maxlength="255" aria-label="email du destinataire" data-need="recipient-email" />
                 </div>
+                <p class="gift-note" id="gift-recipient-note">on lui écrit à cet email — il·elle reçoit le code à révéler.</p>
+              </div>
+
+              <div class="gift-field" data-need="postal-address">
+                <span class="field-label">l'adresse d'envoi de la carte</span>
+                <div class="gift-postal">
+                  <input type="text" name="recipient_address_line1" placeholder="numéro et rue" autocomplete="address-line1" maxlength="200" aria-label="adresse ligne 1" />
+                  <input type="text" name="recipient_address_line2" placeholder="complément (bâtiment, étage…)" autocomplete="address-line2" maxlength="200" aria-label="adresse ligne 2 (optionnel)" />
+                  <div class="postal-cp-city">
+                    <input type="text" name="recipient_postal_code" placeholder="code postal" autocomplete="postal-code" maxlength="20" aria-label="code postal" />
+                    <input type="text" name="recipient_city" placeholder="ville" autocomplete="address-level2" maxlength="120" aria-label="ville" />
+                  </div>
+                </div>
+                <p class="gift-note">france métropolitaine uniquement en v1. la carte imprimée porte le code à révéler.</p>
               </div>
 
               <div class="gift-field">
@@ -498,7 +572,7 @@
                 <textarea name="message" maxlength="280" placeholder="joyeux anniversaire…" aria-label="message pour le destinataire"></textarea>
               </div>
 
-              <div class="gift-field">
+              <div class="gift-field" data-need="send-at">
                 <span class="field-label">date d'envoi de l'email (optionnel)</span>
                 <input type="datetime-local" name="send_at" aria-label="date d'envoi de l'email cadeau" />
                 <p class="gift-note">par défaut l'email part dès le paiement. sinon, entre +5 min et +30 jours.</p>
@@ -507,10 +581,12 @@
 
             <aside class="gift-aside">
               <h3>récapitulatif</h3>
-              <p class="gift-summary">
+              <p class="gift-summary" id="gift-summary" data-mode="email">
                 <span class="amount" id="gift-amount">28,90 €</span>
                 pellicule <span id="gift-poses-label">36</span> poses<br />
+                <span id="gift-kind-label">classique</span><br />
                 tirages + livraison compris
+                <span class="postal-line" id="gift-postal-line" style="display:none">+ 1,90 € carte postale</span>
               </p>
               <button type="submit" class="ul-act" id="gift-continue"><span class="w">continuer vers le paiement</span><span class="trail"></span></button>
               <p class="gift-error" id="gift-details-error" role="alert" aria-live="polite"></p>
@@ -777,7 +853,7 @@
     //   https://apps.apple.com/fr/app/une/id0000000000
     // Tant que la chaîne est vide, les liens gardent href="#" (placeholder muet).
     // ⚠️ Miroir : même variable dans /index.html et /o/index.html.
-    var APP_STORE_URL = "https://apps.apple.com/fr/app/une/id6788447263";
+    var APP_STORE_URL = "https://apps.apple.com/fr/app/une-app-photo-unique/id6788447263";
 
     function track(event, props) {
       if (typeof window.plausible === "function") window.plausible(event, { props });
@@ -785,7 +861,7 @@
     }
 
     document.querySelectorAll("[data-app-store]").forEach(function (a) {
-      if (APP_STORE_URL) { a.setAttribute("href", APP_STORE_URL); }
+      if (APP_STORE_URL) { a.setAttribute("href", APP_STORE_URL); a.setAttribute("target", "_blank"); a.setAttribute("rel", "noopener"); }
       a.addEventListener("click", function () { track("app_store_click", { location: a.dataset.location || "unknown", live: !!APP_STORE_URL }); });
     });
 
@@ -812,7 +888,39 @@
 
       // Prix miroir du backend (gifts.pricing.ts : 12→1490, 24→2190, 36→2890).
       // Source de vérité = serveur ; ces valeurs ne servent qu'à l'affichage du récap.
-      const PRICES = { "12": 1490, "24": 2190, "36": 2890 };
+      // Prix cadeau (centimes). Alignés sur `apps/backend/src/domains/order/
+      // gifts/gifts.pricing.ts` (classic = max non-Claire du catalogue,
+      // naissance = barème fixe DOM-PACING, postal = supplément de 190 c).
+      // Toute évolution ici DOIT rester en phase avec le backend, sinon le
+      // total affiché diffère du montant Stripe réellement débité.
+      const PRICES = {
+        classic:   { "12": 1490, "24": 2190, "36": 2890 },
+        naissance: { "12": 2490, "24": 3490, "36": 4490 },
+      };
+      const POSTAL_SURCHARGE_CENTS = 190;
+      const KIND_LABEL = { classic: "classique", naissance: "cadence naissance" };
+      const KIND_NOTE = {
+        classic: "classique : une pellicule libre, le·la destinataire déclenche à son rythme.",
+        naissance: "naissance : cadence calée sur la date de naissance saisie à l'activation — 12 poses = 1/mois, 24 = 1/15 j, 36 = cadence exponentielle sur 12 mois.",
+      };
+      const MODE_NOTE = {
+        email: "email : le·la destinataire reçoit un email avec le code à révéler.",
+        notification: "notification : push in-app si le·la destinataire a déjà un compte une. — bascule sur email sinon.",
+        self: "je l'offre : c'est toi qui reçois le code par email, à toi de l'offrir en main propre.",
+        postal: "postal : une. imprime la carte et la poste à l'adresse indiquée. +1,90 €.",
+      };
+      const RECIPIENT_LABEL = {
+        email: "le·la destinataire",
+        notification: "le·la destinataire",
+        self: "le·la destinataire (optionnel, pour personnaliser)",
+        postal: "le·la destinataire",
+      };
+      const RECIPIENT_NOTE = {
+        email: "on lui écrit à cet email — il·elle reçoit le code à révéler.",
+        notification: "on cherche son compte via cet email ; s'il·elle n'est pas encore sur une., on bascule sur email.",
+        self: "c'est toi qui reçois le code, aucune info destinataire n'est envoyée.",
+        postal: "la carte porte son prénom ; le code est imprimé dessus, pas d'email envoyé.",
+      };
       const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
       const fmt = (cents) =>
         (cents / 100).toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " €";
@@ -851,15 +959,59 @@
         const r = form.querySelector('input[name="poses_max"]:checked');
         return r ? r.value : "36";
       }
-      function refreshSummary() {
-        const poses = selectedPoses();
-        const txt = fmt(PRICES[poses]);
-        amountEl.textContent = txt;
-        posesLabel.textContent = poses;
+      function selectedKind() {
+        const r = form.querySelector('input[name="kind"]:checked');
+        return r ? r.value : "classic";
       }
-      form.querySelectorAll('input[name="poses_max"]').forEach((r) =>
-        r.addEventListener("change", refreshSummary),
-      );
+      function selectedMode() {
+        const r = form.querySelector('input[name="delivery_mode"]:checked');
+        return r ? r.value : "email";
+      }
+
+      // Recalcule les prix affichés dans les vignettes format (12/24/36) selon
+      // le kind actif, met à jour l'aside récap (montant + labels) et la ligne
+      // supplément postal.
+      const kindNoteEl = document.getElementById("gift-kind-note");
+      const modeNoteEl = document.getElementById("gift-mode-note");
+      const recipientNoteEl = document.getElementById("gift-recipient-note");
+      const recipientLabelEl = document.getElementById("recipient-block-label");
+      const kindLabelEl = document.getElementById("gift-kind-label");
+      const summaryEl = document.getElementById("gift-summary");
+      const postalLineEl = document.getElementById("gift-postal-line");
+
+      function refreshSummary() {
+        const kind = selectedKind();
+        const mode = selectedMode();
+        const poses = selectedPoses();
+        const base = PRICES[kind][poses];
+        const total = base + (mode === "postal" ? POSTAL_SURCHARGE_CENTS : 0);
+        amountEl.textContent = fmt(total);
+        posesLabel.textContent = poses;
+        kindLabelEl.textContent = KIND_LABEL[kind];
+        summaryEl.dataset.mode = mode;
+        postalLineEl.style.display = mode === "postal" ? "block" : "none";
+
+        // Vignettes format : afficher le prix du kind sélectionné.
+        form.querySelectorAll("[data-price-for]").forEach((el) => {
+          const k = el.dataset.priceFor;
+          el.textContent = fmt(PRICES[kind][k]);
+        });
+
+        // Notes explicatives.
+        kindNoteEl.textContent = KIND_NOTE[kind];
+        modeNoteEl.textContent = MODE_NOTE[mode];
+        recipientNoteEl.textContent = RECIPIENT_NOTE[mode];
+        recipientLabelEl.textContent = RECIPIENT_LABEL[mode];
+
+        // data-mode sur le form pilote l'affichage/masquage des champs
+        // conditionnels via les règles CSS [data-need=…].
+        form.dataset.mode = mode;
+        form.dataset.kind = kind;
+      }
+
+      form
+        .querySelectorAll('input[name="poses_max"], input[name="kind"], input[name="delivery_mode"]')
+        .forEach((r) => r.addEventListener("change", refreshSummary));
       refreshSummary();
 
       function showStep(which) {
@@ -889,31 +1041,72 @@
       }
 
       function validateDetails() {
+        const mode = selectedMode();
         const buyerEmail = val("buyer_email");
-        const recipientEmail = val("recipient_email");
         if (!val("buyer_first_name")) return "indique ton prénom.";
         if (!EMAIL_RE.test(buyerEmail)) return "ton email semble incomplet.";
-        if (!val("recipient_first_name")) return "indique le prénom du·de la destinataire.";
-        if (!EMAIL_RE.test(recipientEmail)) return "l'email du·de la destinataire semble incomplet.";
-        if (buyerEmail.toLowerCase() === recipientEmail.toLowerCase())
-          return "tu ne peux pas t'offrir un cadeau à toi-même.";
+
+        if (mode === "email" || mode === "notification") {
+          const recipientEmail = val("recipient_email");
+          if (!val("recipient_first_name")) return "indique le prénom du·de la destinataire.";
+          if (!EMAIL_RE.test(recipientEmail))
+            return "l'email du·de la destinataire semble incomplet.";
+          if (buyerEmail.toLowerCase() === recipientEmail.toLowerCase())
+            return "tu ne peux pas t'offrir un cadeau à toi-même.";
+        } else if (mode === "postal") {
+          if (!val("recipient_first_name")) return "indique le prénom du·de la destinataire.";
+          if (!val("recipient_address_line1")) return "adresse : renseigne le numéro et la rue.";
+          if (!val("recipient_postal_code")) return "adresse : renseigne le code postal.";
+          if (!val("recipient_city")) return "adresse : renseigne la ville.";
+        }
+        // mode 'self' : aucune PII destinataire requise — le code arrive
+        // dans l'email de l'acheteur.
         return null;
       }
 
       function buildPayload() {
+        const mode = selectedMode();
+        const kind = selectedKind();
         const payload = {
           buyer_first_name: val("buyer_first_name"),
           buyer_email: val("buyer_email"),
-          recipient_first_name: val("recipient_first_name"),
-          recipient_email: val("recipient_email"),
           poses_max: Number(selectedPoses()),
+          kind: kind,
+          delivery_mode: mode,
         };
+
+        // Destinataire : selon le mode, on n'envoie que les champs pertinents.
+        // Le schéma backend (createGuestGiftSchema + requireRecipientForEmailMode)
+        // rejette tout écart (email requis en 'email'/'notification', adresse
+        // requise en 'postal', rien en 'self').
+        if (mode === "email" || mode === "notification") {
+          payload.recipient_first_name = val("recipient_first_name");
+          payload.recipient_email = val("recipient_email");
+        } else if (mode === "postal") {
+          payload.recipient_first_name = val("recipient_first_name");
+          payload.recipient_address_line1 = val("recipient_address_line1");
+          const l2 = val("recipient_address_line2");
+          if (l2) payload.recipient_address_line2 = l2;
+          payload.recipient_postal_code = val("recipient_postal_code");
+          payload.recipient_city = val("recipient_city");
+          // recipient_country : défaut backend = 'FR' (Zod .default), on
+          // laisse le serveur trancher plutôt que de forcer côté client.
+        } else if (mode === "self") {
+          const rfn = val("recipient_first_name");
+          if (rfn) payload.recipient_first_name = rfn;
+        }
+
         const message = val("message");
         if (message) payload.message = message;
-        const sendAt = val("send_at"); // datetime-local (heure locale)
-        if (sendAt) {
-          const d = new Date(sendAt);
-          if (!isNaN(d.getTime())) payload.send_at = d.toISOString();
+
+        // send_at : uniquement pour 'email'/'notification'. Ignoré backend
+        // en 'self'/'postal' mais on ne l'envoie pas pour rester propre.
+        if (mode === "email" || mode === "notification") {
+          const sendAt = val("send_at"); // datetime-local (heure locale)
+          if (sendAt) {
+            const d = new Date(sendAt);
+            if (!isNaN(d.getTime())) payload.send_at = d.toISOString();
+          }
         }
         return payload;
       }
