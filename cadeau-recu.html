@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>une. — ton cadeau t'attend</title>
+  <title>une. · ton cadeau t'attend</title>
   <meta name="robots" content="noindex" />
   <!-- Page d'atterrissage du bouton « Ouvrir mon cadeau » des emails gift
        (cf. backend sendGiftReceived → /cadeau-recu.html?code=XXXX…).
@@ -148,11 +148,11 @@
     <div class="wordmark">une.</div>
     <div class="kicker">cadeau</div>
     <h1>ton cadeau<br>t'attend.</h1>
-    <p class="lede">une pellicule à activer dans l'app — tu choisiras ton rendu au moment de la charger.</p>
+    <p class="lede">une pellicule à activer dans l'app · tu choisiras ton rendu au moment de la charger.</p>
 
     <div class="code-block" id="codeBlock">
       <div class="code-label">ton code</div>
-      <div class="code" id="codeText">—</div>
+      <div class="code" id="codeText">·</div>
     </div>
 
     <button class="btn" id="openBtn">ouvrir dans l'app</button>
@@ -169,7 +169,7 @@
   <script>
     // Miroir : même variable dans /index.html, /cadeau.html, /verify-email.html
     // et /o/index.html. Mettre à jour aux cinq endroits en cas de changement.
-    var APP_STORE_URL = "https://apps.apple.com/fr/app/une/id6788447263";
+    var APP_STORE_URL = "https://apps.apple.com/fr/app/une-app-photo-unique/id6788447263";
 
     var params = new URLSearchParams(location.search);
     var raw = (params.get("code") || "").replace(/[^0-9A-Za-z]/g, "").toUpperCase();

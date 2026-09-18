@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>offrir une pellicule — une.</title>
+  <title>offrir une pellicule · une.</title>
   <meta name="description" content="offre une pellicule une. à quelqu'un : un colis de tirages physiques et un code à révéler. tu choisis le format, la personne choisit son look à la réception." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://une-app.fr/cadeau" />
 
-  <meta property="og:title" content="offrir une pellicule — une." />
+  <meta property="og:title" content="offrir une pellicule · une." />
   <meta property="og:description" content="offre une pellicule numérique : un colis de tirages, un code à révéler. tu choisis le format, la personne choisit son look." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://une-app.fr/cadeau" />
   <meta property="og:image" content="https://une-app.fr/og-image.png" />
   <meta name="twitter:card" content="summary_large_image" />
 
-  <!-- Polices de la direction artistique (Google Fonts — gratuites) -->
+  <!-- Polices de la direction artistique (Google Fonts · gratuites) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400&family=Cormorant+Garamond:ital,wght@0,400;1,300;1,400&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
@@ -36,9 +36,9 @@
   <script src="https://js.stripe.com/v3/"></script>
 
   <style>
-    /* ════════ DESIGN TOKENS — strictement alignés sur la DA ════════ */
+    /* ════════ DESIGN TOKENS · strictement alignés sur la DA ════════ */
     :root {
-      /* encre / papier — monochrome strict, aucune couleur sémantique */
+      /* encre / papier · monochrome strict, aucune couleur sémantique */
       --ink:      #161412;   /* surface noire / texte décision */
       --ink-2:    #3d3935;   /* corps secondaire */
       --slate:    #5a554f;   /* labels & méta */
@@ -49,7 +49,7 @@
       --paper-2:  #e8e2d6;   /* surfaces secondaires */
       --paper:    #f1ece4;   /* surface primaire / ivoire */
 
-      /* typo — trois familles, jamais plus */
+      /* typo · trois familles, jamais plus */
       --display:  'Fraunces','GT Sectra Display',Georgia,serif;
       --serif:    'Cormorant Garamond','Garamond',Georgia,serif;
       --mono:     'JetBrains Mono',ui-monospace,monospace;
@@ -106,7 +106,7 @@
 
     .eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: var(--track-mono); text-transform: lowercase; color: var(--slate); margin-bottom: 40px; }
 
-    /* ════════ LOGO .une — TEMPLATE OFFICIEL (repris tel quel de la DA) ════════ */
+    /* ════════ LOGO .une · TEMPLATE OFFICIEL (repris tel quel de la DA) ════════ */
     .une {
       font-family: var(--display);
       font-weight: 300;
@@ -123,7 +123,7 @@
     .une .dot {
       display: block;
       width: .16em; height: .16em;
-      background: currentColor;   /* JAMAIS de couleur — suit le texte */
+      background: currentColor;   /* JAMAIS de couleur · suit le texte */
       border-radius: 50%;
       position: absolute;
       right: 0; bottom: .18em;
@@ -131,7 +131,7 @@
     .une.xs { padding-right: .24em; }
     .une.xs .dot { width: .20em; height: .20em; bottom: .17em; }
 
-    /* ════════ ACTION SOULIGNÉE (.ul-act) — pas de bouton rectangulaire ════════ */
+    /* ════════ ACTION SOULIGNÉE (.ul-act) · pas de bouton rectangulaire ════════ */
     .ul-act {
       font-family: var(--mono);
       font-size: 12px;
@@ -189,13 +189,13 @@
     .scroll-cue .arrow { display: inline-block; animation: bob 2.4s ease-in-out infinite; }
     @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(4px)} }
 
-    /* cover — badge App Store tout en haut du splash */
+    /* cover · badge App Store tout en haut du splash */
     .cover-badge-top { display: inline-block; align-self: center; margin-top: 8px; }
     .cover-badge-top .badge-mini { display: inline-block; height: 56px; width: auto; transition: opacity .2s ease; }
     .cover-badge-top:hover .badge-mini, .cover-badge-top:focus-visible .badge-mini { opacity: 0.82; }
     .cover-badge-top:focus-visible { outline: 2px solid var(--paper); outline-offset: 4px; border-radius: 4px; }
 
-    /* ════════ CTA APP STORE — badge officiel Apple ════════ */
+    /* ════════ CTA APP STORE · badge officiel Apple ════════ */
     .cta-download {
       display: inline-flex;
       flex-direction: column;
@@ -220,11 +220,11 @@
     .hero .lede { font-family: var(--serif); font-size: clamp(19px, 2vw, 24px); line-height: 1.5; color: var(--ink-2); max-width: 38ch; margin-bottom: 48px; }
     .hero .lede em { font-style: italic; }
 
-    /* hero — badge agrandi pour lisibilité */
+    /* hero · badge agrandi pour lisibilité */
     .hero .cta-download .badge { height: 64px; }
     .hero .cta-download .hint { font-size: 12px; }
 
-    /* iPhone vertical à droite — reprend la pub AD 1.1 de la campagne (fond ivoire, type géant) */
+    /* iPhone vertical à droite · reprend la pub AD 1.1 de la campagne (fond ivoire, type géant) */
     .hero-visual { display: flex; justify-content: center; }
     .hero-phone {
       width: 100%; max-width: 340px; aspect-ratio: 9 / 19.5;
@@ -303,7 +303,7 @@
     .film h3 { margin-bottom: 8px; color: var(--ink); }
     .film p { color: var(--ink-2); font-size: 16px; }
     .film-swatch { width: 100%; aspect-ratio: 4 / 5; margin-bottom: 24px; }
-    /* nuances de gris monochromes — pas de teinte (DA : aucune couleur sémantique) */
+    /* nuances de gris monochromes · pas de teinte (DA : aucune couleur sémantique) */
     .swatch-warm { background: linear-gradient(160deg, #e8e2d6 0%, #b8b1a5 55%, #5a554f 100%); }
     .swatch-cool { background: linear-gradient(160deg, #d9d3c7 0%, #8a8278 55%, #3d3935 100%); }
     .swatch-bw   { background: linear-gradient(160deg, #f1ece4 0%, #8a8278 50%, #161412 100%); }
@@ -344,7 +344,7 @@
     .reveal { opacity: 0; transform: translateY(8px); transition: opacity .5s ease, transform .5s ease; }
     .reveal.visible { opacity: 1; transform: translateY(0); }
 
-    /* ════════ GIFT — achat-cadeau (premier visuel, au-dessus du hero) ════════ */
+    /* ════════ GIFT · achat-cadeau (premier visuel, au-dessus du hero) ════════ */
     .gift { background: var(--paper-2); border-bottom: 1px solid var(--rule); scroll-margin-top: clamp(56px, 7vw, 80px); }
     .gift .eyebrow { margin-bottom: 24px; }
     .gift h2 { max-width: 18ch; margin-bottom: 18px; }
@@ -367,7 +367,7 @@
     .gift-row { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
     @media (max-width: 520px) { .gift-row { grid-template-columns: 1fr; gap: 24px; } }
 
-    /* sélecteur de format — 12 / 24 / 36 (cartes filaires radio) */
+    /* sélecteur de format · 12 / 24 / 36 (cartes filaires radio) */
     .gift-formats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
     .gift-format { position: relative; }
     .gift-format input { position: absolute; inset: 0; opacity: 0; cursor: pointer; margin: 0; }
@@ -377,7 +377,7 @@
     .gift-format input:checked + label { border-color: var(--ink); background: var(--paper); }
     .gift-format input:focus-visible + label { outline: 2px solid var(--ink); outline-offset: 2px; }
 
-    /* colonne droite — récap & paiement (sticky) */
+    /* colonne droite · récap & paiement (sticky) */
     .gift-aside { border: 1px solid var(--rule); background: var(--paper); padding: clamp(24px, 3vw, 36px); position: sticky; top: clamp(72px, 8vw, 96px); }
     .gift-aside h3 { font-family: var(--display); font-weight: 300; margin-bottom: 18px; color: var(--ink); }
     .gift-summary { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; text-transform: lowercase; color: var(--slate); line-height: 2; margin-bottom: 24px; }
@@ -443,14 +443,14 @@
 
   <!-- ════════ NAV GLOBALE ════════ -->
   <nav class="site-nav" aria-label="navigation principale">
-    <a href="/" class="nav-logo" aria-label="une. — accueil"><img src="assets/une-logo.png" alt="une." width="59" height="20"></a>
+    <a href="/" class="nav-logo" aria-label="une. · accueil"><img src="assets/une-logo.png" alt="une." width="59" height="20"></a>
     <a href="/">accueil</a>
     <a href="/cadeau#gift" aria-current="page">offrir</a>
     <a href="/#manifeste">à propos</a>
   </nav>
 
   <!-- ════════ §0 SPLASH / COVER ════════ -->
-  <section class="cover on-ink" aria-label="offrir une. — disponible">
+  <section class="cover on-ink" aria-label="offrir une. · disponible">
     <div class="cover-head">
       <span>une<span class="dot" style="display:none"></span> · <b>offrir</b></span>
       <span>août 2026 · paris</span>
@@ -459,7 +459,7 @@
     <div class="stage">
       <span class="une cover-logo">une<span class="dot"></span></span>
       <p class="lede">offre une pellicule. un colis de tirages. un code à révéler.</p>
-      <p class="descriptor">tu choisis le format, la personne choisit son look à la réception.<br>elle prend, elle attend, elle reçoit — chez elle par courrier.</p>
+      <p class="descriptor">tu choisis le format, la personne choisit son look à la réception.<br>elle prend, elle attend, elle reçoit · chez elle par courrier.</p>
       <a href="#gift" class="ul-act on-ink" aria-label="aller au formulaire pour offrir une pellicule"><span class="w">offrir une pellicule</span><span class="trail"></span></a>
     </div>
 
@@ -474,9 +474,9 @@
     <div class="wrap">
       <p class="eyebrow">offrir</p>
       <h2 id="gift-title">offre une pellicule <span class="il">à quelqu'un.</span></h2>
-      <p class="intro">une pellicule numérique, un colis de tirages physiques, un code à révéler. tu choisis le format — la personne choisit son look à la réception.</p>
+      <p class="intro">une pellicule numérique, un colis de tirages physiques, un code à révéler. tu choisis le format · la personne choisit son look à la réception.</p>
 
-      <!-- STEP 1 — détails du cadeau -->
+      <!-- STEP 1 · détails du cadeau -->
       <div class="gift-step active" id="gift-step-details">
         <form class="gift-form" id="gift-form" data-kind="classic" data-mode="email" novalidate>
           <div class="gift-grid">
@@ -531,7 +531,7 @@
                   </div>
                   <div class="gift-format">
                     <input type="radio" name="delivery_mode" id="mode-postal" value="postal" />
-                    <label for="mode-postal"><span class="poses">postal</span><span class="price">carte physique, +1,90 €</span></label>
+                    <label for="mode-postal"><span class="poses">postal</span><span class="price">carte physique, +2,90 €</span></label>
                   </div>
                 </div>
                 <p class="gift-note" id="gift-mode-note">email : le·la destinataire reçoit un email avec le code à révéler.</p>
@@ -551,7 +551,7 @@
                   <input type="text" name="recipient_first_name" placeholder="son prénom" maxlength="80" aria-label="prénom du destinataire" />
                   <input type="email" name="recipient_email" placeholder="son email" inputmode="email" maxlength="255" aria-label="email du destinataire" data-need="recipient-email" />
                 </div>
-                <p class="gift-note" id="gift-recipient-note">on lui écrit à cet email — il·elle reçoit le code à révéler.</p>
+                <p class="gift-note" id="gift-recipient-note">on lui écrit à cet email · il·elle reçoit le code à révéler.</p>
               </div>
 
               <div class="gift-field" data-need="postal-address">
@@ -586,7 +586,7 @@
                 pellicule <span id="gift-poses-label">36</span> poses<br />
                 <span id="gift-kind-label">classique</span><br />
                 tirages + livraison compris
-                <span class="postal-line" id="gift-postal-line" style="display:none">+ 1,90 € carte postale</span>
+                <span class="postal-line" id="gift-postal-line" style="display:none">+ 2,90 € carte postale</span>
               </p>
               <button type="submit" class="ul-act" id="gift-continue"><span class="w">continuer vers le paiement</span><span class="trail"></span></button>
               <p class="gift-error" id="gift-details-error" role="alert" aria-live="polite"></p>
@@ -596,7 +596,7 @@
         </form>
       </div>
 
-      <!-- STEP 2 — paiement -->
+      <!-- STEP 2 · paiement -->
       <div class="gift-step" id="gift-step-payment">
         <div class="gift-grid">
           <div>
@@ -607,7 +607,7 @@
             <h3>paiement</h3>
             <p class="gift-summary">
               <span class="amount" id="gift-amount-2">28,90 €</span>
-              pour <span id="gift-recipient-label">—</span>
+              pour <span id="gift-recipient-label">·</span>
             </p>
             <button type="button" class="ul-act" id="gift-pay"><span class="w">payer</span><span class="trail"></span></button>
             <p class="gift-error" id="gift-payment-error" role="alert" aria-live="polite"></p>
@@ -616,7 +616,7 @@
         </div>
       </div>
 
-      <!-- STEP 3 — succès -->
+      <!-- STEP 3 · succès -->
       <div class="gift-step" id="gift-step-success">
         <div class="gift-success" role="status">
           <h3>c'est offert.</h3>
@@ -635,12 +635,12 @@
           <span class="une" style="font-size:1em">une<span class="dot"></span></span>
           est une pellicule numérique. tu fais tes photos sans jamais les voir,
           et les tirages arrivent chez toi quelques jours plus tard.
-          le numérique vient après — dans le colis, il y a un code.
+          le numérique vient après · dans le colis, il y a un code.
         </p>
 
         <div class="cta-download">
           <a href="#" data-app-store data-location="hero" aria-label="télécharger une. sur l'App Store"><img class="badge" src="assets/badges/app-store-black.svg" alt="Télécharger dans l'App Store" width="180" height="60" /></a>
-          <p class="hint">iPhone® · à partir de 12,90 € tout compris (tirages et livraison)</p>
+          <p class="hint">iPhone® · à partir de 14,90 € tout compris (tirages et livraison)</p>
         </div>
       </div>
 
@@ -669,7 +669,7 @@
           <span class="num">01</span>
           <span class="word"><span class="il">une</span>pellicule.</span>
           <span class="label">l'engagement</span>
-          <p class="desc">tu choisis ton format — 12, 24 ou 36 poses — et ton look : chaude, froide ou noir et blanc. à partir d'ici, plus de retour en arrière.</p>
+          <p class="desc">tu choisis ton format · 12, 24 ou 36 poses · et ton look : chaude, froide ou noir et blanc. à partir d'ici, plus de retour en arrière.</p>
         </li>
         <li tabindex="0">
           <span class="num">02</span>
@@ -693,7 +693,7 @@
           <span class="num">05</span>
           <span class="word"><span class="il">une</span>révélation.</span>
           <span class="label">la découverte</span>
-          <p class="desc">tu ouvres. tu regardes tes tirages. tu rentres le code dans l'app — la galerie numérique se débloque.</p>
+          <p class="desc">tu ouvres. tu regardes tes tirages. tu rentres le code dans l'app · la galerie numérique se débloque.</p>
         </li>
         <li tabindex="0">
           <span class="num">06</span>
@@ -738,7 +738,7 @@
       <div class="grid">
         <div class="item">
           <h3>tu ne triches pas.</h3>
-          <p>impossible de voir les photos avant le développement. impossible de les supprimer. c'est l'app qui tient la règle — pas un argument marketing.</p>
+          <p>impossible de voir les photos avant le développement. impossible de les supprimer. c'est l'app qui tient la règle · pas un argument marketing.</p>
         </div>
         <div class="item">
           <h3>le tirage avant le numérique.</h3>
@@ -750,7 +750,7 @@
         </div>
         <div class="item">
           <h3>un look, pas un filtre.</h3>
-          <p>le rendu est calibré au moment de la prise. trois pellicules, trois ambiances — chaude, froide, noir et blanc. tu n'ajustes rien après.</p>
+          <p>le rendu est calibré au moment de la prise. trois pellicules, trois ambiances · chaude, froide, noir et blanc. tu n'ajustes rien après.</p>
         </div>
       </div>
     </div>
@@ -763,17 +763,17 @@
       <h2 id="films-title">trois pellicules <span class="il">pour commencer.</span></h2>
       <div class="grid">
         <article class="film">
-          <img class="film-swatch film-photo" src="assets/films/chaude.jpg" alt="pellicule couleur chaude — une chaise sur une terrasse baignée par la lumière dorée de fin de journée" width="1100" height="827" loading="lazy" decoding="async" />
+          <img class="film-swatch film-photo" src="assets/films/chaude.jpg" alt="pellicule couleur chaude · une chaise sur une terrasse baignée par la lumière dorée de fin de journée" width="1100" height="827" loading="lazy" decoding="async" />
           <h3>couleur chaude</h3>
           <p>pour l'été, les amis, la lumière de fin de journée.</p>
         </article>
         <article class="film">
-          <img class="film-swatch film-photo" src="assets/films/froide.jpg" alt="pellicule couleur froide — une scène urbaine au crépuscule, un skateur passant devant un kiosque éclairé sur les quais" width="1100" height="835" loading="lazy" decoding="async" />
+          <img class="film-swatch film-photo" src="assets/films/froide.jpg" alt="pellicule couleur froide · une scène urbaine au crépuscule, un skateur passant devant un kiosque éclairé sur les quais" width="1100" height="835" loading="lazy" decoding="async" />
           <h3>couleur froide</h3>
           <p>pour les villes, les soirs, les températures basses.</p>
         </article>
         <article class="film">
-          <img class="film-swatch film-photo" src="assets/films/nb.jpg" alt="pellicule noir et blanc — un fauteuil et un mur traversés par des ombres découpées" width="1100" height="841" loading="lazy" decoding="async" />
+          <img class="film-swatch film-photo" src="assets/films/nb.jpg" alt="pellicule noir et blanc · un fauteuil et un mur traversés par des ombres découpées" width="1100" height="841" loading="lazy" decoding="async" />
           <h3>noir et blanc</h3>
           <p>pour ce qui ne demande pas la couleur.</p>
         </article>
@@ -789,7 +789,7 @@
 
       <details>
         <summary>combien coûte un cadeau ?</summary>
-        <p class="answer">14,90 € (12 poses), 21,90 € (24 poses) ou 28,90 € (36 poses) — tout compris : pellicule, développement, tirages papier et livraison en France. pas d'abonnement, pas d'option cachée. le·la destinataire n'a rien à payer.</p>
+        <p class="answer">14,90 € (12 poses), 21,90 € (24 poses) ou 28,90 € (36 poses) · tout compris : pellicule, développement, tirages papier et livraison en France. pas d'abonnement, pas d'option cachée. le·la destinataire n'a rien à payer.</p>
       </details>
       <details>
         <summary>c'est disponible où ?</summary>
@@ -801,7 +801,7 @@
       </details>
       <details>
         <summary>et si la photo est ratée ?</summary>
-        <p class="answer">c'est pour ça que c'est de la photo. une pellicule, c'est un risque assumé — c'est ce qui rend le moment réel. on ne rembourse pas un cadrage manqué, mais on s'occupe de tout ce qui dépend de nous.</p>
+        <p class="answer">c'est pour ça que c'est de la photo. une pellicule, c'est un risque assumé · c'est ce qui rend le moment réel. on ne rembourse pas un cadrage manqué, mais on s'occupe de tout ce qui dépend de nous.</p>
       </details>
       <details>
         <summary>comment je reçois les tirages ?</summary>
@@ -848,7 +848,7 @@
   </footer>
 
   <script>
-    // ════════ CTA App Store — bascule 1-edit (miroir de index.html) ════════
+    // ════════ CTA App Store · bascule 1-edit (miroir de index.html) ════════
     // Renseigner l'URL réelle de la fiche dès qu'elle est publiée, ex :
     //   https://apps.apple.com/fr/app/une/id0000000000
     // Tant que la chaîne est vide, les liens gardent href="#" (placeholder muet).
@@ -890,24 +890,24 @@
       // Source de vérité = serveur ; ces valeurs ne servent qu'à l'affichage du récap.
       // Prix cadeau (centimes). Alignés sur `apps/backend/src/domains/order/
       // gifts/gifts.pricing.ts` (classic = max non-Claire du catalogue,
-      // naissance = barème fixe DOM-PACING, postal = supplément de 190 c).
+      // naissance = barème fixe DOM-PACING, postal = supplément de 290 c).
       // Toute évolution ici DOIT rester en phase avec le backend, sinon le
       // total affiché diffère du montant Stripe réellement débité.
       const PRICES = {
         classic:   { "12": 1490, "24": 2190, "36": 2890 },
         naissance: { "12": 2490, "24": 3490, "36": 4490 },
       };
-      const POSTAL_SURCHARGE_CENTS = 190;
+      const POSTAL_SURCHARGE_CENTS = 290;
       const KIND_LABEL = { classic: "classique", naissance: "cadence naissance" };
       const KIND_NOTE = {
         classic: "classique : une pellicule libre, le·la destinataire déclenche à son rythme.",
-        naissance: "naissance : cadence calée sur la date de naissance saisie à l'activation — 12 poses = 1/mois, 24 = 1/15 j, 36 = cadence exponentielle sur 12 mois.",
+        naissance: "naissance : cadence calée sur la date de naissance saisie à l'activation · 12 poses = 1/mois, 24 = 1/15 j, 36 = cadence exponentielle sur 12 mois.",
       };
       const MODE_NOTE = {
         email: "email : le·la destinataire reçoit un email avec le code à révéler.",
-        notification: "notification : push in-app si le·la destinataire a déjà un compte une. — bascule sur email sinon.",
+        notification: "notification : push in-app si le·la destinataire a déjà un compte une. · bascule sur email sinon.",
         self: "je l'offre : c'est toi qui reçois le code par email, à toi de l'offrir en main propre.",
-        postal: "postal : une. imprime la carte et la poste à l'adresse indiquée. +1,90 €.",
+        postal: "postal : une. imprime la carte et la poste à l'adresse indiquée. +2,90 €.",
       };
       const RECIPIENT_LABEL = {
         email: "le·la destinataire",
@@ -916,7 +916,7 @@
         postal: "le·la destinataire",
       };
       const RECIPIENT_NOTE = {
-        email: "on lui écrit à cet email — il·elle reçoit le code à révéler.",
+        email: "on lui écrit à cet email · il·elle reçoit le code à révéler.",
         notification: "on cherche son compte via cet email ; s'il·elle n'est pas encore sur une., on bascule sur email.",
         self: "c'est toi qui reçois le code, aucune info destinataire n'est envoyée.",
         postal: "la carte porte son prénom ; le code est imprimé dessus, pas d'email envoyé.",
@@ -1059,7 +1059,7 @@
           if (!val("recipient_postal_code")) return "adresse : renseigne le code postal.";
           if (!val("recipient_city")) return "adresse : renseigne la ville.";
         }
-        // mode 'self' : aucune PII destinataire requise — le code arrive
+        // mode 'self' : aucune PII destinataire requise · le code arrive
         // dans l'email de l'acheteur.
         return null;
       }
@@ -1179,7 +1179,7 @@
       });
 
       // Purge immédiate côté backend (annule le PI Stripe + hard-delete le
-      // gift) — symétrie du fix iOS `ba7f8a8`. Best-effort : les erreurs
+      // gift) · symétrie du fix iOS `ba7f8a8`. Best-effort : les erreurs
       // sont avalées, le cron `gifts:abandoned_payment_cleanup` rattrape à
       // T+24h si l'appel a échoué (réseau, backend en maintenance).
       async function purgeCurrentGift() {

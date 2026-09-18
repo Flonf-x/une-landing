@@ -3,55 +3,647 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>une. bientôt de retour</title>
-  <meta name="description" content="une. fait une courte pause. la page rouvrira bientôt." />
-  <meta name="robots" content="noindex, nofollow" />
+  <title>une. · une application photographique. des tirages livrés.</title>
+  <meta name="description" content="tu ne la prendras qu'une fois. une. est une pellicule numérique pour iPhone®. les tirages physiques arrivent chez toi par courrier. disponible sur l'App Store." />
+  <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://une-app.fr/" />
-  <meta property="og:title" content="une. bientôt de retour" />
-  <meta property="og:description" content="une. fait une courte pause. la page rouvrira bientôt." />
+
+  <meta property="og:title" content="une. · une application photographique. des tirages livrés." />
+  <meta property="og:description" content="une seule prise. une seule respiration. une seule photo. disponible sur l'App Store." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://une-app.fr/" />
   <meta property="og:image" content="https://une-app.fr/og-image.png" />
   <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Polices de la direction artistique (Google Fonts · gratuites) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400&family=Cormorant+Garamond:ital,wght@0,400;1,300;1,400&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+
+  <!-- Plausible analytics (privacy-first, sans cookies) -->
+  <script defer data-domain="une-app.fr" src="https://plausible.io/js/script.outbound-links.tagged-events.js"></script>
+  <script>window.plausible = window.plausible || function(){(window.plausible.q=window.plausible.q||[]).push(arguments)};</script>
+
   <style>
+    /* ════════ DESIGN TOKENS · strictement alignés sur la DA ════════ */
     :root {
-      --ink:#161412; --ink-2:#3d3935; --slate:#5a554f; --voile:#8a8278;
-      --rule:#c9c2b5; --paper-2:#e8e2d6; --paper:#f1ece4;
-      --display:'Fraunces','GT Sectra Display',Georgia,serif;
-      --serif:'Cormorant Garamond','Garamond',Georgia,serif;
-      --mono:'JetBrains Mono',ui-monospace,monospace;
-      --pad-x:clamp(20px,5vw,64px); --track-mono:0.18em;
+      /* encre / papier · monochrome strict, aucune couleur sémantique */
+      --ink:      #161412;   /* surface noire / texte décision */
+      --ink-2:    #3d3935;   /* corps secondaire */
+      --slate:    #5a554f;   /* labels & méta */
+      --voile:    #8a8278;   /* aide / désactivé */
+      --rule-2:   #b8b1a5;   /* filets secondaires */
+      --rule:     #c9c2b5;   /* filets / séparateurs */
+      --paper-3:  #d9d3c7;   /* papier intermédiaire */
+      --paper-2:  #e8e2d6;   /* surfaces secondaires */
+      --paper:    #f1ece4;   /* surface primaire / ivoire */
+
+      /* typo · trois familles, jamais plus */
+      --display:  'Fraunces','GT Sectra Display',Georgia,serif;
+      --serif:    'Cormorant Garamond','Garamond',Georgia,serif;
+      --mono:     'JetBrains Mono',ui-monospace,monospace;
+
+      --max-w:    1180px;
+      --pad-x:    clamp(20px, 5vw, 64px);
+      --pad-y:    clamp(80px, 12vw, 150px);
+      --track-mono: 0.18em;
     }
-    *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
-    html { -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; }
+
+    /* ════════ RESET & BASE ════════ */
+    *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
     body {
-      min-height:100svh; background:var(--paper); color:var(--ink);
-      font-family:var(--serif); font-size:18px; line-height:1.6;
-      display:flex; flex-direction:column; align-items:center; justify-content:center;
-      text-align:center; padding:clamp(48px,10vw,96px) var(--pad-x); gap:clamp(28px,5vw,44px);
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 1.6;
     }
-    ::selection { background:var(--ink); color:var(--paper); }
-    @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none!important; transition:none!important; } }
-    .mark { font-family:var(--display); font-weight:300; letter-spacing:-0.05em; font-size:clamp(52px,12vw,104px); line-height:1; }
-    .mark .dot { color:var(--voile); }
-    .label {
-      font-family:var(--mono); font-size:11px; letter-spacing:var(--track-mono);
-      text-transform:lowercase; color:var(--slate);
-      display:inline-flex; align-items:center; gap:0.7em;
+    ::selection { background: var(--ink); color: var(--paper); }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *,*::before,*::after { animation: none !important; transition: none !important; }
     }
-    .label::before,.label::after { content:""; width:clamp(24px,8vw,56px); height:1px; background:var(--rule); }
-    .lede { font-family:var(--display); font-weight:300; letter-spacing:-0.035em; line-height:1.08; font-size:clamp(28px,5.2vw,52px); max-width:16ch; }
-    .lede .italic { font-family:var(--serif); font-style:italic; font-weight:300; }
-    .note { font-family:var(--serif); font-size:clamp(17px,2.4vw,21px); color:var(--ink-2); max-width:34ch; }
+    img { max-width: 100%; height: auto; display: block; }
+    a { color: inherit; text-decoration: none; }
+    a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
+      outline: 2px solid var(--ink);
+      outline-offset: 3px;
+    }
+
+    /* ════════ ATOMES TYPO ════════ */
+    .display { font-family: var(--display); font-weight: 300; letter-spacing: -0.045em; }
+    .italic  { font-family: var(--serif); font-style: italic; font-weight: 300; }
+    .mono {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: var(--track-mono);
+      text-transform: lowercase;
+      color: var(--slate);
+      font-weight: 400;
+    }
+    .mono-sm { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: lowercase; color: var(--slate); }
+
+    h1,h2,h3 { font-family: var(--display); font-weight: 300; letter-spacing: -0.04em; line-height: 1; }
+    h1 { font-size: clamp(46px, 9vw, 120px); }
+    h2 { font-size: clamp(32px, 5vw, 60px); letter-spacing: -0.035em; }
+    h3 { font-size: clamp(20px, 2.4vw, 28px); letter-spacing: -0.02em; }
+
+    .wrap { max-width: var(--max-w); margin: 0 auto; padding-left: var(--pad-x); padding-right: var(--pad-x); }
+    section { padding-top: var(--pad-y); padding-bottom: var(--pad-y); }
+
+    .eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: var(--track-mono); text-transform: lowercase; color: var(--slate); margin-bottom: 40px; }
+
+    /* ════════ LOGO .une · TEMPLATE OFFICIEL (repris tel quel de la DA) ════════ */
+    .une {
+      font-family: var(--display);
+      font-weight: 300;
+      font-style: normal;
+      letter-spacing: -0.045em;
+      text-transform: lowercase;
+      color: inherit;
+      line-height: 1;
+      display: inline-block;
+      position: relative;
+      padding-right: .20em;       /* diam 0.16 + gap 0.04 */
+      font-feature-settings: "liga" 1, "kern" 1;
+    }
+    .une .dot {
+      display: block;
+      width: .16em; height: .16em;
+      background: currentColor;   /* JAMAIS de couleur · suit le texte */
+      border-radius: 50%;
+      position: absolute;
+      right: 0; bottom: .18em;
+    }
+    .une.xs { padding-right: .24em; }
+    .une.xs .dot { width: .20em; height: .20em; bottom: .17em; }
+
+    /* ════════ ACTION SOULIGNÉE (.ul-act) · pas de bouton rectangulaire ════════ */
+    .ul-act {
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: var(--track-mono);
+      text-transform: lowercase;
+      color: var(--ink);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: .6em;
+      cursor: pointer;
+      background: none; border: none; padding: 0;
+      line-height: 1;
+    }
+    .ul-act .w { padding-bottom: 4px; border-bottom: 1px solid var(--ink); }
+    .ul-act .trail { display: inline-block; width: 1.4em; height: 1px; background: var(--ink); transition: width .35s ease; }
+    .ul-act:hover .trail, .ul-act:focus-visible .trail { width: 3.2em; }
+    .ul-act[disabled] { color: var(--voile); cursor: progress; }
+    .ul-act[disabled] .w { border-bottom-color: var(--voile); }
+    .ul-act[disabled] .trail { background: var(--voile); }
+    .on-ink .ul-act, .ul-act.on-ink { color: var(--paper); }
+    .on-ink .ul-act .w, .ul-act.on-ink .w { border-bottom-color: var(--paper); }
+    .on-ink .ul-act .trail, .ul-act.on-ink .trail { background: var(--paper); }
+
+    /* ════════ §0 SPLASH / COVER (plein écran encre) ════════ */
+    .cover {
+      background: var(--ink);
+      color: var(--paper);
+      min-height: 100svh;
+      padding: clamp(28px, 5vw, 56px) var(--pad-x);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .cover .cover-head, .cover .cover-foot {
+      display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap;
+      font-family: var(--mono); font-size: 10px; letter-spacing: var(--track-mono);
+      text-transform: lowercase; color: var(--voile);
+    }
+    .cover .cover-head b, .cover .cover-foot b { color: var(--paper); font-weight: 400; }
+    .cover .stage {
+      flex: 1;
+      display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+      padding-top: 0;
+      gap: clamp(20px, 3vw, 36px);
+      text-align: center;
+    }
+    .cover-logo { font-size: clamp(140px, 32vw, 420px); color: var(--paper); line-height: .8; }
+    .cover .lede {
+      font-family: var(--serif); font-style: italic; font-weight: 300;
+      font-size: clamp(20px, 2.6vw, 30px); line-height: 1.4; color: var(--paper-3);
+      max-width: 30ch;
+    }
+    .cover .descriptor { font-family: var(--mono); font-size: 12px; letter-spacing: var(--track-mono); text-transform: lowercase; color: var(--voile); max-width: 40ch; margin: 0 auto; line-height: 1.8; }
+    .scroll-cue { font-family: var(--mono); font-size: 10px; letter-spacing: var(--track-mono); text-transform: lowercase; color: var(--voile); }
+    .scroll-cue .arrow { display: inline-block; animation: bob 2.4s ease-in-out infinite; }
+    @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(4px)} }
+
+    /* cover · badge App Store tout en haut du splash */
+    .cover-badge-top { display: inline-block; align-self: center; margin-top: 8px; }
+    .cover-badge-top .badge-mini { display: inline-block; height: 56px; width: auto; transition: opacity .2s ease; }
+    .cover-badge-top:hover .badge-mini, .cover-badge-top:focus-visible .badge-mini { opacity: 0.82; }
+    .cover-badge-top:focus-visible { outline: 2px solid var(--paper); outline-offset: 4px; border-radius: 4px; }
+
+    /* ════════ CTA APP STORE · badge officiel Apple ════════ */
+    .cta-download {
+      display: inline-flex;
+      flex-direction: column;
+      gap: 14px;
+      max-width: 520px;
+    }
+    .cta-download .badge {
+      display: inline-block;
+      height: 56px; width: auto;
+      transition: opacity .2s ease;
+    }
+    .cta-download .badge:hover, .cta-download .badge:focus-visible { opacity: 0.82; }
+    .cta-download a:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; border-radius: 4px; }
+    .on-ink .cta-download a:focus-visible { outline-color: var(--paper); }
+    .cta-download .hint { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: lowercase; color: var(--voile); line-height: 1.7; }
+    .on-ink .cta-download .hint { color: var(--voile); }
+
+    /* ════════ §1 HERO ════════ */
+    .hero { padding-top: clamp(64px, 10vw, 130px); }
+    .hero .hero-grid { display: grid; grid-template-columns: 1fr minmax(280px, 380px); gap: clamp(40px, 6vw, 88px); align-items: center; }
+    .hero-col { min-width: 0; }
+    .hero .lede { font-family: var(--serif); font-size: clamp(19px, 2vw, 24px); line-height: 1.5; color: var(--ink-2); max-width: 38ch; margin-bottom: 48px; }
+    .hero .lede em { font-style: italic; }
+
+    /* hero · badge agrandi pour lisibilité */
+    .hero .cta-download .badge { height: 64px; }
+    .hero .cta-download .hint { font-size: 12px; }
+
+    /* iPhone vertical à droite · reprend la pub AD 1.1 de la campagne (fond ivoire, type géant) */
+    .hero-visual { display: flex; justify-content: center; }
+    .hero-phone {
+      width: 100%; max-width: 340px; aspect-ratio: 9 / 19.5;
+      border-radius: 44px; background: var(--paper); border: 1px solid var(--rule-2);
+      box-shadow: 0 30px 60px -20px rgba(22,20,18,0.28), 0 1px 0 rgba(255,255,255,0.5) inset;
+      padding: 56px 28px 34px; position: relative; overflow: hidden;
+      display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .hero-phone .phone-notch { position: absolute; top: 14px; left: 50%; transform: translateX(-50%); width: 86px; height: 24px; background: var(--ink); border-radius: 14px; }
+    .hero-phone .phone-top { font-family: var(--mono); font-size: 10px; letter-spacing: var(--track-mono); text-transform: lowercase; color: var(--slate); text-align: center; padding-top: 16px; }
+    .hero-phone h1 { max-width: none; margin: 0; font-size: clamp(38px, 6.4vw, 58px); line-height: 0.94; color: var(--ink); }
+    .hero-phone .phone-foot { display: flex; justify-content: space-between; align-items: flex-end; }
+    .hero-phone .phone-brand { font-family: var(--display); font-weight: 300; font-size: 30px; letter-spacing: -0.045em; line-height: 1; }
+    .hero-phone .phone-cta { font-family: var(--mono); font-size: 10px; letter-spacing: var(--track-mono); text-transform: lowercase; color: var(--ink); border-bottom: 1px solid var(--ink); padding-bottom: 3px; }
+    @media (max-width: 760px) {
+      .hero .hero-grid { grid-template-columns: 1fr; gap: clamp(36px, 8vw, 56px); }
+      .hero-visual { order: -1; }
+      .hero-phone { max-width: 300px; }
+    }
+
+    /* ════════ §2 6 TEMPS ════════ */
+    .six-times h2 { max-width: 16ch; margin-bottom: 56px; }
+    .times { list-style: none; border-top: 1px solid var(--ink); }
+    .times li {
+      display: grid; grid-template-columns: 56px 1fr auto; align-items: baseline; gap: 32px;
+      padding: clamp(26px,3.6vw,48px) 0; border-bottom: 1px solid var(--rule);
+    }
+    .times .num { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: var(--slate); }
+    .times .word { font-family: var(--display); font-weight: 300; font-size: clamp(28px,4.4vw,52px); letter-spacing: -0.04em; line-height: 1; color: var(--ink); }
+    .times .word .il { font-family: var(--serif); font-style: italic; font-weight: 400; color: var(--slate); margin-right: .18em; font-size: .8em; }
+    .times .label { font-family: var(--mono); font-size: 10px; letter-spacing: var(--track-mono); text-transform: lowercase; color: var(--slate); text-align: right; }
+    .times .desc { grid-column: 2 / 3; margin: 0; color: var(--ink-2); font-size: 17px; max-width: 44ch; opacity: 0; max-height: 0; overflow: hidden; transition: opacity .25s ease, max-height .25s ease, margin .25s ease; }
+    .times li:hover .desc, .times li:focus-within .desc, .times li.is-open .desc { opacity: 1; max-height: 120px; margin-top: 16px; }
+    @media (max-width: 720px) {
+      .times li { grid-template-columns: 1fr auto; gap: 10px; }
+      .times .num { grid-column: 1 / -1; }
+      .times .label { align-self: center; }
+      .times .desc { grid-column: 1 / -1; opacity: 1; max-height: 200px; margin-top: 12px; }
+    }
+
+    /* ════════ §3 LE COLIS ════════ */
+    .colis { text-align: center; }
+    .colis h2 { max-width: 14ch; margin: 0 auto 56px; }
+    .colis h2 .il { font-family: var(--serif); font-style: italic; font-weight: 400; }
+    .colis-visual {
+      display: block; width: 100%; max-width: 760px; margin: 0 auto;
+      aspect-ratio: 1 / 1; object-fit: cover;
+      border: 1px solid var(--rule);
+    }
+
+    /* ════════ §4 MANIFESTE (plein écran encre) ════════ */
+    .manifeste { background: var(--ink); color: var(--paper); padding: clamp(100px,16vw,180px) 0; }
+    .manifeste .eyebrow { color: var(--voile); }
+    .manifeste-body { max-width: 30ch; margin-right: auto; font-family: var(--serif); font-size: clamp(20px,2vw,26px); line-height: 1.5; color: var(--paper); }
+    .manifeste-body p { margin-bottom: 1.5em; }
+    .manifeste-body p:last-child { margin-bottom: 0; }
+    .manifeste-body .opener { font-family: var(--display); font-weight: 300; font-size: clamp(56px,8vw,96px); line-height: 1; letter-spacing: -0.045em; margin-bottom: .9em; }
+    .manifeste-body em { font-family: var(--serif); font-style: italic; font-weight: 400; }
+    .manifeste-body .claim { font-family: var(--display); font-weight: 300; font-size: clamp(26px,3.2vw,38px); letter-spacing: -0.03em; line-height: 1.25; margin: 1.6em 0; max-width: 18ch; }
+
+    /* ════════ §5 CE QUI CHANGE ════════ */
+    .diff h2 { max-width: 20ch; margin-bottom: 56px; }
+    .diff h2 .il { font-family: var(--serif); font-style: italic; font-weight: 400; }
+    .diff .grid { display: grid; grid-template-columns: repeat(2,1fr); border-top: 1px solid var(--rule); border-left: 1px solid var(--rule); }
+    .diff .item { padding: clamp(26px,3.6vw,44px); border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+    .diff .item h3 { margin-bottom: 12px; color: var(--ink); }
+    .diff .item p { color: var(--ink-2); font-size: 17px; max-width: 34ch; }
+    @media (max-width: 700px) { .diff .grid { grid-template-columns: 1fr; } }
+
+    /* ════════ §6 PELLICULES ════════ */
+    .films { background: var(--paper-2); }
+    .films h2 { margin-bottom: 56px; }
+    .films h2 .il { font-family: var(--serif); font-style: italic; font-weight: 400; }
+    .films .grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+    .film { background: var(--paper); padding: 32px 28px; }
+    .film h3 { margin-bottom: 8px; color: var(--ink); }
+    .film p { color: var(--ink-2); font-size: 16px; }
+    .film-swatch { width: 100%; aspect-ratio: 4 / 5; margin-bottom: 24px; }
+    /* nuances de gris monochromes · pas de teinte (DA : aucune couleur sémantique) */
+    .swatch-warm { background: linear-gradient(160deg, #e8e2d6 0%, #b8b1a5 55%, #5a554f 100%); }
+    .swatch-cool { background: linear-gradient(160deg, #d9d3c7 0%, #8a8278 55%, #3d3935 100%); }
+    .swatch-bw   { background: linear-gradient(160deg, #f1ece4 0%, #8a8278 50%, #161412 100%); }
+    .film-photo { object-fit: cover; object-position: center; background: var(--paper-2); display: block; }
+    .films .footnote { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: lowercase; color: var(--voile); text-align: center; margin-top: 40px; }
+    @media (max-width: 800px) { .films .grid { grid-template-columns: 1fr; } }
+
+    /* ════════ §8 FAQ ════════ */
+    .faq h2 { margin-bottom: 48px; }
+    .faq h2 .il { font-family: var(--serif); font-style: italic; font-weight: 400; }
+    .faq details { border-top: 1px solid var(--rule); padding: 26px 0; }
+    .faq details:last-of-type { border-bottom: 1px solid var(--rule); }
+    .faq summary { cursor: pointer; font-family: var(--display); font-weight: 300; font-size: clamp(20px,2.4vw,28px); letter-spacing: -0.02em; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 24px; }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq summary::after { content: "+"; font-family: var(--display); font-weight: 300; color: var(--slate); }
+    .faq details[open] summary::after { content: "–"; }
+    .faq .answer { margin-top: 18px; color: var(--ink-2); font-size: 17px; max-width: 46ch; }
+
+    /* ════════ §9 CTA FINAL (plein écran encre) ════════ */
+    .final { background: var(--ink); color: var(--paper); }
+    .final .final-logo { font-size: clamp(80px,12vw,150px); color: var(--paper); display: inline-block; margin-bottom: 28px; }
+    .final h2 { color: var(--paper); max-width: 16ch; margin-bottom: 24px; }
+    .final h2 .il { font-family: var(--serif); font-style: italic; font-weight: 400; }
+    .final .lede { font-family: var(--serif); font-size: clamp(18px,2vw,22px); color: var(--paper-3); max-width: 38ch; margin-bottom: 44px; line-height: 1.5; }
+
+    /* ════════ FOOTER ════════ */
+    footer.site { padding: 56px 0 64px; background: var(--paper); border-top: 1px solid var(--rule); }
+    footer.site .wrap { display: grid; grid-template-columns: 2fr 3fr; gap: 32px; align-items: end; }
+    footer.site .brandline { font-family: var(--display); font-weight: 300; font-size: 22px; color: var(--ink); margin-bottom: 8px; display: inline-block; }
+    footer.site .tag { font-family: var(--serif); font-style: italic; font-size: 16px; color: var(--ink-2); }
+    footer.site nav ul { list-style: none; display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: flex-end; }
+    footer.site nav a { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: lowercase; color: var(--slate); border-bottom: 1px solid transparent; }
+    footer.site nav a:hover { color: var(--ink); border-bottom-color: var(--ink); }
+    footer.site .legal { grid-column: 1 / -1; margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--rule); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: lowercase; color: var(--voile); }
+    @media (max-width: 700px) { footer.site .wrap { grid-template-columns: 1fr; } footer.site nav ul { justify-content: flex-start; } }
+
+    /* ════════ REVEAL ════════ */
+    .reveal { opacity: 0; transform: translateY(8px); transition: opacity .5s ease, transform .5s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ════════ NAV GLOBALE (partagée entre les pages) ════════ */
+    .site-nav {
+      position: sticky; top: 0; z-index: 60;
+      display: flex; align-items: center; justify-content: center;
+      gap: clamp(20px, 5vw, 52px);
+      padding: 13px clamp(16px, 5vw, 40px);
+      background: var(--paper); color: var(--ink);
+      border-bottom: 1px solid var(--ink);
+    }
+    .site-nav a {
+      font-family: var(--mono);
+      font-size: 11px; letter-spacing: .18em; text-transform: lowercase;
+      color: var(--slate); text-decoration: none;
+      padding-bottom: 3px; border-bottom: 1px solid transparent;
+      transition: color .15s ease, border-color .15s ease;
+    }
+    .site-nav a:hover,
+    .site-nav a:focus-visible { color: var(--ink); border-bottom-color: var(--ink); outline: none; }
+    .site-nav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--ink); }
+    .site-nav .nav-logo { position: absolute; left: clamp(16px, 5vw, 40px); top: 50%; transform: translateY(-50%); display: inline-flex; padding: 0; border-bottom: 0; }
+    .site-nav .nav-logo img { height: 20px; width: auto; display: block; }
+    .site-nav .nav-logo:hover, .site-nav .nav-logo:focus-visible { border-bottom-color: transparent; }
   </style>
 </head>
 <body>
-  <div class="mark">une<span class="dot">.</span></div>
-  <span class="label">bientôt de retour</span>
-  <h1 class="lede">nous faisons une <span class="italic">pause</span>.</h1>
-  <p class="note">la page se repose un instant. elle rouvrira bientôt. reviens dans quelques jours.</p>
+
+  <!-- ════════ NAV GLOBALE ════════ -->
+  <nav class="site-nav" aria-label="navigation principale">
+    <a href="/" class="nav-logo" aria-label="une. · accueil"><img src="assets/une-logo.png" alt="une." width="59" height="20"></a>
+    <a href="/" aria-current="page">accueil</a>
+    <a href="/cadeau#gift">offrir</a>
+    <a href="/#manifeste">à propos</a>
+  </nav>
+
+  <!-- ════════ §0 SPLASH / COVER ════════ -->
+  <section class="cover on-ink" aria-label="une. · disponible">
+    <div class="cover-head">
+      <span>une<span class="dot" style="display:none"></span> · <b>c'est là</b></span>
+      <span>août 2026 · paris</span>
+    </div>
+
+    <div class="stage">
+      <span class="une cover-logo">une<span class="dot"></span></span>
+      <p class="lede">une seule prise. une seule respiration. une seule photo.</p>
+      <p class="descriptor">application photographique<br>tu prends, tu attends, tu reçois.<br>tu prends tes photos sans les revoir comme avec un appareil argentique, et les tirages arrivent chez toi par courrier.</p>
+      <a href="#" class="cover-badge-top" data-app-store data-location="cover" aria-label="télécharger une. sur l'App Store"><img class="badge-mini" src="assets/badges/app-store-white.svg" alt="Télécharger dans l'App Store" width="180" height="60" /></a>
+    </div>
+
+    <div class="cover-foot">
+      <a href="#hero" class="scroll-cue">défiler <span class="arrow">↓</span></a>
+      <span>iPhone® · disponible sur l'App Store</span>
+    </div>
+  </section>
+
+  <!-- ════════ §1 HERO ════════ -->
+  <section class="hero" id="hero" aria-labelledby="hero-title">
+    <div class="wrap hero-grid">
+      <div class="hero-col">
+        <p class="lede">
+          tu prends, tu attends, tu reçois.
+          <span class="une" style="font-size:1em">une<span class="dot"></span></span>
+          est une pellicule numérique. tu fais tes photos sans jamais les voir,
+          et les tirages arrivent chez toi quelques jours plus tard.
+          le numérique vient après · dans le colis, il y a un code.
+        </p>
+
+        <div class="cta-download">
+          <a href="#" data-app-store data-location="hero" aria-label="télécharger une. sur l'App Store"><img class="badge" src="assets/badges/app-store-black.svg" alt="Télécharger dans l'App Store" width="180" height="60" /></a>
+          <p class="hint">iPhone® · à partir de 14,90 € tout compris (tirages et livraison)</p>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="hero-phone">
+          <span class="phone-notch" aria-hidden="true"></span>
+          <span class="phone-top">pellicule simulée · 24 poses</span>
+          <h1 id="hero-title" class="phone-body">tu ne la prendras qu'<span class="une">une<span class="dot"></span></span> fois.</h1>
+          <div class="phone-foot">
+            <span class="phone-brand"><span class="une">une<span class="dot"></span></span></span>
+            <span class="phone-cta">sur l'App Store</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════ §2 6 TEMPS ════════ -->
+  <section class="six-times" aria-labelledby="six-times-title">
+    <div class="wrap">
+      <p class="eyebrow">comment ça marche</p>
+      <h2 id="six-times-title">six temps, un seul rythme.</h2>
+
+      <ol class="times" role="list">
+        <li tabindex="0">
+          <span class="num">01</span>
+          <span class="word"><span class="il">une</span>pellicule.</span>
+          <span class="label">l'engagement</span>
+          <p class="desc">tu choisis ton format · 12, 24 ou 36 poses · et ton look : chaude, froide ou noir et blanc. à partir d'ici, plus de retour en arrière.</p>
+        </li>
+        <li tabindex="0">
+          <span class="num">02</span>
+          <span class="word"><span class="il">une</span>pose.</span>
+          <span class="label">la prise</span>
+          <p class="desc">tu vises, tu déclenches. le viseur reste noir entre deux poses. tu fais confiance au moment.</p>
+        </li>
+        <li tabindex="0">
+          <span class="num">03</span>
+          <span class="word"><span class="il">une</span>promesse.</span>
+          <span class="label">l'envoi</span>
+          <p class="desc">la dernière pose lance le rembobinage. ta pellicule part au labo. on t'écrit à chaque étape.</p>
+        </li>
+        <li tabindex="0">
+          <span class="num">04</span>
+          <span class="word"><span class="il">une</span>surprise.</span>
+          <span class="label">la boîte aux lettres</span>
+          <p class="desc">quelques jours plus tard, un colis arrive. tu sais à peu près ce qu'il y a dedans. pas exactement quoi.</p>
+        </li>
+        <li tabindex="0">
+          <span class="num">05</span>
+          <span class="word"><span class="il">une</span>révélation.</span>
+          <span class="label">la découverte</span>
+          <p class="desc">tu ouvres. tu regardes tes tirages. tu rentres le code dans l'app · la galerie numérique se débloque.</p>
+        </li>
+        <li tabindex="0">
+          <span class="num">06</span>
+          <span class="word"><span class="il">une</span>trace.</span>
+          <span class="label">le vestige</span>
+          <p class="desc">ce qui reste : du papier dans une main, des photos sur ton téléphone, un moment qui a tenu.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ════════ §3 LE COLIS ════════ -->
+  <section class="colis" aria-labelledby="colis-title">
+    <div class="wrap">
+      <p class="eyebrow">l'objet</p>
+      <h2 id="colis-title"><span class="il">le colis</span> est le produit.</h2>
+      <img class="colis-visual" src="assets/colis.jpg" alt="un carton une. avec le code pellicule 2758, un iPhone affichant la galerie de l'app, et des tirages photo argentique posés sur du lin" width="1024" height="1024" loading="lazy" decoding="async" />
+    </div>
+  </section>
+
+  <!-- ════════ §4 MANIFESTE ════════ -->
+  <section class="manifeste on-ink" aria-labelledby="manifeste-title">
+    <div class="wrap">
+      <p class="eyebrow" id="manifeste-title">manifeste</p>
+      <div class="manifeste-body">
+        <p class="opener">une<span class="dot" style="display:none"></span>.</p>
+        <p>nous prenons trop de photos.<br>nous en regardons trop peu.<br>nous les stockons par milliers dans des téléphones qui les oublient.</p>
+        <p>la photographie était un acte.<br>elle est devenue un réflexe.</p>
+        <p class="claim"><em>une</em> remet l'acte au centre.</p>
+        <p>une pellicule limitée.<br>une pose qu'on ne refait pas.<br>une attente qu'on ne contourne pas.<br>un tirage papier qu'on tient.</p>
+        <p>pas de prévisualisation.<br>pas de retouche.<br>pas de filtre.<br>pas de cloud.</p>
+        <p>juste une photo, prise <em>une</em> fois, révélée plus tard, gardée pour toujours.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════ §5 CE QUI CHANGE ════════ -->
+  <section class="diff" aria-labelledby="diff-title">
+    <div class="wrap">
+      <p class="eyebrow">ce qui change</p>
+      <h2 id="diff-title">quatre choses qui ne ressemblent <span class="il">à rien d'autre.</span></h2>
+      <div class="grid">
+        <div class="item">
+          <h3>tu ne triches pas.</h3>
+          <p>impossible de voir les photos avant le développement. impossible de les supprimer. c'est l'app qui tient la règle · pas un argument marketing.</p>
+        </div>
+        <div class="item">
+          <h3>le tirage avant le numérique.</h3>
+          <p>le code qui débloque les photos sur ton téléphone arrive dans le colis. pas de raccourci, pas de version numérique avant le papier.</p>
+        </div>
+        <div class="item">
+          <h3>tes photos restent chez toi.</h3>
+          <p>une fois le code saisi, tes photos vivent sur ton téléphone. pas chez nous. tu n'as rien à confier à un cloud étranger.</p>
+        </div>
+        <div class="item">
+          <h3>un look, pas un filtre.</h3>
+          <p>le rendu est calibré au moment de la prise. trois pellicules, trois ambiances · chaude, froide, noir et blanc. tu n'ajustes rien après.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════ §6 PELLICULES ════════ -->
+  <section class="films" aria-labelledby="films-title">
+    <div class="wrap">
+      <p class="eyebrow">pellicules</p>
+      <h2 id="films-title">trois pellicules <span class="il">pour commencer.</span></h2>
+      <div class="grid">
+        <article class="film">
+          <img class="film-swatch film-photo" src="assets/films/chaude.jpg" alt="pellicule couleur chaude · une chaise sur une terrasse baignée par la lumière dorée de fin de journée" width="1100" height="827" loading="lazy" decoding="async" />
+          <h3>couleur chaude</h3>
+          <p>pour l'été, les amis, la lumière de fin de journée.</p>
+        </article>
+        <article class="film">
+          <img class="film-swatch film-photo" src="assets/films/froide.jpg" alt="pellicule couleur froide · une scène urbaine au crépuscule, un skateur passant devant un kiosque éclairé sur les quais" width="1100" height="835" loading="lazy" decoding="async" />
+          <h3>couleur froide</h3>
+          <p>pour les villes, les soirs, les températures basses.</p>
+        </article>
+        <article class="film">
+          <img class="film-swatch film-photo" src="assets/films/nb.jpg" alt="pellicule noir et blanc · un fauteuil et un mur traversés par des ombres découpées" width="1100" height="841" loading="lazy" decoding="async" />
+          <h3>noir et blanc</h3>
+          <p>pour ce qui ne demande pas la couleur.</p>
+        </article>
+      </div>
+      <p class="footnote">les noms changeront peut-être avant le launch. l'idée non.</p>
+    </div>
+  </section>
+
+  <!-- ════════ §8 FAQ ════════ -->
+  <section class="faq" aria-labelledby="faq-title">
+    <div class="wrap">
+      <p class="eyebrow">questions</p>
+      <h2 id="faq-title">quelques <span class="il">questions.</span></h2>
+
+      <details>
+        <summary>combien ça coûte ?</summary>
+        <p class="answer">à partir de 14,90 € tout compris · pellicule, développement, tirages papier et livraison. pas d'abonnement, pas de frais cachés, pas d'option. moins que le prix d'un appareil photo jetable + développement.</p>
+      </details>
+      <details>
+        <summary>c'est disponible où ?</summary>
+        <p class="answer">sur l'App Store, pour iPhone®. tu télécharges, tu choisis ta pellicule, tu prends tes photos, tu reçois le colis par la poste.</p>
+      </details>
+      <details>
+        <summary>vous voyez mes photos ?</summary>
+        <p class="answer">non. tes photos sont protégées entre ton téléphone et le labo. personne de notre équipe ne peut les ouvrir. le laboratoire partenaire les voit le temps de faire les tirages, c'est tout.</p>
+      </details>
+      <details>
+        <summary>et si la photo est ratée ?</summary>
+        <p class="answer">c'est pour ça que c'est de la photo. une pellicule, c'est un risque assumé · c'est ce qui rend le moment réel. on ne rembourse pas un cadrage manqué, mais on s'occupe de tout ce qui dépend de nous.</p>
+      </details>
+      <details>
+        <summary>comment je reçois les tirages ?</summary>
+        <p class="answer">par la poste, à l'adresse que tu nous donnes au moment de la commande. dans le colis : tes tirages papier et une carte avec un code unique. le code débloque les versions numériques dans l'app.</p>
+      </details>
+      <details>
+        <summary>je peux me désinscrire ?</summary>
+        <p class="answer">oui, en un clic depuis n'importe quel email qu'on t'envoie. et si tu décides plus tard que ce n'est plus pour toi, on supprime ton adresse.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- ════════ §9 CTA FINAL ════════ -->
+  <section class="final on-ink" aria-labelledby="final-title">
+    <div class="wrap">
+      <span class="une final-logo">une<span class="dot"></span></span>
+      <h2 id="final-title">une pellicule. <span class="il">un colis. un code.</span></h2>
+      <p class="lede">télécharge <span class="une">une<span class="dot"></span></span>, choisis ta pellicule, prends tes photos. le colis fait le reste.</p>
+
+      <div class="cta-download">
+        <a href="#" data-app-store data-location="final" aria-label="télécharger une. sur l'App Store"><img class="badge" src="assets/badges/app-store-white.svg" alt="Télécharger dans l'App Store" width="180" height="60" /></a>
+        <p class="hint">iPhone® · à partir de 14,90 € tout compris</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════ FOOTER ════════ -->
+  <footer class="site">
+    <div class="wrap">
+      <div>
+        <span class="une brandline">une<span class="dot"></span></span>
+        <p class="tag">une seule prise. une seule respiration. une seule photo.</p>
+      </div>
+      <nav aria-label="liens de pied de page">
+        <ul>
+          <li><a href="/mentions">mentions légales</a></li>
+          <li><a href="/confidentialite">confidentialité</a></li>
+          <li><a href="/statut-hebergeur">statut hébergeur</a></li>
+          <li><a href="mailto:hello@une-app.fr">contact</a></li>
+        </ul>
+      </nav>
+      <div class="legal">
+        <span>hébergeur au sens du règlement européen sur les services numériques.</span>
+        <span>© 2026 une.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ════════ CTA App Store · bascule 1-edit ════════
+    // Renseigner l'URL réelle de la fiche dès qu'elle est publiée, ex :
+    //   https://apps.apple.com/fr/app/une/id0000000000
+    // Tant que la chaîne est vide, les liens gardent href="#" (placeholder muet).
+    // ⚠️ Miroir : même variable dans /o/index.html (mettre à jour aux deux endroits).
+    var APP_STORE_URL = "https://apps.apple.com/fr/app/une-app-photo-unique/id6788447263";
+
+    function track(event, props) {
+      if (typeof window.plausible === "function") window.plausible(event, { props });
+      if (["localhost","127.0.0.1"].includes(window.location.hostname)) console.log("[track]", event, props);
+    }
+
+    document.querySelectorAll("[data-app-store]").forEach(function (a) {
+      if (APP_STORE_URL) { a.setAttribute("href", APP_STORE_URL); a.setAttribute("target", "_blank"); a.setAttribute("rel", "noopener"); }
+      a.addEventListener("click", function () { track("app_store_click", { location: a.dataset.location || "unknown", live: !!APP_STORE_URL }); });
+    });
+
+    // ════════ 6 temps : tap to expand (mobile) ════════
+    document.querySelectorAll(".times li").forEach((li) => {
+      li.addEventListener("click", (e) => { if (e.target.closest("a,button")) return; li.classList.toggle("is-open"); });
+      li.addEventListener("keypress", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); li.classList.toggle("is-open"); } });
+    });
+
+    // ════════ Reveal on scroll ════════
+    if ("IntersectionObserver" in window) {
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach((en) => { if (en.isIntersecting) { en.target.classList.add("visible"); obs.unobserve(en.target); } });
+      }, { threshold: 0.1 });
+      document.querySelectorAll("section:not(.cover) > .wrap > *").forEach((el) => { el.classList.add("reveal"); obs.observe(el); });
+    }
+  </script>
 </body>
 </html>
