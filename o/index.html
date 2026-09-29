@@ -9,13 +9,9 @@
        1) tenter d'ouvrir l'app via le scheme une://offrir (ceux qui l'ont
           installée tombent directement sur le tunnel « offrir » du tiroir
           cadeaux) ;
-       2) fallback provisoire : rediriger vers /cadeau.html (achat cadeau sur
-          le web) si l'app ne s'ouvre pas · en attendant que la fiche App
-          Store soit publiée.
-       Hébergement statique (GitHub Pages) : tout se joue côté client.
-       Quand l'URL App Store sera dispo, remplacer APP_STORE_URL ci-dessous
-       et le fallback deviendra un choix « télécharger l'app » / « acheter
-       sur le web ». -->
+       2) fallback store adapté à l'OS si l'app ne s'ouvre pas, avec achat web
+          toujours disponible en second choix.
+       Hébergement statique (GitHub Pages) : tout se joue côté client. -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400&family=Cormorant+Garamond:ital,wght@0,400;1,300;1,400&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
@@ -133,12 +129,8 @@
   </main>
 
   <script>
-    // TODO (publication App Store) : renseigner l'URL réelle de la fiche,
-    // ex. https://apps.apple.com/fr/app/une/id0000000000
-    // Une fois renseignée, le fallback affichera « télécharger l'app » au
-    // lieu de rediriger vers /cadeau.html.
-    // ⚠️ Miroir : même variable dans /index.html (mettre à jour aux deux endroits).
     var APP_STORE_URL = "https://apps.apple.com/fr/app/une-app-photo-unique/id6788447263";
+    var PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=com.une.app";
 
     var DEEP_LINK = "une://offrir";
     var WEB_FALLBACK = "/cadeau.html";
@@ -201,6 +193,13 @@
       return "inconnu";
     }
 
+    function storeUrl() {
+      var ua = navigator.userAgent || "";
+      if (/android/i.test(ua) && PLAY_STORE_URL) return PLAY_STORE_URL;
+      if (APP_STORE_URL) return APP_STORE_URL;
+      return "";
+    }
+
     function trackQr(action, destination) {
       var payload = {
         qr_code: QR_CODE,
@@ -235,9 +234,10 @@
 
     function goToFallback() {
       if (document.hidden) return;  // app ouverte → on ne bouge pas
-      if (APP_STORE_URL) {
+      var fallbackStoreUrl = storeUrl();
+      if (fallbackStoreUrl) {
         trackQr("app_store_fallback", "app_store");
-        location.replace(APP_STORE_URL);
+        location.replace(fallbackStoreUrl);
       } else {
         location.replace(WEB_FALLBACK);
       }

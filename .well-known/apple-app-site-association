@@ -3,10 +3,16 @@
     "apps": [],
     "details": [
       {
-        "appIDs": ["UFN3WGL77X.fr.une-app.ios"],
+        "appIDs": [
+          "UFN3WGL77X.fr.une-app.ios",
+          "UFN3WGL77X.fr.une-app.ios.staging",
+          "UFN3WGL77X.fr.une-app.ios.dev"
+        ],
         "components": [
           { "/": "/o", "comment": "QR imprimé — offrir une pellicule (sans slash final)" },
-          { "/": "/o/", "comment": "QR imprimé — offrir une pellicule (avec slash final)" }
+          { "/": "/o/", "comment": "QR imprimé — offrir une pellicule (avec slash final)" },
+          { "/": "/cadeau-recu.html", "comment": "Email cadeau — code dans la query string" },
+          { "/": "/gift/*", "comment": "Lien cadeau canonique" }
         ]
       }
     ]
