@@ -135,6 +135,7 @@
     var DEEP_LINK = "une://offrir";
     var WEB_FALLBACK = "/cadeau.html";
     var QR_CODE = "photo_card_film_code_v1";
+    var SCAN_ID = fallbackUuid();
     // ~1,4 s : assez pour laisser l'app s'ouvrir (document.hidden bascule à
     // true côté iOS), pas trop long pour ceux qui ne l'ont pas.
     var FALLBACK_DELAY_MS = 1400;
@@ -153,7 +154,7 @@
         var key = "une.qr.anonymousId";
         var existing = window.localStorage && localStorage.getItem(key);
         if (existing) return existing;
-        var id = crypto.randomUUID ? crypto.randomUUID() : fallbackUuid();
+        var id = window.crypto && crypto.randomUUID ? crypto.randomUUID() : fallbackUuid();
         if (window.localStorage) localStorage.setItem(key, id);
         return id;
       } catch (_) {
@@ -200,10 +201,38 @@
       return "";
     }
 
-    function trackQr(action, destination) {
+    function sendQrWithBeacon(body) {
+      if (!navigator.sendBeacon) return false;
+      var blob = new Blob([body], { type: "application/json" });
+      return navigator.sendBeacon(apiBase() + "/api/v1/marketing/qr-scans", blob);
+    }
+
+    function sendQrWithFetch(body) {
+      if (!window.fetch) return Promise.resolve(false);
+      return fetch(apiBase() + "/api/v1/marketing/qr-scans", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: body,
+        keepalive: true
+      }).then(function () {
+        return true;
+      }).catch(function () {
+        return false;
+      });
+    }
+
+    function waitMs(ms) {
+      return new Promise(function (resolve) {
+        setTimeout(function () { resolve(false); }, ms);
+      });
+    }
+
+    function trackQr(action, destination, options) {
+      options = options || {};
       var payload = {
         qr_code: QR_CODE,
         action: action,
+        scan_id: SCAN_ID,
         anonymous_id: anonymousId(),
         destination: destination || null,
         page_path: location.pathname,
@@ -219,17 +248,18 @@
       };
       try {
         var body = JSON.stringify(payload);
-        if (navigator.sendBeacon) {
-          var blob = new Blob([body], { type: "application/json" });
-          if (navigator.sendBeacon(apiBase() + "/api/v1/marketing/qr-scans", blob)) return;
+        if (options.wait && window.Promise) {
+          return Promise.race([
+            sendQrWithFetch(body),
+            waitMs(options.timeoutMs || 450)
+          ]).then(function (sent) {
+            if (!sent) sendQrWithBeacon(body);
+            return sent;
+          });
         }
-        fetch(apiBase() + "/api/v1/marketing/qr-scans", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: body,
-          keepalive: true
-        }).catch(function () {});
+        if (!sendQrWithBeacon(body)) sendQrWithFetch(body);
       } catch (_) {}
+      return Promise.resolve(false);
     }
 
     function goToFallback() {
@@ -260,14 +290,16 @@
     // l'app est absente. Si l'app est présente, elle s'ouvre → document.hidden
     // devient true → la redirection fallback ne se déclenche pas.
     window.addEventListener("load", function () {
-      trackQr("page_loaded", "app");
-      // Micro-délai pour laisser la page peindre avant de tenter le scheme
-      // (évite un flash blanc sur Safari).
-      setTimeout(function () {
+      function autoOpenApp() {
         trackQr("app_open_attempted", "app");
         location.href = DEEP_LINK;
         setTimeout(goToFallback, FALLBACK_DELAY_MS);
-      }, 120);
+      }
+      // On laisse une très courte fenêtre au compteur de scan avant d'ouvrir
+      // l'app/le store : sur mobile, le changement d'app peut interrompre JS.
+      trackQr("page_loaded", "app", { wait: true, timeoutMs: 500 }).then(function () {
+        setTimeout(autoOpenApp, 80);
+      });
     });
   </script>
 </body>
