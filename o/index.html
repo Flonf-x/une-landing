@@ -143,6 +143,7 @@
     var openBtn = document.getElementById("openBtn");
     var webBtn = document.getElementById("webBtn");
     var hint = document.getElementById("hint");
+    var appOpenAttemptTracked = false;
 
     function apiBase() {
       if (["localhost", "127.0.0.1"].includes(location.hostname)) return "http://localhost:3000";
@@ -275,11 +276,30 @@
 
     function tryOpenApp() {
       // Le clic utilisateur permet à Safari d'ouvrir le scheme sans alerte.
-      trackQr("app_open_attempted", "app");
-      location.href = DEEP_LINK;
-      setTimeout(goToFallback, FALLBACK_DELAY_MS);
+      function openDeepLink() {
+        location.href = DEEP_LINK;
+        setTimeout(goToFallback, FALLBACK_DELAY_MS);
+      }
+      if (appOpenAttemptTracked) {
+        openDeepLink();
+        return;
+      }
+      appOpenAttemptTracked = true;
+      trackQr("app_open_attempted", "app", { wait: true, timeoutMs: 250 }).then(openDeepLink);
     }
 
+    function prepareAppOpenTracking() {
+      if (appOpenAttemptTracked) return;
+      appOpenAttemptTracked = true;
+      trackQr("app_open_attempted", "app");
+    }
+
+    if (window.PointerEvent) {
+      openBtn.addEventListener("pointerdown", prepareAppOpenTracking);
+    } else {
+      openBtn.addEventListener("touchstart", prepareAppOpenTracking);
+      openBtn.addEventListener("mousedown", prepareAppOpenTracking);
+    }
     openBtn.addEventListener("click", tryOpenApp);
     webBtn.addEventListener("click", function () {
       trackQr("web_fallback_clicked", "web_gift");
@@ -291,9 +311,10 @@
     // devient true → la redirection fallback ne se déclenche pas.
     window.addEventListener("load", function () {
       function autoOpenApp() {
-        trackQr("app_open_attempted", "app");
-        location.href = DEEP_LINK;
-        setTimeout(goToFallback, FALLBACK_DELAY_MS);
+        trackQr("app_open_attempted", "app", { wait: true, timeoutMs: 250 }).then(function () {
+          location.href = DEEP_LINK;
+          setTimeout(goToFallback, FALLBACK_DELAY_MS);
+        });
       }
       // On laisse une très courte fenêtre au compteur de scan avant d'ouvrir
       // l'app/le store : sur mobile, le changement d'app peut interrompre JS.
