@@ -143,8 +143,6 @@
     var openBtn = document.getElementById("openBtn");
     var webBtn = document.getElementById("webBtn");
     var hint = document.getElementById("hint");
-    var appOpenAttemptTracked = false;
-    var appOpenAttemptPromise = null;
 
     function apiBase() {
       if (["localhost", "127.0.0.1"].includes(location.hostname)) return "http://localhost:3000";
@@ -276,32 +274,15 @@
     }
 
     function tryOpenApp() {
-      // Le clic utilisateur permet à Safari d'ouvrir le scheme sans alerte.
-      function openDeepLink() {
-        location.href = DEEP_LINK;
-        setTimeout(goToFallback, FALLBACK_DELAY_MS);
-      }
-      if (appOpenAttemptTracked) {
-        (appOpenAttemptPromise || Promise.resolve(false)).then(openDeepLink);
-        return;
-      }
-      appOpenAttemptTracked = true;
-      appOpenAttemptPromise = trackQr("app_open_attempted", "app", { wait: true, timeoutMs: 450 });
-      appOpenAttemptPromise.then(openDeepLink);
+      var url = new URL(apiBase() + "/api/v1/marketing/qr-open");
+      url.searchParams.set("qr_code", QR_CODE);
+      url.searchParams.set("scan_id", SCAN_ID);
+      var aid = anonymousId();
+      if (aid) url.searchParams.set("anonymous_id", aid);
+      url.searchParams.set("page_path", location.pathname);
+      location.href = url.toString();
     }
 
-    function prepareAppOpenTracking() {
-      if (appOpenAttemptTracked) return;
-      appOpenAttemptTracked = true;
-      appOpenAttemptPromise = trackQr("app_open_attempted", "app", { wait: true, timeoutMs: 450 });
-    }
-
-    if (window.PointerEvent) {
-      openBtn.addEventListener("pointerdown", prepareAppOpenTracking);
-    } else {
-      openBtn.addEventListener("touchstart", prepareAppOpenTracking);
-      openBtn.addEventListener("mousedown", prepareAppOpenTracking);
-    }
     openBtn.addEventListener("click", tryOpenApp);
     webBtn.addEventListener("click", function () {
       trackQr("web_fallback_clicked", "web_gift");
