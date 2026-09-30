@@ -72,21 +72,19 @@ function storeUrl() {
   return "";
 }
 
-function sendQrWithBeacon(body) {
-  if (!navigator.sendBeacon) return false;
-  var blob = new Blob([body], { type: "application/json" });
-  return navigator.sendBeacon(apiBase() + "/api/v1/marketing/qr-scans", blob);
-}
-
 function sendQrWithFetch(body) {
   if (!window.fetch) return Promise.resolve(false);
+  // sendBeacon impose credentials: include : le préflight JSON est rejeté
+  // entre une-app.fr et api.une-app.fr, même s'il annonce une mise en file.
+  // Le suivi anonyme utilise fetch sans cookies et survit au départ de la page.
   return fetch(apiBase() + "/api/v1/marketing/qr-scans", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: body,
+    credentials: "omit",
     keepalive: true
-  }).then(function () {
-    return true;
+  }).then(function (response) {
+    return response.ok;
   }).catch(function () {
     return false;
   });
@@ -113,9 +111,7 @@ function trackQr(action, destination) {
       screen_height: window.screen ? window.screen.height : null
     };
     var body = JSON.stringify(payload);
-    var queued = false;
-    try { queued = sendQrWithBeacon(body); } catch (_) {}
-    if (!queued) sendQrWithFetch(body);
+    sendQrWithFetch(body);
   } catch (_) {}
 }
 
@@ -163,6 +159,7 @@ window.addEventListener("load", function () {
   autoOpenTimer = setTimeout(function () {
     if (document.hidden) return;
     scheduleFallback();
+    trackQr("app_open_attempted", "app");
     location.href = DEEP_LINK;
   }, 120);
 });
