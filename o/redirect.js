@@ -2,17 +2,15 @@ var APP_STORE_URL = "https://apps.apple.com/fr/app/une-app-photo-unique/id678844
 var PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=com.une.app";
 
 var DEEP_LINK = "une://offrir";
-var WEB_FALLBACK = "/cadeau.html";
 var QR_CODE = "photo_card_film_code_v1";
 var SCAN_ID = fallbackUuid();
-// ~1,4 s : assez pour laisser l'app s'ouvrir (document.hidden bascule à
-// true côté iOS), pas trop long pour ceux qui ne l'ont pas.
-var FALLBACK_DELAY_MS = 1400;
 
 var openBtn = document.getElementById("openBtn");
 var webBtn = document.getElementById("webBtn");
-var fallbackTimer;
+var storeBtn = document.getElementById("storeBtn");
 var autoOpenTimer;
+
+storeBtn.href = storeUrl();
 
 function apiBase() {
   if (location.hostname === "staging-admin.une-app.fr") return location.origin;
@@ -115,30 +113,13 @@ function trackQr(action, destination) {
   } catch (_) {}
 }
 
-function goToFallback() {
-  if (document.hidden) return;  // app ouverte → on ne bouge pas
-  var fallbackStoreUrl = storeUrl();
-  if (fallbackStoreUrl) {
-    trackQr("app_store_fallback", "app_store");
-    location.replace(fallbackStoreUrl);
-  } else {
-    location.replace(WEB_FALLBACK);
-  }
-}
-
 function cancelPendingNavigation() {
   clearTimeout(autoOpenTimer);
-  clearTimeout(fallbackTimer);
-}
-
-function scheduleFallback() {
-  cancelPendingNavigation();
-  fallbackTimer = setTimeout(goToFallback, FALLBACK_DELAY_MS);
 }
 
 openBtn.addEventListener("click", function () {
+  cancelPendingNavigation();
   trackQr("app_open_attempted", "app");
-  scheduleFallback();
   // Laisser le navigateur suivre href="une://offrir" dans le geste utilisateur.
   // Aucun await, aucune page API intermédiaire, aucun preventDefault.
 });
@@ -148,7 +129,13 @@ webBtn.addEventListener("click", function () {
   trackQr("web_fallback_clicked", "web_gift");
 });
 
-// Une fois l'app ouverte, revenir dans Safari ne doit pas ouvrir le store.
+// Le navigateur ne sait pas si la confirmation iOS est encore affichée,
+// refusée, ou si l'app est absente. Seul un choix explicite ouvre le store.
+storeBtn.addEventListener("click", function () {
+  cancelPendingNavigation();
+  trackQr("app_store_fallback", "app_store");
+});
+
 document.addEventListener("visibilitychange", function () {
   if (document.hidden) cancelPendingNavigation();
 });
@@ -158,8 +145,7 @@ window.addEventListener("load", function () {
   trackQr("page_loaded", "app");
   autoOpenTimer = setTimeout(function () {
     if (document.hidden) return;
-    scheduleFallback();
-    trackQr("app_open_attempted", "app");
+    // La tentative automatique du QR n'est pas un clic sur « ouvrir ».
     location.href = DEEP_LINK;
   }, 120);
 });

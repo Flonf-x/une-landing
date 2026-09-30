@@ -9,8 +9,8 @@
        1) tenter d'ouvrir l'app via le scheme une://offrir (ceux qui l'ont
           installée tombent directement sur le tunnel « offrir » du tiroir
           cadeaux) ;
-       2) fallback store adapté à l'OS si l'app ne s'ouvre pas, avec achat web
-          toujours disponible en second choix.
+       2) proposer l'installation via le store adapté à l'OS et l'achat web,
+          uniquement sur choix explicite (aucune redirection temporisée).
        Hébergement statique (GitHub Pages) : tout se joue côté client. -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -124,10 +124,11 @@
     <a class="btn ghost" id="webBtn" href="/cadeau.html">acheter sur le web</a>
 
     <p class="hint" id="hint">ouverture de l'app… sinon, appuie sur le bouton.</p>
+    <p class="hint">pas encore l'app ? <a id="storeBtn" href="https://apps.apple.com/fr/app/une-app-photo-unique/id6788447263" style="color: inherit">installer une.</a></p>
 
     <footer>une seule prise. une seule chance. une seule photo.</footer>
   </main>
 
-  <script src="./redirect.js?v=20260930-2"></script>
+  <script src="./redirect.js?v=20260930-3"></script>
 </body>
 </html>
