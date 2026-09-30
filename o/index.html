@@ -123,7 +123,7 @@
     <button class="btn" id="openBtn">ouvrir dans l'app</button>
     <a class="btn ghost" id="webBtn" href="/cadeau.html">acheter sur le web</a>
 
-    <p class="hint" id="hint">redirection dans un instant…</p>
+    <p class="hint" id="hint">appuie pour ouvrir l'app.</p>
 
     <footer>une seule prise. une seule chance. une seule photo.</footer>
   </main>
@@ -288,20 +288,8 @@
       trackQr("web_fallback_clicked", "web_gift");
     });
 
-    // Auto-tentative au chargement : la plupart des Safari récents acceptent
-    // location.href vers un scheme custom même sans geste, silencieusement si
-    // l'app est absente. Si l'app est présente, elle s'ouvre → document.hidden
-    // devient true → la redirection fallback ne se déclenche pas.
     window.addEventListener("load", function () {
-      function autoOpenApp() {
-        location.href = DEEP_LINK;
-        setTimeout(goToFallback, FALLBACK_DELAY_MS);
-      }
-      // On laisse une très courte fenêtre au compteur de scan avant d'ouvrir
-      // l'app/le store : sur mobile, le changement d'app peut interrompre JS.
-      trackQr("page_loaded", "app", { wait: true, timeoutMs: 500 }).then(function () {
-        setTimeout(autoOpenApp, 80);
-      });
+      trackQr("page_loaded", "app", { wait: true, timeoutMs: 500 });
     });
   </script>
 </body>
