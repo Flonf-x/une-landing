@@ -144,6 +144,7 @@
     var webBtn = document.getElementById("webBtn");
     var hint = document.getElementById("hint");
     var appOpenAttemptTracked = false;
+    var appOpenAttemptPromise = null;
 
     function apiBase() {
       if (["localhost", "127.0.0.1"].includes(location.hostname)) return "http://localhost:3000";
@@ -281,17 +282,18 @@
         setTimeout(goToFallback, FALLBACK_DELAY_MS);
       }
       if (appOpenAttemptTracked) {
-        openDeepLink();
+        (appOpenAttemptPromise || Promise.resolve(false)).then(openDeepLink);
         return;
       }
       appOpenAttemptTracked = true;
-      trackQr("app_open_attempted", "app", { wait: true, timeoutMs: 250 }).then(openDeepLink);
+      appOpenAttemptPromise = trackQr("app_open_attempted", "app", { wait: true, timeoutMs: 450 });
+      appOpenAttemptPromise.then(openDeepLink);
     }
 
     function prepareAppOpenTracking() {
       if (appOpenAttemptTracked) return;
       appOpenAttemptTracked = true;
-      trackQr("app_open_attempted", "app");
+      appOpenAttemptPromise = trackQr("app_open_attempted", "app", { wait: true, timeoutMs: 450 });
     }
 
     if (window.PointerEvent) {
