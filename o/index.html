@@ -311,10 +311,8 @@
     // devient true → la redirection fallback ne se déclenche pas.
     window.addEventListener("load", function () {
       function autoOpenApp() {
-        trackQr("app_open_attempted", "app", { wait: true, timeoutMs: 250 }).then(function () {
-          location.href = DEEP_LINK;
-          setTimeout(goToFallback, FALLBACK_DELAY_MS);
-        });
+        location.href = DEEP_LINK;
+        setTimeout(goToFallback, FALLBACK_DELAY_MS);
       }
       // On laisse une très courte fenêtre au compteur de scan avant d'ouvrir
       // l'app/le store : sur mobile, le changement d'app peut interrompre JS.
